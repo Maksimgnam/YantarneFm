@@ -1,4 +1,4 @@
-import Auth from '@/components/Auth'
+import Signup from '@/components/Signup';
 import React from 'react'
 
 export const metadata = {
@@ -9,7 +9,7 @@ export const metadata = {
 const Page = () => {
   return (
     <div className='w-full h-svh'>
-      <Auth/>
+      <Signup/>
     </div>
   )
 }
