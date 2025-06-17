@@ -38,7 +38,7 @@ async function listFilesInFolder(folderId) {
   }
 }
 
-// Folder ID твоєї папки
+
 const FOLDER_ID = '15M1t-6FAJh1TSDar9Sl-UMVmbkoon8ud';
 
 app.get('/files', async (req, res) => {
