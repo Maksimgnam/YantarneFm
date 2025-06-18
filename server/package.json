@@ -1,17 +1,19 @@
 {
-  "name": "yantarneserver",
+  "name": "yantarne",
   "version": "1.0.0",
-  "main": "app.js",
+  "description": "Yantanre back-end",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "googleapis": "^150.0.1"
+    "fs": "^0.0.1-security",
+    "googleapis": "^150.0.1",
+    "node-telegram-bot-api": "^0.66.0"
   }
 }
