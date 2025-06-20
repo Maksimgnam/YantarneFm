@@ -8,13 +8,14 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 2000;
 
-const getUserByCode = require("./src/routes/getUserByCode")
+const getUserByCode = require('./src/routes/getUserByCode')
+const likeAudio = require('./src/routes/likeAudioRoute')
 
-app.use('/api', getUserByCode);
-
-
-app.use(cors());
 app.use(express.json());
+app.use(cors());
+app.use('/api', getUserByCode);
+app.use('/api', likeAudio)
+
 
 // MongoDB
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })

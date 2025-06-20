@@ -30,10 +30,14 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  savedSongs: {
+    type: Array,
+    required: true,
+    default: ['Zak Abel & Syn Cole - What Love Is (Syn Cole Remix).mp3', 'Aaron Smith feat. Luvli - Dancin Krono Remix.mp3']
   }
 });
 
-// Індекси для оптимізації пошуку
 userSchema.index({ telegramId: 1 });
 userSchema.index({ username: 1 });
 

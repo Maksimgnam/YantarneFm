@@ -37,3 +37,5 @@ bot.on('message', async (msg) => {
 
   bot.sendMessage(chatId, '❓ Напишіть /start для початку, або введіть код підтвердження.');
 });
+
+module.exports = {bot}
