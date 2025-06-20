@@ -1,6 +1,30 @@
 const User = require('../models/User');
 const AuthCode = require('../models/AuthCode');
 
+/**
+ * @swagger
+ * /api/getUserByCode/{code}:
+ *   get:
+ *     summary: Get user by code
+ *     parameters:
+ *       - in: path
+ *         name: code
+ *         required: true
+ *         description: The code of the user to retrieve
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Successful operation
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/User'
+ *       404:
+ *         description: Code not found
+ *       500:
+ *         description: Internal server error
+ */
 exports.getUserByCode = async (req, res) => {
     try {
         const code_info = await AuthCode.findOne({ code: req.params.code });

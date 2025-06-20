@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const { createAuthCode, verifyAuthCode } = require('../services/codeService');
+const { createAuthCode } = require('../services/codeService');
 const escapeMarkdown = require('../utils/escapeMarkdown');
 const { handleRegistrationStep } = require('../state/registrationState');
 

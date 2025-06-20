@@ -16,19 +16,5 @@ async function createAuthCode(telegramId) {
   return code;
 }
 
-async function verifyAuthCode(telegramId, inputCode) {
-  const authCode = await AuthCode.findOne({
-    telegramId,
-    code: inputCode,
-    isUsed: false,
-    expiresAt: { $gt: new Date() }
-  });
 
-  if (!authCode) return null;
-
-  authCode.isUsed = true;
-  await authCode.save();
-  return authCode;
-}
-
-module.exports = { createAuthCode, verifyAuthCode };
+module.exports = { createAuthCode };

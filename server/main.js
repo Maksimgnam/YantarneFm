@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require("cors");
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./src/docs/swagger');
 
 
 dotenv.config();
@@ -17,6 +19,7 @@ app.use(cors());
 app.use('/api', getUserByCodeRoute);
 app.use('/api', likeAudioRoute);
 app.use('/api', getUserRoute)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
 // MongoDB
