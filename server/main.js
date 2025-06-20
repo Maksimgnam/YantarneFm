@@ -8,13 +8,15 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 2000;
 
-const getUserByCode = require('./src/routes/getUserByCode')
-const likeAudio = require('./src/routes/likeAudioRoute')
+const getUserByCodeRoute = require('./src/routes/getUserByCode');
+const likeAudioRoute = require('./src/routes/likeAudio');
+const getUserRoute = require('./src/routes/getUser');
 
 app.use(express.json());
 app.use(cors());
-app.use('/api', getUserByCode);
-app.use('/api', likeAudio)
+app.use('/api', getUserByCodeRoute);
+app.use('/api', likeAudioRoute);
+app.use('/api', getUserRoute)
 
 
 // MongoDB
