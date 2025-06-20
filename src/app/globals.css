@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  font-family: 'Montserrat Alternates', sans-serif;
 }
 
 body {
@@ -11,5 +13,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-color: #171717;
+  color: white;
+  background-color: #222222;
+  font-family: 'Montserrat Alternates', sans-serif;
 }

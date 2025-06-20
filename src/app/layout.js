@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Madimi_One, Montserrat_Alternates, Unbounded } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -16,6 +16,17 @@ export const metadata = {
   description: "Yantarne FM",
 };
 
+
+
+const montserrat = Montserrat_Alternates({
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  variable: '--font-montserrat',
+  display: 'swap',
+});
+
+
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -23,7 +34,7 @@ export default function RootLayout({ children }) {
       <link rel="icon" href="/logo.webp" type="image/x-icon" />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} antialiased`}
       >
         {children}
       </body>
