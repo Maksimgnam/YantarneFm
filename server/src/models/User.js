@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+const {generateID} = require('../utils/idGenerator');
 
 const userSchema = new mongoose.Schema({
   telegramId: {
@@ -21,13 +21,9 @@ const userSchema = new mongoose.Schema({
   },
   id: {
     type: Number,
-    default: 0
+    default: generateID()
   },
   email: {
-    type: String,
-    required: true
-  },
-  password: {
     type: String,
     required: true
   },

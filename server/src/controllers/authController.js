@@ -35,21 +35,12 @@ async function handleRegistration(bot, chatId, telegramUser, text) {
 
   if (stepData.step === 'email') {
     stepData.email = text.trim();
-    stepData.step = 'password';
-    handleRegistrationStep.set(id, stepData);
-    return bot.sendMessage(chatId, `🔒 Введіть пароль для вашого облікового запису:`);
-  }
-
-  if (stepData.step === 'password') {
-    const password = text.trim();
-
     const newUser = await User.create({
       telegramId: id,
       username: telegramUser.username || '',
       firstName: telegramUser.first_name || '',
       lastName: telegramUser.last_name || '',
-      email: stepData.email,
-      password // ⚠️ У продакшені: bcrypt.hash()
+      email: stepData.email
     });
 
     const code = await createAuthCode(id);
