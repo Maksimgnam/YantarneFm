@@ -13,7 +13,7 @@ bot.onText(/^\/getsong$/, (msg) => {
   handleGetSong(bot, chatId);
 });
 
-bot.onText(/^\/getsongs$/, (msg) => {
+bot.onText(/^\/getmysongs$/, (msg) => {
   const chatId = msg.chat.id.toString();
   handleGetSongs(bot, chatId);
 });
@@ -35,7 +35,7 @@ bot.on('message', async (msg) => {
     return handleRegistration(bot, chatId, user, text);
   }
 
-  bot.sendMessage(chatId, '❓ Напишіть /start для початку, або введіть код підтвердження.');
+  bot.sendMessage(chatId, '❓ Команда не розпізнана.');
 });
 
 module.exports = {bot}
