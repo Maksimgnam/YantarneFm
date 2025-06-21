@@ -7,24 +7,37 @@ const Account = () => {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
+  const getCookie = (name) => {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  };
+
   useEffect(() => {
     const fetchUser = async () => {
+      const userId = getCookie('userId'); 
+      if (!userId) {
+        setError('User ID not found in cookies');
+        return;
+      }
+
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/1750496674776`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/${userId}`);
         if (!res.ok) throw new Error('User not found');
         const data = await res.json();
+        console.log(data);
         setUser(data);
       } catch (err) {
         setError(err.message);
       }
     };
+
     fetchUser();
   }, []);
 
-  // 👇 Function to send a POST request to likeAudio
   const handleLikeAudio = async () => {
     if (!user) return;
-  
+
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/addSong`, {
         method: 'POST',
@@ -32,21 +45,19 @@ const Account = () => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          nameAudio: 'example-audio.mp3', // must match backend expectations
-          userId: user.id                 // make sure user.id exists
+          nameAudio: 'Aaron Smith feat. Luvli - Dancin Krono Remix.mp3',
+          userId: user.id
         })
       });
-  
+
       const data = await res.json();
-  
       if (!res.ok) throw new Error(data.message || 'Something went wrong');
-  
+
       setMessage('Audio liked successfully!');
     } catch (err) {
       setMessage(err.message);
     }
   };
-  
 
   return (
     <div className="w-full h-svh p-4">
@@ -56,7 +67,7 @@ const Account = () => {
       {user ? (
         <div>
           <h1 className="text-xl font-bold">Account Details</h1>
-          <p><strong>Name:</strong> {user.name}</p>
+          <p><strong>Name:</strong> {user.firstName}</p>
           <p><strong>Email:</strong> {user.email}</p>
 
           <button
@@ -74,4 +85,3 @@ const Account = () => {
 };
 
 export default Account;
-

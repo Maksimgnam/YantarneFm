@@ -8,7 +8,7 @@ const Home = () => {
   const router = useRouter()
 
   const handleTelegramLogin = () => {
-    window.open('https://t.me/', '_blank')
+    window.open('https://t.me/@yantarnefmNY_bot', '_blank')
 
 
     setTimeout(() => {
