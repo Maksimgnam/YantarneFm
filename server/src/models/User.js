@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
   savedSongs: {
     type: Array,
     required: true,
-    default: ['Zak Abel & Syn Cole - What Love Is (Syn Cole Remix).mp3', 'Aaron Smith feat. Luvli - Dancin Krono Remix.mp3']
+    default: []
   }
 });
 

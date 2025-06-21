@@ -22,11 +22,24 @@ async function handleDownloadAudio(bot, chatId, songName) {
     const localPath = path.join(__dirname, `../../temp_${song.id}${fileExt}`);
 
     await downloadFile(song.id, localPath);
-    await bot.sendAudio(chatId, fs.createReadStream(localPath), { title: song.name });
+
+    const sentMessage = await bot.sendAudio(chatId, fs.createReadStream(localPath), { title: song.name });
+    console.log('message_id:', sentMessage.message_id);
+
     fs.unlinkSync(localPath);
+
+    return sentMessage.message_id
 
   } catch (error) {
     console.log('Unexpected error:', error)
+  }
+}
+
+async function handleDeleteMessage(bot, chatId, messageId){
+  try {
+    await bot.deleteMessage(chatId, messageId);
+  } catch (error){
+    console.log('Error during deleting message:', error)
   }
 }
 
@@ -78,4 +91,4 @@ async function handleGetSongs(bot, chatId) {
   }
 }
 
-module.exports = { handleGetSong, handleGetSongs, handleDownloadAudio };
+module.exports = { handleGetSong, handleGetSongs, handleDownloadAudio, handleDeleteMessage };

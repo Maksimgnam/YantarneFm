@@ -1,5 +1,5 @@
 const User = require('../models/User')
-const { handleDownloadAudio } = require('../controllers/telegramController')
+const { handleDownloadAudio, handleDeleteMessage } = require('../controllers/telegramController')
 const {bot} = require('../bot/bot')
 
 /**
@@ -33,22 +33,35 @@ const {bot} = require('../bot/bot')
 
 exports.likeAudio = async (req, res) => {
     try {
-        const {nameAudio, userId} = req.body;
-        const user = await User.findOne({id: userId});
+        const { nameAudio, userId } = req.body;
+        const user = await User.findOne({ id: userId });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
+
         const chatId = user.telegramId;
-        const isLiked = user.savedSongs.some(song => song === nameAudio);
+        const isLiked = user.savedSongs.some(song => song.nameAudio === nameAudio);
         if (isLiked) {
-            return res.status(400).json({ message: 'Audio is already liked' });
+            const messageId = user.savedSongs.find(song => song.nameAudio === nameAudio).idMessage;
+            const index = user.savedSongs.findIndex(song => song.nameAudio === nameAudio);
+            user.savedSongs.splice(index, 1);
+            await user.save();
+            await handleDeleteMessage(bot, chatId, messageId);
+            res.status(200).json({message: 'Song deleted successfully'})
+        } else {
+            const idMessage = await handleDownloadAudio(bot, chatId, nameAudio);
+
+            if (!idMessage) {
+                return res.status(500).json({ message: 'Failed to send audio' });
+            }
+
+            user.savedSongs.push({ nameAudio, idMessage });
+            await user.save();
+
+            res.status(200).json({ message: 'Audio liked successfully' });
         }
-        user.savedSongs.push(nameAudio)
-        await user.save();
-        handleDownloadAudio(bot, chatId, nameAudio)
-        res.status(200).json({message: 'Audio liked successfully'});
-    } catch (error){
-        console.log('Error during likeAudio:', error)
-        res.status(500).json({message: 'Internal server error'});
+    } catch (error) {
+        console.log('Error during likeAudio:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 }
