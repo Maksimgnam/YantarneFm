@@ -38,7 +38,6 @@ exports.likeAudio = async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-
         const chatId = user.telegramId;
         const isLiked = user.savedSongs.some(song => song.nameAudio === nameAudio);
         if (isLiked) {
