@@ -1,5 +1,6 @@
+import Header from "@/components/Header";
 import { Geist, Geist_Mono, Madimi_One, Montserrat_Alternates, Unbounded } from "next/font/google";
-import "./globals.css";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: "Yantarne FM - радіо рідного міста",
-  description: "Yantarne FM - радіо рідного міста",
+  title: "Yantarne FM",
+  description: "Yantarne FM",
 };
 
 
@@ -27,17 +28,13 @@ const montserrat = Montserrat_Alternates({
 
 
 
-export default function RootLayout({ children }) {
+export default function HomeLayout({ children }) {
   return (
-    <html lang="en">
-      <head>
-      <link rel="icon" href="/logo.webp" type="image/x-icon" />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+    <main className="w-full h-svh">
+        <Header/>
+        <div className="w-full h-[88vh]">
+            {children}
+        </div>
+    </main>
   );
 }

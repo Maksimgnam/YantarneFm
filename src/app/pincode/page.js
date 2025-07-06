@@ -1,8 +1,8 @@
 import PinCode from "@/components/PinCode";
 
 export const metadata = {
-    title: "Yantarne FM | Pincode",
-    description: "Yantarne FM | Pincode",
+    title: "Yantarne FM | Уведіть ваш пінкод",
+    description: "Yantarne FM | Уведіть ваш пінкод",
   };
 
 const Page = () => {

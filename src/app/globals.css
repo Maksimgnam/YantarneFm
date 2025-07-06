@@ -17,3 +17,8 @@ body {
   background-color: #222222;
   font-family: 'Montserrat Alternates', sans-serif;
 }
+
+canvas{
+  width: 100%;
+  height: 100%;
+}
