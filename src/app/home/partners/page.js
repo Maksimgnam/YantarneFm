@@ -1,3 +1,4 @@
+import Footer from '@/components/Footer';
 import Partners from '@/components/Partners';
 import React from 'react';
 export const metadata = {
@@ -9,6 +10,7 @@ const Page = () => {
   return (
     <main className='w-full h-full'>
       <Partners/>
+      <Footer/>
     </main>
   )
 }

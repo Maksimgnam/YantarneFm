@@ -62,7 +62,7 @@ const Home = () => {
 
       <div className='w-full flex justify-between p-14'>
         <div>
-          <h2 className='text-7xl font-bold first-letter:text-[#Cc0100]'>{trackInfo.title || 'Loading...'}</h2>
+          <h2 className='text-7xl font-bold first-letter:text-[#Cc0100]'>{trackInfo.title || 'Loading...' }</h2>
           <h3 className='text-5xl font-bold m-4 ml-0 mr-0'>{trackInfo.artist || ''}</h3>
         </div>
 
@@ -71,7 +71,15 @@ const Home = () => {
             onClick={togglePlay}
             className='w-[130px] h-[130px] bg-[#Cc0100] hover:shadow-2xl cursor-pointer rounded-full flex items-center justify-center m-5 mb-0 mt-0'
           >
-            <Image src={isPlaying ? '/pause.png' : '/play.png'} width={40} height={40} alt='Play/Pause' />
+            {isPlaying ? (
+  <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="white" viewBox="0 0 24 24">
+    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+  </svg>
+) : (
+  <svg xmlns="http://www.w3.org/2000/svg" width="85" height="80" fill="white" viewBox="0 0 24 24" className='rounded'>
+    <path d="M8 5v14l11-7z"/>
+  </svg>
+)}
           </button>
 
           <button className='w-[130px] h-[130px] bg-white border-2 border-[#Cc0100] hover:shadow-2xl cursor-pointer rounded-full flex items-center justify-center m-5 mb-0 mt-0'>
@@ -80,7 +88,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Optional Volume Controls */}
+
       {/* <div className='flex justify-center gap-4 p-4'>
         <button onClick={decrease} className='px-4 py-2 bg-gray-300 rounded'>-</button>
         <span className='text-xl font-bold'>{volume}%</span>

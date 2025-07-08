@@ -32,7 +32,7 @@ export default function HomeLayout({ children }) {
   return (
     <main className="w-full h-svh">
         <Header/>
-        <div className="w-full h-[88vh]">
+        <div className="w-full h-[89vh]">
             {children}
         </div>
     </main>
