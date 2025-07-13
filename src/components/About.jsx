@@ -1,4 +1,8 @@
-import React from 'react'
+import React from 'react';
+import micro from '../../public/about/micro.webp';
+import flag from '../../public/about/flag.webp'
+import music from '../../public/about/music.webp'
+import star from '../../public/about/star.webp'
 
 const About = () => {
   return (

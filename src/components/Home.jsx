@@ -49,7 +49,7 @@ const Home = () => {
     }
 
     fetchTrackInfo()
-    const interval = setInterval(fetchTrackInfo, 10000) // update every 10s
+    const interval = setInterval(fetchTrackInfo, 50000) 
     return () => clearInterval(interval)
   }, [])
 
@@ -83,7 +83,7 @@ const Home = () => {
           </button>
 
           <button className='w-[130px] h-[130px] bg-white border-2 border-[#Cc0100] hover:shadow-2xl cursor-pointer rounded-full flex items-center justify-center m-5 mb-0 mt-0'>
-            <Image src={'/heart.png'} width={50} height={50} alt='Heart' />
+            <Image src={'/heart.webp'} width={50} height={50} alt='Heart' />
           </button>
         </div>
       </div>

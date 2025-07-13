@@ -68,7 +68,7 @@ const PinCode = () => {
               key={i}
               maxLength={1}
               type='text'
-              className='w-[110px] h-[120px] text-5xl border-2 border-[#Cc0100] text-center placeholder:text-[#CC0100] rounded-lg text-black bg-white outline-none'
+              className='w-[110px] h-[120px] text-5xl   text-center placeholder:text-white text-white rounded-lg text-black bg-[#464646] outline-none'
               placeholder='0'
               ref={el => inputs.current[i] = el}
               onChange={e => handleChange(e, i)}
