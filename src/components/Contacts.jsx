@@ -1,14 +1,9 @@
-import React from 'react';
-import facebook from '../../public/contacts/facebook.webp';
-import instagram from '../../public/contacts/instagram.webp';
-import soundcloud from '../../public/contacts/soundcloud.webp';
-import youtube from '../../public/contacts/youtube.webp';
-import back from '../../public/contacts/back.webp'
+import React from 'react'
 
 const Contacts = () => {
   return (
-    <main className='w-full h-full'>Контакти</main>
+    <div className='w-full h-svh'>Контакти</div>
   )
 }
 
-export default Contacts;
+export default Contacts

@@ -21,12 +21,15 @@ const Header = () => {
       </Link>
       <div className='w-auto flex  items-center'>
       <nav className='w-auto flex items-center mr-5'>
-          <Link className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home'>Головна</Link>
-          <Link className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/timetable'>Розклад</Link>
-          <Link className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/about'>Хто ми</Link>
-          <Link className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/team'>Команда</Link>  
-          <Link className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/partners'>Партнери</Link>   
-          <Link className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/contacts'>Контакти</Link>  
+          <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home'>Головна</a>
+          <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/#timetable'>Розклад</a>
+          <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/#about'>Хто ми</a>
+          <Link className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/blog'>Блог</Link> 
+          <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/team'>Команда</a>  
+          <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/#partners'>Партнери</a>   
+          <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/#contacts'>Контакти</a>  
+                     
+          
           {/* <Link className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/support'>Підтримати</Link>   */}
       </nav>
       <button onClick={handleTelegramLogin} className='w-56 text-white h-[56px] bg-[#Cc0100]  font-semibold rounded-lg text-lg cursor-pointer m-2 ml-0 mr-0 flex items-center justify-center'>

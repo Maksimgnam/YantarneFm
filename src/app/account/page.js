@@ -1,4 +1,4 @@
-import Account from '@/components/Account/Account'
+import Account from '@/components/Account'
 import React from 'react'
 
 const page = () => {

@@ -31,8 +31,7 @@ const montserrat = Montserrat_Alternates({
 export default function HomeLayout({ children }) {
   return (
     <main className="w-full h-svh">
-        <Header/>
-        <div className="w-full h-[89vh]">
+        <div className="w-full h-full">
             {children}
         </div>
     </main>
