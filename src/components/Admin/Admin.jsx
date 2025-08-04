@@ -1,8 +1,9 @@
-import React from 'react'
+import React from 'react';
+import './Admin.scss'
 
 const Admin = () => {
   return (
-    <main className='w-full h-svh bg-yellow-200'>ddd</main>
+    <div className='wrap'>ddd</div>
   )
 }
 

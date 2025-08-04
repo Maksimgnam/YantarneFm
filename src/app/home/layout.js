@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+
 import { Geist, Geist_Mono, Madimi_One, Montserrat_Alternates, Unbounded } from "next/font/google";
 
 

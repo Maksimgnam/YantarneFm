@@ -1,0 +1,106 @@
+/* Team.scss */
+@import '@/styles/mixins.scss';
+
+
+.team {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+.team-title{
+  font-size: 50px;
+  font-weight: 500;
+}
+span{
+  color: #CC0100;
+}
+
+
+.line{
+  width: 190px;
+  height: 6px; 
+  background-color: $primary-color;
+  border-radius: 5px;
+  margin: 20px; 
+}
+
+.team__container {
+  display: flex;
+  gap: 20px;
+  animation: move-center 20s linear infinite;
+  margin: 20px; 
+}
+
+.team-card {
+  width: 350px;
+  height: auto;
+  background-color:  $primary-color;
+  border-radius: 20px;
+  flex-shrink: 0;
+
+  margin: 20px;
+  color: white;
+  font-weight: 500;
+
+}
+
+.team-image{
+  
+  background-size: cover;
+  border-radius: 20px;
+}
+
+.team-info{
+  width: 100%;
+  height: 35%;
+  padding: 15px;
+
+
+
+}
+.team-info h3{
+  font-size: 28px;
+
+}
+.team-info p{
+  font-size: 20px;
+
+}
+.team-social{
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: end;
+  .team-btn{
+    width: 50px;
+    height: 50px;
+border: 1px solid white;
+    border-radius: 15px;
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+     
+
+  
+  }
+  
+}
+
+
+
+@keyframes move-center {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-50%); 
+  }
+  100% {
+    transform: translateX(0); 
+  }
+}
+

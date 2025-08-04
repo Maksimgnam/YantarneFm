@@ -1,9 +1,11 @@
-import { Main } from 'next/document'
+import Admin from '@/components/Admin/Admin'
 import React from 'react'
 
 const page = () => {
   return (
-    <main className='w-full h-svh'></main>
+    <main className='w-full h-svh'>
+      <Admin/>
+    </main>
   )
 }
 
