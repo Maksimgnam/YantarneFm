@@ -4,11 +4,11 @@ import './Team.scss';
 
 const Team = () => {
   const teamMembers = [
-    { name: "Андрій Стасишин", position: "Директор та муз. редактор", instagram: "https://instagram.com",  image: "/team/team1.webp"},
-    { name: "Софія Труш", position: "Програмний директор, ведуча", instagram: "https://instagram.com",  image: "/team/team2.webp" },
-    { name: "Марія Канцелярист", position: "Ведуча новин", instagram: "https://instagram.com",  image: "/team/team3.webp" },
-    { name: "Тарас Федунь", position: "Ведучий", instagram: "https://instagram.com",  image: "/team/team4.webp" },
-    { name: "Юрій Калагурка", position: "Менеджер по рекламі", instagram: "https://instagram.com", image: "/team/team5.webp" },
+    { name: "Андрій Стасишин", position: "Директор та муз. редактор", instagram: "https://www.instagram.com/djstason",  image: "/team/team1.webp"},
+    { name: "Софія Труш", position: "Програмний директор, ведуча", instagram: "https://www.instagram.com/_trush_sofia_/",  image: "/team/team2.webp" },
+    { name: "Марія Канцелярист", position: "Ведуча новин", instagram: "https://www.instagram.com/kantseliarist/",  image: "/team/team3.webp" },
+    { name: "Тарас Федунь", position: "Ведучий", instagram: "https://www.instagram.com/tarasfedun/",  image: "/team/team4.webp" },
+    { name: "Юрій Калагурка", position: "Менеджер по рекламі", instagram: "https://www.instagram.com/kalagurkaiurii/", image: "/team/team5.webp" },
   ];
 
   const scrollingMembers = [...teamMembers, ...teamMembers];

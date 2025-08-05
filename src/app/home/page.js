@@ -1,5 +1,5 @@
 import About from "@/components/About/About";
-import Adds from "@/components/Adds/Adds";
+import Ads from "@/components/Ads/Ads";
 import CNNLine from "@/components/CNNLine/CNNLine";
 import Contacts from "@/components/Contacts/Contacts";
 import Footer from "@/components/Footer/Footer";
@@ -31,7 +31,7 @@ export default function Page() {
        <Team/>
        <Partners/>
        <Support/>
-       <Adds/>
+       <Ads/>
        <TopSongs/>
        <Contacts/>
        <Footer/>

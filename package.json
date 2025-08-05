@@ -13,7 +13,10 @@
     "next": "15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "sass": "^1.89.2"
+    "react-slick": "^0.30.3",
+    "sass": "^1.89.2",
+    "slick-carousel": "^1.8.1",
+    "swiper": "^11.2.10"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

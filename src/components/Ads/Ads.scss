@@ -1,0 +1,79 @@
+/* Adds.scss */
+@import '@/styles/mixins.scss';
+
+.ads {
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+    .title{
+      font-size: 40px;
+      font-weight: 500;
+      text-align: center;
+
+      span{
+        color: #CC0100;
+      }
+    }
+    .line{
+      width: 300px;
+      height: 6px; 
+      background-color: $primary-color;
+      border-radius: 5px;
+      margin: 3px; 
+    }
+     .ads__container{
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 40px;
+     }
+
+    .ads-card{
+      width: 470px;
+      height: auto;
+      padding: 20px;
+      background-color: #292929;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 30px;
+      margin: 30px;
+
+        .ads-card-img{
+          margin: 20px;
+        }
+
+
+        .ads-card-line{
+          width: 90px;
+          height: 5px; 
+          background-color: $primary-color;
+          border-radius: 5px;
+          margin: 20px; 
+        }
+
+        h2{
+          font-size: 30px;
+          text-align: center;
+          font-weight: 500;
+          margin: 10px;
+          margin-left: 0;
+          margin-right: 0;
+
+        }
+        p{
+          font-size: 20px;
+          text-align: center;
+          padding: 10px;
+          margin: 20px;
+          margin-left: 0;
+          margin-right: 0;
+        }
+    }
+}

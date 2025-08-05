@@ -1,4 +1,4 @@
-import SavedSongs from '@/components/SavedSongs'
+import SavedSongs from '@/components/SavedSongs/SavedSongs'
 import React from 'react'
 
 const page = () => {

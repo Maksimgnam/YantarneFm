@@ -1,9 +1,12 @@
 import React from 'react';
 import './Admin.scss'
+import AdminMenu from './AdminMenu/AdminMenu';
 
 const Admin = () => {
   return (
-    <div className='wrap'>ddd</div>
+    <main className='admin'>
+
+    </main>
   )
 }
 

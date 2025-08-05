@@ -1,4 +1,4 @@
-import Tapalka from '@/components/Tapalka'
+import Tapalka from '@/components/Tapalka/Tapalka'
 import React from 'react'
 
 const page = () => {

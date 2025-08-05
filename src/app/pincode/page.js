@@ -1,4 +1,4 @@
-import PinCode from "@/components/PinCode";
+import PinCode from "@/components/PinCode/PinCode";
 
 export const metadata = {
     title: "Yantarne FM | Уведіть ваш пінкод",

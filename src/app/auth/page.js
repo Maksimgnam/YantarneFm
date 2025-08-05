@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import Auth from "@/components/Auth";
+import Auth from "@/components/Auth/Auth";
 
 export const metadata = {
   title: "YantarneFM | Auth",
