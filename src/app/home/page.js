@@ -5,7 +5,6 @@ import Contacts from "@/components/Contacts/Contacts";
 import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 import Home from "@/components/Home/Home";
-import Partners from "@/components/Partners/Partners";
 import Support from "@/components/Support/Support";
 import Team from "@/components/Team/Team";
 import Timetable from "@/components/Timetable/Timetable";
@@ -29,7 +28,6 @@ export default function Page() {
        <Timetable/>
        <About/>
        <Team/>
-       <Partners/>
        <Support/>
        <Ads/>
        <TopSongs/>

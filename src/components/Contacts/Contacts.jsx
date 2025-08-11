@@ -14,7 +14,6 @@ const Contacts = () => {
           <h2>Надіслати<span> повідомлення</span></h2>
           <form>
             <input type="text" placeholder="Введіть своє ім’я" />
-            <input type="email" placeholder="Введіть свій емейл" />
             <textarea placeholder="Введіть повідомлення"></textarea>
             <button type="submit">Надіслати</button>
           </form>

@@ -14,7 +14,7 @@ const Team = () => {
   const scrollingMembers = [...teamMembers, ...teamMembers];
 
   return (
-    <main className="team">
+    <main id='team' className="team">
       <h1 className="team-title"> <span>К</span>оманда</h1>
       <div className='line'></div>
       <div className="team__container">

@@ -3,7 +3,7 @@ import './Support.scss'
 import Image from 'next/image'
 const Support = () => {
   return (
-    <main className='support'>
+    <main id='support' className='support'>
       <h2 className='title'><span>П</span>ідтримати нас</h2>
       <div className='line'></div>
 

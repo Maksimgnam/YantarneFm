@@ -1,4 +1,4 @@
-@import '@/styles/mixins.scss';
+
 
 .contacts {
 
@@ -18,8 +18,8 @@
   }
   .line{
     width: 220px;
-    height: 6px; 
-    background-color: $primary-color;
+    height: 9px; 
+    background-color:#CC0100;
     border-radius: 5px;
     margin: 3px; 
   }
@@ -78,7 +78,7 @@
           border: 2px solid red;
           color: white;
           border-radius: 5px;
-          height: 230px;
+          height: 430px;
           outline: none;
         }
         input::placeholder ,textarea::placeholder{
@@ -165,6 +165,17 @@
   }
 
   
+}
+@media (max-width: 900px) {
+  .contacts{
+    .contacts__container{
+      .contacts-form{
+        padding: 40px;
+      }
+      
+    }
+  }
+
 }
 
 

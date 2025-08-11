@@ -3,7 +3,7 @@ import './Timetable.scss'
 
 const Timetable = () => {
   return (
-    <main className='w-full h-full'>Розклад
+    <main id='timetable' className='w-full h-full'>Розклад
     </main>
   )
 }

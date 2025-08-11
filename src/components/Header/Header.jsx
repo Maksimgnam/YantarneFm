@@ -26,8 +26,7 @@ const Header = () => {
           <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/#timetable'>Розклад</a>
           <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/#about'>Хто ми</a>
           <Link className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/blog'>Блог</Link> 
-          <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/team'>Команда</a>  
-          <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/#partners'>Партнери</a>   
+          <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/#team'>Команда</a>   
           <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/#contacts'>Контакти</a>  
                      
           
