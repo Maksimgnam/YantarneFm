@@ -234,18 +234,24 @@ const Home = () => {
         <div className='controls'>
           <button
             onClick={togglePlay}
-            className={isPlaying ? "play-btn playing" : 'play-btn'}
+            className='border_btn'
             aria-label={isPlaying ? 'Pause' : 'Play'}
           >
+            <div className='grey_btn'>
+          <button
+            className={isPlaying ? "play-btn playing" : 'play-btn'}            
+          >
             {isPlaying ? (
-              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="#fff">
+              <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="#fff">
                 <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
               </svg>
             ) : (
-              <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" viewBox="0 0 24 24" fill="#fff">
+              <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="#fff">
                 <path d="M8 5v14l11-7z"/>
               </svg>
             )}
+          </button>
+          </div>
           </button>
         </div>
         

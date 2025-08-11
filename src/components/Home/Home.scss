@@ -44,7 +44,7 @@
   align-items: center;
   
   .title {
-    font-size: 48px;
+    font-size: 80px;
     font-weight: 800;
     margin: 0;
     letter-spacing: -1px;
@@ -55,7 +55,7 @@
   
   .artist {
     margin: 8px 0 16px 0;
-    font-size: 28px;
+    font-size: 35px;
     font-weight: 600;
     color: rgba(255,255,255,0.95);
   }
@@ -90,9 +90,35 @@
   align-items: center;
   justify-content: center;
 
+  .border_btn{
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: none;
+    overlay: none;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 30px;
+  }
+
+  .grey_btn{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+  }
+
   .play-btn {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
     background: #cc0100;
     border: none;
