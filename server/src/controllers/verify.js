@@ -3,7 +3,7 @@ const AuthCode = require('../models/AuthCode');
 
 /**
  * @swagger
- * /api/getUserByCode/{code}:
+ * /api/userByCode/{code}:
  *   get:
  *     summary: Get user by code
  *     parameters:

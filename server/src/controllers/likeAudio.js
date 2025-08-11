@@ -4,7 +4,7 @@ const {bot} = require('../bot/bot')
 
 /**
  * @swagger
- * /api/likeAudio:
+ * /api/addSong:
  *   post:
  *     summary: Like an audio file
  *     requestBody:

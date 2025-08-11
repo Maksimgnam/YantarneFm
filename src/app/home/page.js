@@ -21,7 +21,7 @@ export default function Page() {
 
       <main className="w-full h-full">
         <CNNLine/>
-        <main style={{backgroundImage:"url('/back.png')"}} className="w-full bg-cover h-full">
+        <main className="w-full bg-cover h-full">
         <Header/>
         <Home/>
         </main>

@@ -2,7 +2,7 @@ const User = require('../models/User');
 
 /**
  * @swagger
- * /api/getUser/{id}:
+ * /api/user/{id}:
  *   get:
  *     summary: Get user by ID
  *     parameters:

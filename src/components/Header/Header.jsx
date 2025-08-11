@@ -16,7 +16,7 @@ const Header = () => {
     }, 500)
   }
   return (
-    <header className='w-full h-auto  flex items-center justify-between  p-2 pl-14 pr-12'>
+    <header className='header w-full h-auto  flex items-center justify-between  p-2 pl-14 pr-12'>
       <Link href='/home'>
         <Image src={'/logo.webp'} width={150} height={150} alt='' className='rounded-3xl cursor-pointer' />
       </Link>
