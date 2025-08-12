@@ -191,7 +191,7 @@ const Home = () => {
         ctx.fillStyle = grad
 
         // Малюємо заокруглені палички
-        drawRoundedRect(ctx, x, height - barHeight, barWidth, barHeight, 8) // радіус 4px
+        drawRoundedRect(ctx, x, height - barHeight, barWidth, barHeight, 0) // радіус 4px
 
         x += barWidth + 10 // невеликий відступ між паличками
       }
@@ -238,7 +238,7 @@ const Home = () => {
             aria-label={isPlaying ? 'Pause' : 'Play'}
           >
             <div className='grey_btn'>
-          <button
+          <div
             className={isPlaying ? "play-btn playing" : 'play-btn'}            
           >
             {isPlaying ? (
@@ -250,7 +250,7 @@ const Home = () => {
                 <path d="M8 5v14l11-7z"/>
               </svg>
             )}
-          </button>
+          </div>
           </div>
           </button>
         </div>

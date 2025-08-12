@@ -1,5 +1,153 @@
-/* Timetable.scss */
-
 .timetable {
-  // styles here
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+
+  .header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .title {
+      font-size: 50px;
+      font-weight: 500;
+
+      span {
+        color: #CC0100;
+      }
+    }
+  }
+
+  .schedule {
+    --time-col-width: 70px;
+    --header-height: 44px;
+    --hour-height: 60px;
+    --hours: 15;
+
+    width: 100%;
+
+    margin-top: 100px;
+
+    box-sizing: border-box;
+    position: relative;
+
+    .schedule-grid {
+      position: relative;
+      display: grid;
+      grid-template-columns: var(--time-col-width) repeat(7, 1fr);
+      grid-template-rows: var(--header-height) calc(var(--hour-height) * var(--hours));
+      gap: 0;
+      align-items: stretch;
+      width: 100%;
+      height: calc(var(--hour-height) * var(--hours) + var(--header-height));
+      overflow: hidden;
+    }
+
+    /* --- Header (row 1) --- */
+    .time-col-header {
+      /* порожня клітинка ліворуч */
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .day-col-header {
+      grid-row: 1;
+      padding: 10px 6px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 14px;
+      user-select: none;
+      align-self: center;
+    }
+
+    /* --- Body (row 2) --- */
+    .time-col {
+      grid-column: 1;
+      grid-row: 2;
+      z-index: 4;
+      /* вище за grid-lines */
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      background: transparent;
+    }
+
+    .time-cell {
+      height: var(--hour-height);
+      padding-left: 8px;
+      padding-top: 6px;
+      font-size: 12px;
+      color: #bdbdbd;
+      /* прибрали border-top — лінії веде grid-lines шар */
+      background: transparent;
+      box-sizing: border-box;
+    }
+
+    .day-col {
+      grid-row: 2;
+      border-left: 3px solid rgba(180, 0, 0, 0.95);
+      /* вертикальні лінії товщиною 3px */
+      position: relative;
+      z-index: 3;
+      /* над grid-lines, під подіями */
+      background: transparent;
+    }
+
+    /* подія */
+    .event {
+      position: absolute;
+      left: 6%;
+      width: 88%;
+      border-radius: 10px;
+      padding: 8px 10px;
+      box-sizing: border-box;
+      color: #111;
+      font-family: Montserrat Alternates, sans-serif;
+      font-weight: 500;
+      font-size: 13px;
+      z-index: 6;
+      /* над усього */
+      // box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+    }
+
+    /* Шар сітки — горизонтальні лінії через всю ширину */
+    .grid-lines {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: var(--header-height);
+      height: calc(var(--hour-height) * var(--hours));
+      z-index: 1;
+      pointer-events: none;
+
+      /* кожна година — період repeating-linear-gradient,
+       товщина червоної лінії = 3px */
+      background-image: repeating-linear-gradient(to bottom,
+          transparent 0 calc(var(--hour-height) - 3px),
+          rgba(180, 0, 0, 0.95) calc(var(--hour-height) - 3px) var(--hour-height));
+      background-repeat: repeat;
+      background-size: 100% var(--hour-height);
+    }
+
+    /* Поточний час — оранжева лінія */
+    .current-time-line {
+      position: absolute;
+      left: var(--time-col-width);
+      /* починається після колонки часу */
+      right: 0;
+      height: 4px;
+      z-index: 7;
+      pointer-events: none;
+      background: linear-gradient(90deg, rgba(255, 165, 0, 1), rgba(255, 110, 0, 1));
+      box-shadow: 0 0 8px rgba(255, 140, 0, 0.5);
+    }
+  }
 }
