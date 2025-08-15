@@ -13,12 +13,18 @@ const port = process.env.PORT || 2000;
 const getUserByCodeRoute = require('./src/routes/getUserByCode');
 const likeAudioRoute = require('./src/routes/likeAudio');
 const getUserRoute = require('./src/routes/getUser');
+const cnnRoute = require('./src/routes/cnn');
+const backRoutes = require('./src/routes/back');
+
+
 
 app.use(express.json());
 app.use(cors());
 app.use('/api', getUserByCodeRoute);
 app.use('/api', likeAudioRoute);
 app.use('/api', getUserRoute)
+app.use('/api', cnnRoute);
+app.use('/api', backRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 

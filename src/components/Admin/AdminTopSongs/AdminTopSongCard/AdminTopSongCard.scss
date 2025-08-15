@@ -1,0 +1,65 @@
+.admin-topsong-card{
+    width: 100%;
+    height: 130px;
+    background-color: rgb(46, 46, 46);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+
+
+
+    h2{
+        color: #CC0100;
+    }
+
+
+    img{
+        width: 90px;
+        height: 90px;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+
+
+
+
+    }
+    p{
+        font-size: 30px;
+        font-weight: 500;
+    }
+    button{
+        cursor: pointer;
+    }
+
+    .volume-control{
+        width: 310px;
+        background-color: #CC0100;
+    }
+
+
+    .play{
+        width: 78px;
+        height: 78px;
+        border: 2px solid #CC0100;
+        border-radius: 50%;
+        margin: 7px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        right: 15px;
+    }
+    .edit{
+        width: 60px;
+        height: 60px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        margin: 7px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

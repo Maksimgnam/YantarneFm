@@ -1,0 +1,17 @@
+.admin-topsongs{
+    width: 100%;
+    height: 100vh;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+        h2{
+            font-size: 50px;
+            font-weight: 500;
+                span{
+                    color: #CC0100;
+                }
+        }
+}

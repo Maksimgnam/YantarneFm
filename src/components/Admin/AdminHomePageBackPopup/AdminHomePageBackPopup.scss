@@ -1,0 +1,179 @@
+// .admin-homepage-back-popup-container{
+//     width: 80%;
+//     height: 100vh;
+//     position: absolute;
+//     top: 0;
+//     background-color: rgba(0, 0 ,0 , 0.4);
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+
+//     .admin-homepage-back-popup{
+//         width: 550px;
+//         height: 80%;
+//         background-color: #292929;
+//         border-radius: 20px;
+//         padding:20px;
+
+
+//         .upload-section {
+            
+//             display: flex;
+//             justify-content: center;
+//             margin: 15px 0;
+//             padding: 10px;
+//           }
+          
+//           .image-preview {
+//             display: flex;
+//             justify-content: center;
+//             margin-bottom: 20px;
+          
+//             img {
+//               max-width: 100%;
+//               max-height: 80%;
+//               border-radius: 10px;
+//               object-fit: cover;
+//             }
+//           }
+          
+
+//         .header{
+//             width: 100%;
+//             display: flex;
+//             justify-content: end;
+//             align-items: center;
+//         }
+//         .add-btn{
+//             width: 50px;
+//             height: 50px;
+//             background-color: #CC0100;
+//             border-radius: 10px;
+//             font-size: 30px;
+//             font-weight: 500;
+//             cursor: pointer;
+//         }
+
+//         .close-btn{
+//             width: 40px;
+//             height: 40px;
+//             background-color: #CC0100;
+//             border-radius: 50%;
+//             font-size: 17px;
+//             font-weight: 500;
+//             cursor: pointer;
+//         }
+
+//         .cards-container{
+//             width: 100%;
+//             height: 80%;
+//             padding-top: 10px;
+//             overflow-y: scroll;
+
+//             .card{
+//                 width: 100%;
+//                 height: auto;
+//                 background-color: rgba(255, 255, 255, 0.1);
+//                 margin: 15px;
+//                 margin-left: 0;
+//                 margin-right: 0;
+//                 border-radius: 10px;
+//                 padding: 10px;
+//             }
+//         }
+//         .save-btn{
+//             width: 100%;
+//             height: 60px;
+//             background-color: #CC0100;
+//             border-radius: 10px;
+//             font-size: 23px;
+//             font-weight: 500;
+//             cursor: pointer;
+            
+//         }
+//     }
+// }
+.admin-homepage-back-popup-container {
+    width: 80%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    .admin-homepage-back-popup {
+      width: 500px;
+      height: 80%;
+      background-color: #1e1e1e;
+      border-radius: 15px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+  
+      .header {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+  
+        .close-btn {
+          width: 40px;
+          height: 40px;
+          background-color: #cc0100;
+          border-radius: 50%;
+          color: white;
+          border: none;
+          font-size: 26px;
+          cursor: pointer;
+        }
+      }
+  
+      .upload-section {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 75%;
+        width: 100%;
+  
+        .upload-icon {
+            width: 100%;
+            height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;;
+          background-color: #2c2c2c;
+          border-radius: 15px;
+          cursor: pointer;
+          overflow: hidden;
+  
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+  
+          svg {
+            pointer-events: none; 
+       width: 250px;
+       height: 250px;
+          }
+        }
+      }
+  
+      .save-btn {
+        width: 100%;
+        height: 60px;
+        background-color: #cc0100;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 22px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+    }
+  }
+  
