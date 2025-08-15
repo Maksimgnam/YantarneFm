@@ -7,6 +7,7 @@ import AdminTopSongs from './AdminTopSongs/AdminTopSongs';
 import AdminHomePageCnnPopup from './AdminHomePageCnnPopup/AdminHomePageCnnPopup';
 import AdminHomePageBackPopup from './AdminHomePageBackPopup/AdminHomePageBackPopup';
 import { useStore } from '@/store/store';
+import AdminTopSongsPopup from './AdminTopSongsPopup/AdminTopSongsPopup';
 
 const Admin = () => {
   const { isCNNPopupOpen,   isBackPopupOpen,} = useStore();
@@ -19,6 +20,8 @@ const Admin = () => {
       {
         isCNNPopupOpen &&  <AdminHomePageCnnPopup/> 
       }
+ 
+
 
 
 

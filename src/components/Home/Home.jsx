@@ -25,7 +25,7 @@ const Home = () => {
     }
   }, [volume, isMuted])
 
-  // Загрузка назви треку
+
   useEffect(() => {
     const fetchTrackInfo = async () => {
       try {

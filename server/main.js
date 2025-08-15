@@ -15,6 +15,7 @@ const likeAudioRoute = require('./src/routes/likeAudio');
 const getUserRoute = require('./src/routes/getUser');
 const cnnRoute = require('./src/routes/cnn');
 const backRoutes = require('./src/routes/back');
+const topSongsRoutes = require('./src/routes/topSongs');
 
 
 
@@ -25,6 +26,7 @@ app.use('/api', likeAudioRoute);
 app.use('/api', getUserRoute)
 app.use('/api', cnnRoute);
 app.use('/api', backRoutes);
+app.use('/api', topSongsRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
