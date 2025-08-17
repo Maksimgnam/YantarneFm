@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from 'react';
 import './AdminHomePage.scss';
 import { useStore } from '@/store/store';
@@ -8,38 +8,43 @@ const AdminHomePage = () => {
   const [cnnTexts, setCnnTexts] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState(null);
 
+  const fetchCnnTexts = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/cnn-texts`);
+      if (!res.ok) throw new Error('Failed to fetch CNN texts');
+      const data = await res.json();
+      setCnnTexts(data.cnnTexts || []);
+    } catch (err) {
+      console.error('Error loading CNN texts:', err);
+    }
+  };
+
+  const fetchBackgroundImage = async () => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/back-image`);
+      if (!res.ok) throw new Error('Failed to fetch background image');
+      const data = await res.json();
+      if (data?.backgroundImage) {
+        setBackgroundImage(data.backgroundImage);
+      }
+    } catch (err) {
+      console.error('Error loading background image:', err);
+    }
+  };
+
   useEffect(() => {
-    // Fetch CNN texts
-    const fetchCnnTexts = async () => {
-      try {
-        const res = await fetch('http://localhost:2000/api/cnn-texts');
-        if (!res.ok) throw new Error('Failed to fetch CNN texts');
-        const data = await res.json();
-        setCnnTexts(data.cnnTexts || []);
-      } catch (err) {
-        console.error('Error loading CNN texts:', err);
-      }
-    };
-
-    // Fetch background image
-    const fetchBackgroundImage = async () => {
-      try {
-        const res = await fetch('http://localhost:2000/api/back-image');
-        if (!res.ok) throw new Error('Failed to fetch background image');
-        const data = await res.json();
-        if (data?.backgroundImage) {
-          setBackgroundImage(data.backgroundImage);
-        }
-      } catch (err) {
-        console.error('Error loading background image:', err);
-      }
-    };
-
     fetchCnnTexts();
     fetchBackgroundImage();
+
+    const interval = setInterval(() => {
+      fetchCnnTexts();
+      fetchBackgroundImage();
+    }, 3000);
+
+    // cleanup
+    return () => clearInterval(interval);
   }, []);
 
-  // Combine texts for scrolling marquee
   const displayText = cnnTexts.length
     ? Array(20).fill(cnnTexts.map(item => item.text).join(' • ')).join(' ')
     : "Loading CNN texts... • ";
@@ -80,5 +85,3 @@ const AdminHomePage = () => {
 };
 
 export default AdminHomePage;
-
-

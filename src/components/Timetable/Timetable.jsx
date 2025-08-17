@@ -91,7 +91,7 @@ export default function Timetable() {
   };
 
   return (
-    <div className="timetable">
+    <div id="timetable" className="timetable">
       <div className="header">
         <div className="title">Розклад</div>
         <div className="line"></div>

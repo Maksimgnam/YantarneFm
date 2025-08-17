@@ -11,7 +11,8 @@ const AdminMenu = () => {
   const menuItems = [
     { href: '/admin', icon: '/admin/home.webp', size: 25, label: 'Головна сторінка' },
     { href: '/admin/timetable', icon: '/admin/timetable.webp', size: 30, label: 'Розклад' },
-    { href: '/admin/topsongs', icon: '/admin/top.webp', size: 30, label: 'ТОП Пісень' }
+    { href: '/admin/topsongs', icon: '/admin/top.webp', size: 30, label: 'ТОП Пісень' },
+    { href: '/admin/blog', icon: '/admin/blog.webp', size: 30, label: 'Блог' }
   ];
 
   return (

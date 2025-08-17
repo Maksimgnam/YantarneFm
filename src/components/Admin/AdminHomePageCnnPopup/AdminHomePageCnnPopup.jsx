@@ -8,15 +8,13 @@ const AdminHomePageCnnPopup = () => {
   const [cnnTexts, setCnnTexts] = useState([]);
   const [newText, setNewText] = useState('');
 
-  // Load all texts
   useEffect(() => {
-    fetch('http://localhost:2000/api/cnn-texts')
+    fetch(`${process.env.NEXT_PUBLIC_API}/api/cnn-texts`)
       .then(res => res.json())
       .then(data => setCnnTexts(data.cnnTexts || []))
       .catch(err => console.error(err));
   }, []);
 
-  // Add text
   const handleAddText = async () => {
     if (!newText.trim()) return;
     if (cnnTexts.length >= 5) {
@@ -25,7 +23,7 @@ const AdminHomePageCnnPopup = () => {
     }
 
     try {
-      const res = await fetch('http://localhost:2000/api/cnn-texts', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/cnn-texts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: newText })
@@ -41,7 +39,7 @@ const AdminHomePageCnnPopup = () => {
   // Delete text by id
   const handleDelete = async (id) => {
     try {
-      const res = await fetch('http://localhost:2000/api/cnn-texts', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/cnn-texts`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id })

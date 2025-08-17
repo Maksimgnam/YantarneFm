@@ -8,7 +8,7 @@ const CNNLine = () => {
   useEffect(() => {
     const fetchCnnTexts = async () => {
       try {
-        const res = await fetch('http://localhost:2000/api/cnn-texts');
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/cnn-texts`);
         if (!res.ok) throw new Error('Failed to fetch CNN texts');
         const data = await res.json();
         setCnnTexts(data.cnnTexts || []);

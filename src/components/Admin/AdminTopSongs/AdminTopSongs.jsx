@@ -1,5 +1,3 @@
-
-
 'use client';
 import React, { useEffect, useState, useCallback } from 'react';
 import './AdminTopSongs.scss';
@@ -15,7 +13,7 @@ const AdminTopSongs = () => {
   const fetchSongs = useCallback(async () => {
     try {
       setLoading(true);
-      const res = await fetch('http://localhost:2000/api/top-songs');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/top-songs`);
       if (!res.ok) throw new Error('Failed to fetch songs');
       const data = await res.json();
       setSongs(data.songs || []);
@@ -28,9 +26,15 @@ const AdminTopSongs = () => {
 
   useEffect(() => {
     fetchSongs();
+
+    const interval = setInterval(() => {
+      fetchSongs();
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, [fetchSongs]);
 
-  if (loading) return <div>Loading songs...</div>;
+
 
   return (
     <main className='admin-topsongs'>

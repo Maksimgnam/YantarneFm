@@ -27,7 +27,7 @@ const AdminTopSongsPopup = () => {
     if (!selectedSongId) return;
 
     try {
-      const res = await fetch(`http://localhost:2000/api/top-songs/${selectedSongId}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/top-songs/${selectedSongId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ title, artist, audio })

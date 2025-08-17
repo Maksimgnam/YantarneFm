@@ -1,0 +1,86 @@
+.navigation{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+padding: 30px;
+padding-top: 20px;
+
+
+
+    .header{
+        width: 100%;
+        height: auto;
+        display: flex;
+        justify-content: end;
+        margin: 30px;
+        margin-top: 0;
+        padding-right: 10px;
+        button{
+            font-size: 40px;
+            color: #CC0100;
+            font-weight: 500;
+        }   
+
+      
+
+        
+    }
+
+    .top{
+        width: 100%;
+        height: auto;
+        .btn{
+            width: 100%;
+            height: 75px;
+            border: 2px solid #CC0100;
+            border-radius: 10px;
+            font-size: 25px;
+            font-weight: 600;
+            margin: 20px;
+            margin-left: 0;
+            margin-right: 0;
+            margin-top: 0;
+            cursor: pointer;
+        }
+        .tapalka{
+            border: 2px solid gray;
+        }
+    }
+    .line{
+        width: 80%;
+        height: 7px;
+        background-color: #CC0100;
+        border-radius: 10px;
+        margin: 20px;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .button-container{
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        padding-top: 10px;
+
+        button{
+            width: 100%;
+            height: 65px;
+            font-size: 25px;
+            font-weight: 600;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid #CC0100;
+            margin: 25px;
+            margin-left: 0;
+            margin-right: 0;
+            margin-top: 0;
+            cursor: pointer;
+        }
+
+    }
+}

@@ -8,7 +8,7 @@ const About = () => {
     { title: ["Якісна українська", "музика"], image: '/about/music.webp' }
   ]
   return (
-    <main className='about'>
+    <main id='about' className='about'>
       <h1 className="title"> <span>Х</span>то ми?</h1>
       <div className='line'></div>
       <div className="about__container">

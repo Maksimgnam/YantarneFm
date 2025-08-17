@@ -16,6 +16,9 @@ body {
   background-color: #222222;
   font-family: 'Montserrat Alternates', sans-serif;
 }
+html{
+  scroll-behavior: smooth;
+}
 
 canvas{
   width: 100%;
