@@ -5,6 +5,7 @@ import DeletePopup from '@/components/Admin/AdminBlog/DeletePopup/DeletePopup'
 import EditPopup from '@/components/Admin/AdminBlog/EditPopup/EditPopup'
 import React from 'react'
 import { useStore } from '@/store/store'
+import AdminHomePage from '@/components/Admin/AdminHomePage/AdminHomePage'
 
 const page = () => {
 

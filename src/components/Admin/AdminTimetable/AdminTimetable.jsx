@@ -143,9 +143,8 @@ const AdminTimetable = () => {
       if (editingId !== null) {
         // Update existing event
         const eventToUpdate = { ...formData };
-        const eventId = editingId._id; // Використовуємо _id з MongoDB
+        const eventId = editingId._id; 
         
-        // Спроба оновити подію через API
         try {
           const response = await fetch(`http://localhost:2000/api/timetable/events/${eventId}`, {
             method: 'PUT',

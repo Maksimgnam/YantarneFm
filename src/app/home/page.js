@@ -24,7 +24,6 @@ export default function Page() {
         <Header/>
         <Home/>
         </main>
-     
        <Timetable/>
        <About/>
        <Team/>
