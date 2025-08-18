@@ -7,7 +7,7 @@ export const metadata = {
 
 const Page = () => {
   return (
-    <div className="w-ful h-svh">
+    <div className="w-full h-svh">
      <PinCode/>
     </div>
   );

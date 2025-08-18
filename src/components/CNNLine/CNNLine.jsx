@@ -1,6 +1,5 @@
 'use client'
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 const CNNLine = () => {
   const [cnnTexts, setCnnTexts] = useState([]);
@@ -20,15 +19,14 @@ const CNNLine = () => {
     fetchCnnTexts();
   }, []);
 
-
   const displayText = cnnTexts.length
-    ? Array(20).fill(cnnTexts.map(item => item.text).join(' • ')).join(' ')
-    : "Loading CNN texts... • ";
+    ? Array(30).fill(cnnTexts.map(item => item.text).join(' • ')).join(' ')
+    : Array(50).fill("Yantarne FM").join(" • ");
 
   return (
-    <main className="w-full h-10 bg-red-600 overflow-hidden relative">
-      <div className="cnn-text">
-      {displayText}
+    <main className="w-full h-10 bg-red-600 overflow-hidden relative flex items-center">
+      <div className="cnn-text whitespace-nowrap text-white text-lg f">
+        {displayText}
       </div>
     </main>
   );
