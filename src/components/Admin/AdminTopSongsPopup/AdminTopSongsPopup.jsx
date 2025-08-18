@@ -35,6 +35,9 @@ const AdminTopSongsPopup = () => {
       const updated = await res.json();
       console.log('Updated song:', updated);
       closeTopSongPopup();
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
     } catch (err) {
       console.error('Error updating song:', err);
     }

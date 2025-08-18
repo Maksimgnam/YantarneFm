@@ -21,7 +21,7 @@ const CNNLine = () => {
 
   const displayText = cnnTexts.length
     ? Array(30).fill(cnnTexts.map(item => item.text).join(' • ')).join(' ')
-    : Array(50).fill("Yantarne FM").join(" • ");
+    : Array(30).fill("Yantarne FM").join(" • ");
 
   return (
     <main className="w-full h-10 bg-red-600 overflow-hidden relative flex items-center">

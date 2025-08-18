@@ -33,6 +33,9 @@ const AddPopup = () => {
         const data = await res.json();
         console.log('Blog created:', data);
         closeAddPopup();
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
       } else {
         console.error('Error creating blog');
       }

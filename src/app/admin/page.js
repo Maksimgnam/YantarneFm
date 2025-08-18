@@ -1,11 +1,11 @@
 
-import AdminHomePage from '@/components/Admin/AdminHomePage/AdminHomePage'
+import Admin from '@/components/Admin/Admin'
 import React from 'react'
 
 const page = () => {
   return (
     <main className='w-full h-svh'>
-<AdminHomePage/>
+<Admin/>
     </main>
   )
 }

@@ -14,6 +14,9 @@ const DeletePopup = ({ blog }) => {
       if (res.ok) {
         console.log('Blog deleted');
         closeDeletePopup();
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
       } else {
         console.error('Error deleting blog');
       }

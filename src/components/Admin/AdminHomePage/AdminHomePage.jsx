@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import './AdminHomePage.scss';
 import { useStore } from '@/store/store';
 const AdminHomePage = () => {
-
+  const  {  openCNNPopup,   openBackPopup} = useStore()
   const [cnnTexts, setCnnTexts] = useState([]);
   const [backgroundImage, setBackgroundImage] = useState(null);
 
@@ -64,7 +64,7 @@ const AdminHomePage = () => {
         <div className='cnnline-container'>
           <div className='cnnline-text'>{displayText}</div>
         </div>
-        <button >
+        <button  onClick={openCNNPopup}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className='pl-1' width="30" height="30">
             <g fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 21l3-1 11-11a3 3 0 0 0-4-4L2 16v5z"/>
@@ -76,11 +76,11 @@ const AdminHomePage = () => {
 
       <div className='w-full'>
         {backgroundImage ? (
-          <img src={backgroundImage} alt="Background" />
+          <img src={backgroundImage} alt="Background" loading='lazy' />
         ) : (
           <div></div>
         )}
-        <button className='edit' >
+        <button className='edit' onClick={openBackPopup}>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className='pl-1' width="47" height="47">
             <g fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
               <path d="M3 21l3-1 11-11a3 3 0 0 0-4-4L2 16v5z"/>

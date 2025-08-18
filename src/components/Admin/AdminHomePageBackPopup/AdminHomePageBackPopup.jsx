@@ -15,7 +15,6 @@ const AdminHomePageBackPopup = () => {
       setPreview(URL.createObjectURL(selectedFile));
     }
   };
-
   const handleSave = async () => {
     if (!file) return alert("Please select an image");
   
@@ -28,17 +27,23 @@ const AdminHomePageBackPopup = () => {
         body: formData
       });
       if (!res.ok) throw new Error("Upload failed");
-
+  
       const data = await res.json();
       console.log("Updated:", data.backgroundImage);
-
+  
       localStorage.setItem("backgroundImage", data.backgroundImage);
-
+  
       closeBackPopup();
+  
+      // 🔄 Перезавантаження після збереження
+      setTimeout(() => {
+        window.location.reload();
+      }, 300); // невелика затримка щоб popup встиг закритися
     } catch (err) {
       console.error(err);
     }
   };
+  
 
   return (
     <main className="admin-homepage-back-popup-container">

@@ -31,6 +31,9 @@ const EditPopup = ({ blog }) => {
       if (res.ok) {
         console.log('Blog updated');
         closeEditPopup();
+        setTimeout(() => {
+          window.location.reload();
+        }, 300);
       } else {
         console.error('Error updating blog');
       }

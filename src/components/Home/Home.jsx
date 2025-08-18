@@ -7,7 +7,8 @@ const Home = () => {
   const [volume, setVolume] = useState(50)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
-  const [trackInfo, setTrackInfo] = useState({ title: '', artist: '' })
+  const [trackInfo, setTrackInfo] = useState({ title: '', artist: '' });
+  const [backgroundImage, setBackgroundImage] = useState(null)
 
   const audioRef = useRef(null)
   const canvasRef = useRef(null)
@@ -222,9 +223,31 @@ const Home = () => {
     window.addEventListener('resize', resize)
     return () => window.removeEventListener('resize', resize)
   }, [])
+  
+  useEffect(() => {
+    const fetchBackgroundImage = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/back-image`)
+        if (!res.ok) throw new Error('Failed to fetch background image')
+        const data = await res.json()
+        if (data?.backgroundImage) {
+          setBackgroundImage(data.backgroundImage)
+        }
+      } catch (err) {
+        console.error('Error loading background image:', err)
+      }
+    }
 
+    fetchBackgroundImage()
+    const interval = setInterval(fetchBackgroundImage, 60000) // update every 1 min
+    return () => clearInterval(interval)
+  }, [])
   return (
-    <main className='home'>
+    <main className='home'   style={{
+      backgroundImage: backgroundImage ? `url(${backgroundImage})` : '/back.png',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+    }}>
       <audio ref={audioRef} src={streamUrl} preload='none' />
 
       <div className='overlay' />

@@ -12,7 +12,7 @@ const AdminBlog = () => {
     fetch(`${process.env.NEXT_PUBLIC_API}/api/blogs`)
       .then(res => res.json())
       .then(data => {
-        setBlogs(data);
+        setBlogs(data.reverse());
         setLoading(false);
       })
       .catch(err => {
@@ -34,9 +34,9 @@ const AdminBlog = () => {
         ) : blogs.length === 0 ? (
           <p>Публікацій немає</p>
         ) : (
-          blogs.map(blog => (
+          blogs.reverse().map(blog => (
             <div key={blog._id} className="admin-blog-card">
-              <img src={blog.image || '/back.png'} alt={blog.title} />
+              <img src={blog.image || '/back.png'} alt={blog.title}  loading='lazy'/>
               <div className="admin-blog-card-block">
                 <h1>{blog.title}</h1>
                 <p>{blog.description}</p>
