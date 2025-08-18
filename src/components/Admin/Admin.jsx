@@ -16,14 +16,16 @@ const Admin = () => {
   return (
     <main className='admin'>
       <AdminMenu setActiveComponent={setActiveComponent} activeComponent={activeComponent} />
-      {activeComponent === 'home' && <AdminHomePage/>}
-      {activeComponent === 'timetable' && <AdminTimetable />}
-      {
-        isBackPopupOpen &&  <AdminHomePageBackPopup/>
-      }
-      {
-        isCNNPopupOpen &&  <AdminHomePageCnnPopup/> 
-      }
+      <div className='admin-content'>
+        {activeComponent === 'home' && <AdminHomePage/>}
+        {activeComponent === 'timetable' && <AdminTimetable />}
+        {
+          isBackPopupOpen &&  <AdminHomePageBackPopup/>
+        }
+        {
+          isCNNPopupOpen &&  <AdminHomePageCnnPopup/> 
+        }
+      </div>
     </main>
   )
 }

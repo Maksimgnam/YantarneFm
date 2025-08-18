@@ -1,5 +1,4 @@
 
-import AdminMenu from "@/components/Admin/AdminMenu/AdminMenu";
 import { Geist, Geist_Mono, Madimi_One, Montserrat_Alternates, Unbounded } from "next/font/google";
 
 
@@ -32,12 +31,9 @@ const montserrat = Montserrat_Alternates({
 export default function HomeLayout({ children }) {
   return (
     <main className="w-full h-svh flex">
-       <AdminMenu/>
-       <div className="w-[80%] h-svh">
+       <div className="w-full h-svh">
         {children}
        </div>
-       
-      
     </main>
   );
 }
