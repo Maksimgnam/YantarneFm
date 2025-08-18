@@ -17,6 +17,7 @@ const cnnRoute = require('./src/routes/cnn');
 const backRoutes = require('./src/routes/back');
 const topSongsRoutes = require('./src/routes/topSongs');
 const blogRoutes = require('./src/routes/blog');
+const timetableRoutes = require('./src/routes/timetableRoutes');
 
 
 
@@ -29,6 +30,7 @@ app.use('/api', cnnRoute);
 app.use('/api', backRoutes);
 app.use('/api', topSongsRoutes);
 app.use('/api', blogRoutes);
+app.use('/api/timetable', timetableRoutes);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 

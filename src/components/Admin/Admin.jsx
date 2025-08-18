@@ -8,23 +8,22 @@ import AdminHomePageCnnPopup from './AdminHomePageCnnPopup/AdminHomePageCnnPopup
 import AdminHomePageBackPopup from './AdminHomePageBackPopup/AdminHomePageBackPopup';
 import { useStore } from '@/store/store';
 import AdminTopSongsPopup from './AdminTopSongsPopup/AdminTopSongsPopup';
+import AdminTimetable from './AdminTimetable/AdminTimetable';
 
 const Admin = () => {
-  const { isCNNPopupOpen,   isBackPopupOpen,} = useStore();
+  const { isCNNPopupOpen, isBackPopupOpen } = useStore();
+  const [activeComponent, setActiveComponent] = React.useState('timetable');
   return (
     <main className='admin'>
-      <AdminHomePage/>
+      <AdminMenu setActiveComponent={setActiveComponent} activeComponent={activeComponent} />
+      {activeComponent === 'home' && <AdminHomePage/>}
+      {activeComponent === 'timetable' && <AdminTimetable />}
       {
         isBackPopupOpen &&  <AdminHomePageBackPopup/>
       }
       {
         isCNNPopupOpen &&  <AdminHomePageCnnPopup/> 
       }
- 
-
-
-
-
     </main>
   )
 }

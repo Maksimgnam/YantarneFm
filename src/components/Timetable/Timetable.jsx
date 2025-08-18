@@ -3,32 +3,77 @@ import React, { useEffect, useState } from "react";
 import "./Timetable.scss";
 
 export default function Timetable() {
-  const [timetable] = useState([
-    {
-      title: "Ранкове шоу",
-      start_time: "8:00",
-      end_time: "12:00",
-      days: [0, 1, 2, 3, 4],
-      date: null,
-      color: "#E65E5E"
-    },
-    {
-      title: "Інтерв'ю",
-      start_time: "13:00",
-      end_time: "14:00",
-      days: [],
-      date: "2025-08-12",
-      color: "#4ED97A"
-    },
-    {
-      title: "Авторські музичні мікси від DJ StasON!",
-      start_time: "20:00",
-      end_time: "23:00",
-      days: [0, 1, 2, 3, 4, 5, 6],
-      date: null,
-      color: "#6FA9F5"
-    }
-  ]);
+  const [timetable, setTimetable] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  // Завантаження подій з API
+  useEffect(() => {
+    const fetchTimetable = async () => {
+      try {
+        setLoading(true);
+        // Запит до API для отримання подій
+        const response = await fetch('http://localhost:2000/api/timetable/events');
+        
+        // Якщо API недоступне, використовуємо тестові дані
+        if (!response.ok) {
+          // Тестові дані для відображення
+          const defaultEvents = [
+            {
+              title: "Ранкове шоу",
+              start_time: "8:00",
+              end_time: "12:00",
+              days: [0, 1, 2, 3, 4],
+              date: null,
+              color: "#E65E5E"
+            },
+            {
+              title: "Авторські музичні мікси від DJ StasON!",
+              start_time: "20:00",
+              end_time: "23:00",
+              days: [0, 1, 2, 3, 4, 5, 6],
+              date: null,
+              color: "#6FA9F5"
+            }
+          ];
+          setTimetable(defaultEvents);
+          console.warn('Використовуються тестові дані розкладу');
+        } else {
+          // Використовуємо дані з API
+          const data = await response.json();
+          setTimetable(data);
+        }
+      } catch (err) {
+        console.error('Помилка завантаження розкладу:', err);
+        setError('Не вдалося завантажити розклад');
+        
+        // Використовуємо тестові дані у випадку помилки
+        const defaultEvents = [
+          {
+            title: "Ранкове шоу",
+            start_time: "8:00",
+            end_time: "12:00",
+            days: [0, 1, 2, 3, 4],
+            date: null,
+            color: "#E65E5E"
+          },
+          {
+            title: "Авторські музичні мікси від DJ StasON!",
+            start_time: "20:00",
+            end_time: "23:00",
+            days: [0, 1, 2, 3, 4, 5, 6],
+            date: null,
+            color: "#6FA9F5"
+          }
+        ];
+        setTimetable(defaultEvents);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchTimetable();
+  }, []);
 
   // Налаштування сітки
   const TIME_COL_WIDTH = 70; // px
@@ -83,8 +128,29 @@ export default function Timetable() {
     const jsDay = d.getDay(); // 0 = Sun ... 6 = Sat
     return jsDay === 0 ? 6 : jsDay - 1; // 0=Mon ... 6=Sun
   };
+  
+  // Перевірка, чи дата події є актуальною (поточною або майбутньою)
+  const isDateRelevant = (dateStr) => {
+    if (!dateStr) return true; // Якщо дата не вказана, вважаємо подію регулярною
+    
+    const eventDate = new Date(dateStr);
+    if (isNaN(eventDate)) return true; // Якщо дата некоректна, показуємо подію
+    
+    // Встановлюємо час на початок дня для коректного порівняння
+    eventDate.setHours(0, 0, 0, 0);
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // Подія актуальна, якщо її дата >= сьогоднішній
+    return eventDate >= today;
+  };
 
   const isEventOnDay = (ev, dayIndex) => {
+    // Перевіряємо, чи дата події актуальна
+    if (ev.date && !isDateRelevant(ev.date)) return false;
+    
+    // Перевіряємо, чи подія відображається в цей день тижня
     if (ev.days && ev.days.length) return ev.days.includes(dayIndex);
     if (ev.date) return getDayIndexFromDate(ev.date) === dayIndex;
     return false;

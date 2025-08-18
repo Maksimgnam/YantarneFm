@@ -1,4 +1,232 @@
-.admin-timetable{
-    width: 100%;
+.admin-timetable {
+    width: 80%;
     height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    background-color: #121212;
+    color: white;
+    overflow-y: auto;
+
+    .admin-timetable-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    h1 {
+        font-size: 28px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #333;
+        padding-bottom: 10px;
+    }
+
+    h2 {
+        font-size: 22px;
+        margin: 30px 0 15px;
+    }
+
+    .error-message {
+        background-color: rgba(255, 0, 0, 0.1);
+        border-left: 4px solid #ff3333;
+        padding: 10px 15px;
+        margin-bottom: 20px;
+        border-radius: 4px;
+    }
+
+    .loading {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 200px;
+        font-size: 18px;
+        color: #999;
+    }
+
+    .event-form {
+        background-color: #1e1e1e;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+
+        .form-group {
+            margin-bottom: 15px;
+
+            label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: 500;
+            }
+
+            input[type="text"],
+            input[type="time"],
+            input[type="date"] {
+                width: 100%;
+                padding: 10px;
+                background-color: #2a2a2a;
+                border: 1px solid #444;
+                border-radius: 4px;
+                color: white;
+                font-size: 16px;
+
+                &:focus {
+                    outline: none;
+                    border-color: #6FA9F5;
+                }
+            }
+
+            input[type="color"] {
+                width: 60px;
+                height: 40px;
+                border: none;
+                border-radius: 4px;
+                background: none;
+                cursor: pointer;
+            }
+
+            small {
+                display: block;
+                margin-top: 5px;
+                color: #999;
+                font-size: 14px;
+            }
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+
+            .form-group {
+                flex: 1;
+            }
+        }
+
+        .days-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+
+            .day-checkbox {
+                display: flex;
+                align-items: center;
+                background-color: #2a2a2a;
+                padding: 8px 12px;
+                border-radius: 4px;
+                cursor: pointer;
+
+                input[type="checkbox"] {
+                    margin-right: 5px;
+                }
+
+                &:hover {
+                    background-color: #333;
+                }
+            }
+        }
+
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+
+            button {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                font-size: 16px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+
+                &.btn-save {
+                    background-color: #6FA9F5;
+                    color: white;
+
+                    &:hover {
+                        background-color: #5a8fd6;
+                    }
+                }
+
+                &.btn-cancel {
+                    background-color: #444;
+                    color: white;
+
+                    &:hover {
+                        background-color: #555;
+                    }
+                }
+            }
+        }
+    }
+
+    .no-events {
+        text-align: center;
+        padding: 30px;
+        background-color: #1e1e1e;
+        border-radius: 8px;
+        color: #999;
+        font-size: 18px;
+    }
+
+    .events-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+
+        .event-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #1e1e1e;
+            padding: 15px 20px;
+            border-radius: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            }
+
+            .event-details {
+                h3 {
+                    margin: 0 0 10px;
+                    font-size: 18px;
+                }
+
+                p {
+                    margin: 5px 0;
+                    color: #ccc;
+                }
+            }
+
+            .event-actions {
+                display: flex;
+                gap: 10px;
+
+                button {
+                    padding: 8px 15px;
+                    border: none;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    transition: background-color 0.2s;
+
+                    &.btn-edit {
+                        background-color: #444;
+                        color: white;
+
+                        &:hover {
+                            background-color: #555;
+                        }
+                    }
+
+                    &.btn-delete {
+                        background-color: rgba(255, 0, 0, 0.2);
+                        color: #ff6666;
+
+                        &:hover {
+                            background-color: rgba(255, 0, 0, 0.3);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
