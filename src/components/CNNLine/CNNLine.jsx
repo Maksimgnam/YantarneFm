@@ -20,7 +20,7 @@ const CNNLine = () => {
   }, []);
 
   const displayText = cnnTexts.length
-    ? Array(30).fill(cnnTexts.map(item => item.text).join(' • ')).join(' ')
+    ? Array(35).fill(cnnTexts.map(item => item.text).join(' • ')).join(' ')
     : Array(30).fill("Yantarne FM").join(" • ");
 
   return (

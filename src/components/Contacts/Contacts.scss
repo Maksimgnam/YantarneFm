@@ -17,18 +17,17 @@
     }
   }
   .line{
-    width: 220px;
-    height: 9px; 
+    width: 320px;
+    height: 6px; 
     background-color:#CC0100;
     border-radius: 5px;
-    margin: 3px; 
+    margin: 20px; 
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
   }
 
-  .line {
-    height: 2px;
-    background: red;
-    margin-bottom: 30px;
-  }
+
 
   .contacts__container {
     width: 100%;
@@ -169,10 +168,27 @@
 }
 @media (max-width: 900px) {
   .contacts{
+    .title{
+      font-size: 45px;
+    }
+    .line{
+      width: 80%
+    }
     .contacts__container{
       .contacts-form{
         padding: 30px;
       }
+
+      .contacts-image{ .contacts-info-overlay{
+        p{
+          font-size: 23px;
+        }
+        .contacts-info-overlay-social{
+          width: 60px;
+          height: 60px;
+        }
+      }
+    }
       
     }
   }

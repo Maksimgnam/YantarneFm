@@ -6,16 +6,7 @@ const Support = () => {
     <main id='support' className='support'>
       <h2 className='title'><span>П</span>ідтримати нас</h2>
       <div className='line'></div>
-
-      <video
-      className='support-video '
-        controls
-        autoPlay
-        muted
-        loop
-      >
-        <source src="/support/Untitled.mp4" type="video/mp4" />
-      </video>
+      <iframe   className='support-video' src="https://www.youtube.com/embed/xf08sw93k8w?si=lkMAjzsT66I1nuKU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
       <div className="support-footer">
         <div className='support-footer-card'>
           <div className='support-footer-card-block'>
