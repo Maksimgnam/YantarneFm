@@ -198,9 +198,13 @@
 
 @media (max-width: 768px) {
   .contacts{
+    .title{
+      font-size: 40px;
+    }
     .contacts__container{
       .contacts-form{
         padding: 25px;
+        padding-top: 0;
       }
       
     }
