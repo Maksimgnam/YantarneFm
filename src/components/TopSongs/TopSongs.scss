@@ -1,5 +1,26 @@
-/* TopSongs.scss */
+.topsongs{
+  width: 100%;
+  height: auto;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 10px;
 
-.topsongs {
-  // styles here
+  padding: 70px;
+
+
+      h2{
+          font-size: 50px;
+          font-weight: 500;
+              span{
+                  color: #CC0100;
+              }
+      }
 }
+@media (max-width: 1024px) {
+    .topsongs{
+        padding: 20px;
+    }
+ 
+  }

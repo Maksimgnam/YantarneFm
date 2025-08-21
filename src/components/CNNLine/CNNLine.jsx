@@ -28,6 +28,8 @@ const CNNLine = () => {
       <div className="cnn-text whitespace-nowrap text-white text-lg f">
         {displayText}
         {displayText}
+        {displayText}
+        {displayText}
       </div>
     </main>
   );

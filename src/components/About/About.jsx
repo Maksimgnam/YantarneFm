@@ -22,7 +22,6 @@ const About = () => {
       <div className="about__container second">
  
         <div className='about_block-two'>
-         {/* <Image src={'/about/sound.webp'}  width={300} height={300} alt=''/> */}
          <img src="/about/sound.webp" alt="" />
          <div className='about_block-two-text'>
           <p>З початком повномасштабного вторгнення, отримали дозвіл від Армії.FM та Національної ради теле- та радіозвʼязку на тимчасове мовлення на частоті 88.9! Щиро дякуємо Армії.FM та Національній раді за довіру!</p>
