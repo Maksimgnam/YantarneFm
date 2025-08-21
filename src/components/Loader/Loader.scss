@@ -6,6 +6,7 @@
     align-items: center;
     height: 100vh;
     padding-bottom: 60px;
+
   }
   
   .loading-line-container {
@@ -35,6 +36,17 @@
     }
     100% {
       left: 100%;
+    }
+  }
+  
+
+  @media (max-width: 900px) {
+    .loader{
+      padding: 20px;
+
+      .loading-line-container{
+        width: 100%;
+      }
     }
   }
   

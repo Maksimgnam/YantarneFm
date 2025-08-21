@@ -20,12 +20,13 @@ const CNNLine = () => {
   }, []);
 
   const displayText = cnnTexts.length
-    ? Array(35).fill(cnnTexts.map(item => item.text).join(' • ')).join(' ')
+    ? Array(10).fill(cnnTexts.map(item => item.text).join(' • ')).join(' ')
     : Array(30).fill("Yantarne FM").join(" • ");
 
   return (
     <main className="w-full h-10 bg-red-600 overflow-hidden relative flex items-center">
       <div className="cnn-text whitespace-nowrap text-white text-lg f">
+        {displayText}
         {displayText}
       </div>
     </main>
