@@ -33,6 +33,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
       <link rel="icon" href="/headphones.webp" type="image/x-icon" />
+      <link rel="preconnect" href="https://yantarne-beta.vercel.app" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} antialiased`}
