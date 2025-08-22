@@ -8,7 +8,8 @@ const Home = () => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
   const [trackInfo, setTrackInfo] = useState({ title: '', artist: '' });
-  const [backgroundImage, setBackgroundImage] = useState(null)
+  const [backgroundImages, setBackgroundImages] = useState([])
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   const audioRef = useRef(null)
   const canvasRef = useRef(null)
@@ -17,7 +18,7 @@ const Home = () => {
   const dataArrayRef = useRef(null)
   const rafRef = useRef(null)
 
-  const streamUrl = 'https://complex.in.ua/yantarne' // твій стрім
+  const streamUrl = 'https://complex.in.ua/yantarne' 
 
   // Зміна гучності
   useEffect(() => {
@@ -223,31 +224,40 @@ const Home = () => {
     window.addEventListener('resize', resize)
     return () => window.removeEventListener('resize', resize)
   }, [])
-  
   useEffect(() => {
-    const fetchBackgroundImage = async () => {
+    const fetchBackgroundImages = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/back-image`)
-        if (!res.ok) throw new Error('Failed to fetch background image')
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/back-images`)
         const data = await res.json()
-        if (data?.backgroundImage) {
-          setBackgroundImage(data.backgroundImage)
+        if (data?.backgroundImages?.length) {
+          setBackgroundImages(data.backgroundImages)
+        } else {
+          setBackgroundImages(['/back.png'])
         }
       } catch (err) {
-        console.error('Error loading background image:', err)
+        console.error('Failed to fetch background images:', err)
+        setBackgroundImages(['/back.png'])
       }
     }
-
-    fetchBackgroundImage()
-    const interval = setInterval(fetchBackgroundImage, 60000) // update every 1 min
-    return () => clearInterval(interval)
+    fetchBackgroundImages()
   }, [])
+
+  // Auto slider every 3 seconds
+  useEffect(() => {
+    if (backgroundImages.length <= 1) return
+    const interval = setInterval(() => {
+      setCurrentIndex(prev => (prev + 1) % backgroundImages.length)
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [backgroundImages])
   return (
-    <main className='home'   style={{
-      backgroundImage: backgroundImage ? `url(${backgroundImage})` : '/back.png',
+    <main className='home'  style={{
+      backgroundImage: `url(${backgroundImages[currentIndex] || '/back.png'})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
-    }}>
+      transition: 'background-image 1s ease-in-out'
+    }}
+>
       <audio ref={audioRef} src={streamUrl} preload='none' />
 
       <div className='overlay' />
@@ -335,3 +345,177 @@ const Home = () => {
 }
 
 export default Home
+// 'use client'
+// import React, { useEffect, useRef, useState } from 'react'
+// import Image from 'next/image'
+// import './Home.scss'
+
+// const Home = () => {
+//   const [volume, setVolume] = useState(50)
+//   const [isPlaying, setIsPlaying] = useState(false)
+//   const [isMuted, setIsMuted] = useState(false)
+//   const [trackInfo, setTrackInfo] = useState({ title: '', artist: '' })
+//   const [backgroundImages, setBackgroundImages] = useState([])
+//   const [currentIndex, setCurrentIndex] = useState(0)
+
+//   const audioRef = useRef(null)
+//   const canvasRef = useRef(null)
+//   const audioContextRef = useRef(null)
+//   const analyserRef = useRef(null)
+//   const dataArrayRef = useRef(null)
+//   const rafRef = useRef(null)
+
+//   const streamUrl = 'https://complex.in.ua/yantarne'
+
+//   // Volume effect
+//   useEffect(() => {
+//     if (audioRef.current) {
+//       audioRef.current.volume = isMuted ? 0 : volume / 100
+//     }
+//   }, [volume, isMuted])
+
+//   // Fetch track info
+//   useEffect(() => {
+//     const fetchTrackInfo = async () => {
+//       try {
+//         const res = await fetch('https://complex.in.ua/status-json.xsl?mount=/yantarne')
+//         const data = await res.json()
+//         const rawTitle = data?.icestats?.source?.title || ''
+//         const parts = rawTitle.split(' - ')
+//         const artist = parts[0] ?? ''
+//         const title = parts.slice(1).join(' - ') ?? rawTitle
+//         setTrackInfo({ title, artist })
+//       } catch (err) {
+//         console.warn('Track info error:', err)
+//       }
+//     }
+
+//     fetchTrackInfo()
+//     const interval = setInterval(fetchTrackInfo, 50000)
+//     return () => clearInterval(interval)
+//   }, [])
+
+//   // Fetch background images
+//   useEffect(() => {
+//     const fetchBackgroundImages = async () => {
+//       try {
+//         const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/back-images`)
+//         const data = await res.json()
+//         if (data?.backgroundImages?.length) {
+//           setBackgroundImages(data.backgroundImages)
+//         } else {
+//           setBackgroundImages(['/back.png'])
+//         }
+//       } catch (err) {
+//         console.error('Failed to fetch background images:', err)
+//         setBackgroundImages(['/back.png'])
+//       }
+//     }
+//     fetchBackgroundImages()
+//   }, [])
+
+//   // Auto slider every 3 seconds
+//   useEffect(() => {
+//     if (backgroundImages.length <= 1) return
+//     const interval = setInterval(() => {
+//       setCurrentIndex(prev => (prev + 1) % backgroundImages.length)
+//     }, 3000)
+//     return () => clearInterval(interval)
+//   }, [backgroundImages])
+
+  
+//   return (
+//     <main className='home' style={{
+//       backgroundImage: `url(${backgroundImages[currentIndex] || '/back.png'})`,
+//       backgroundSize: 'cover',
+//       backgroundPosition: 'center',
+//       transition: 'background-image 1s ease-in-out'
+//     }}
+//   >
+//             <audio ref={audioRef} src={streamUrl} preload='none' />
+      
+//             <div className='overlay' />
+      
+//             <div className='player-container'>
+//               {/* Play button on the left */}
+//               <div className='controls'>
+//                 <button
+//                   onClick={togglePlay}
+//                   className='border_btn'
+//                   aria-label={isPlaying ? 'Pause' : 'Play'}
+//                 >
+//                   <div className='grey_btn'>
+//                 <div
+//                   className={isPlaying ? "play-btn playing" : 'play-btn'}            
+//                 >
+//                   {isPlaying ? (
+//                     <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 24 24" fill="#fff">
+//                       <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+//                     </svg>
+//                   ) : (
+//                     <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="#fff">
+//                       <path d="M8 5v14l11-7z"/>
+//                     </svg>
+//                   )}
+//                 </div>
+//                 </div>
+//                 </button>
+//               </div>
+              
+//               {/* Track info in the center */}
+//               <div className='track-info'>
+//                 <h2 className='title'>{trackInfo.title || 'Dancin Krono Remix' }</h2>
+//                 <h3 className='artist'>{trackInfo.artist || 'Aaron Smith feat. Luvli'}</h3>
+                
+//                 {/* Like button below track info */}
+//                 <button className='heart-btn' title='Like'>
+//                   <Image src='/heart.webp' width={32} height={32} alt='heart' />
+//                 </button>
+//               </div>
+      
+//               {/* Volume slider on the right */}
+//               <div className='volume-vertical'>
+//                 <button className='vol-icon top' onClick={increase} aria-label='increase'>
+//                   <Image src='/volume1.webp' width={32} height={32} alt='volume up' />
+      
+//                 </button>
+      
+//                 <div className='vol-slider-container'>
+//                   <input
+//                     className='vol-range'
+//                     type='range'
+//                     min='0'
+//                     max='100'
+//                     value={isMuted ? 0 : volume}
+//                     onChange={onVolumeChange}
+//                     orient='vertical'
+//                   />
+//                 </div>
+      
+//                 <button className='vol-icon bottom' onClick={decrease} aria-label='decrease'>
+//                   <Image src='/volume2.webp' width={32} height={32} alt='volume down' />
+//                 </button>
+      
+//                 <button className='mute-btn' onClick={toggleMute} aria-label='mute'>
+//                   {isMuted || volume === 0 ? (
+//                     <div className='mute-ind'>
+//                       <Image src='/Volume_Off.svg' width={32} height={32} alt='volume mute' />
+//                     </div>
+//                   ) : (
+//                     <div className='mute-ind'>
+//                       <Image src='/Volume_Max.svg' width={32} height={32} alt='volume turn on' />
+//                     </div>
+//                   )}
+//                 </button>
+//               </div>
+//             </div>
+      
+//             {/* Visualizer at the bottom */}
+//             <div className='visualizer-wrap'>
+//               <canvas ref={canvasRef} className='visualizer-canvas' />
+//             </div>
+//           </main>
+//   )
+// }
+
+// export default Home
