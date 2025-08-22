@@ -1,5 +1,8 @@
-/* Footer.scss */
-
-.footer {
-  // styles here
+p{
+  font-size: 23px;
+}
+@media (max-width: 500px) {
+  p{
+    font-size: 19px;
+  }
 }

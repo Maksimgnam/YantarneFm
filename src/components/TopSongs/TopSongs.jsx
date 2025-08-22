@@ -35,8 +35,8 @@ const AdminTopSongs = () => {
       <h2><span>ТОП</span> Пісень</h2>
       <div className="line"></div>
 
-      {loading ? (
-          <div className='w-full h-[90vh]  flex items-center justify-center'>
+      {loading ? ( 
+          <div className='loader'>
             <p className='text-4xl font-medium'>Завантаження...</p>
           </div>
         ) :

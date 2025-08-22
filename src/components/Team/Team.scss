@@ -7,7 +7,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
+
 }
 .team-title{
   font-size: 50px;
@@ -26,25 +26,42 @@ span{
   margin:3px; 
 }
 
+.team__wrapper {
+  width: 100%;
+  overflow: hidden;
+}
+
 .team__container {
   display: flex;
+  width: max-content;
+  margin-top: 40px ;
+}
+
+.team__track {
+  display: flex;
   gap: 20px;
-  animation: move-center 20s linear infinite;
-  margin: 20px; 
+  animation: scroll-left 10s linear infinite;
 }
 
 .team-card {
+  flex: 0 0 auto;
   width: 350px;
-  height: auto;
-  background-color:  $primary-color;
   border-radius: 20px;
-  flex-shrink: 0;
-
-  margin: 20px;
+  background: $primary-color;
   color: white;
-  font-weight: 500;
-
+  margin: 20px;
 }
+
+/* Ключове: рухаємо весь блок назовсім */
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 
 .team-image{
   
@@ -91,16 +108,12 @@ border: 1px solid white;
 }
 
 
-
-@keyframes move-center {
+@keyframes scroll-left {
   0% {
     transform: translateX(0);
   }
-  50% {
-    transform: translateX(-50%); 
-  }
   100% {
-    transform: translateX(0); 
+    transform: translateX(-50%); // половина дубльованого списку
   }
 }
 
