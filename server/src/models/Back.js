@@ -1,7 +1,12 @@
+
 const mongoose = require('mongoose');
 
 const backSchema = new mongoose.Schema({
-    backgroundImage: { type: String, required: true }
+  backgroundImages: {
+    type: [String], 
+    default: []
+  }
 });
 
 module.exports = mongoose.model('Back', backSchema);
+
