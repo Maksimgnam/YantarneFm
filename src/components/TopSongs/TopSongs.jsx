@@ -37,7 +37,7 @@ const AdminTopSongs = () => {
 
       {loading ? ( 
           <div className='loader'>
-            <p className='text-4xl font-medium'>Завантаження...</p>
+            <p>Завантаження...</p>
           </div>
         ) :
       songs.map((song, idx) => (

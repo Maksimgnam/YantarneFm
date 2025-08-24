@@ -29,7 +29,6 @@ const CNNLine = () => {
         {displayText}
         {displayText}
         {displayText}
-        {displayText}
       </div>
     </main>
   );
