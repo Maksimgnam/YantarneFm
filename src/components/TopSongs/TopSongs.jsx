@@ -31,7 +31,7 @@ const AdminTopSongs = () => {
 
 
   return (
-    <main className='topsongs'>
+    <main id='topsongs' className='topsongs'>
       <h2><span>ТОП</span> Пісень</h2>
       <div className="line"></div>
 

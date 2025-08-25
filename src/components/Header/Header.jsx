@@ -26,11 +26,11 @@ const Header = () => {
           <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/#timetable'>Розклад</a>
           <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/#about'>Хто ми</a>
           <Link className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/blog'>Блог</Link> 
-          <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/#team'>Команда</a>   
-          <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/#contacts'>Контакти</a>  
+          <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/#support'>Підтримати</a>   
+          <a className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/#team'>Команда</a>  
                      
           
-          {/* <Link className='text-lg hover:text-[#Cc0100] font-semibold m-2.5 mt-0 mb-0'  href='/home/support'>Підтримати</Link>   */}
+
       </nav>
       <button onClick={handleTelegramLogin} className='w-56 text-white h-[56px] bg-[#Cc0100]  font-semibold rounded-lg text-lg cursor-pointer m-2 ml-0 mr-0 flex items-center justify-center'>
           Зареєструватися

@@ -33,7 +33,7 @@ const Contacts = () => {
   };
 
   return (
-    <div id='contacts' className='contacts'>
+    <main id='contacts' className='contacts'>
       <h1 className="title"><span>К</span>онтакти</h1>
       <div className='line'></div>
       <div className='contacts__container'>
@@ -93,7 +93,7 @@ const Contacts = () => {
         </div>
 
       </div>
-    </div>
+    </main>
   );
 };
 
