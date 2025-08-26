@@ -125,45 +125,89 @@ useEffect(() => {
   }, []) // лише один раз на mount
 
   // Запуск/зупинка плеєра
-  const togglePlay = async () => {
-    if (!audioRef.current) return
-    if (!audioContextRef.current) {
-      // деякі браузери вимагають user gesture, тож ініціалізуємо контекст тут якщо потрібно
-      try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext
-        const audioCtx = new AudioContext()
-        audioContextRef.current = audioCtx
-        const source = audioCtx.createMediaElementSource(audioRef.current)
-        const analyser = audioCtx.createAnalyser()
-        analyser.fftSize = 256
-        analyserRef.current = analyser
-        source.connect(analyser)
-        analyser.connect(audioCtx.destination)
-        dataArrayRef.current = new Uint8Array(analyser.frequencyBinCount)
-        startVisualizer()
-      } catch (e) {
-        console.warn('Init audio context failed:', e)
-      }
-    }
+  // const togglePlay = async () => {
+  //   if (!audioRef.current) return
+  //   if (!audioContextRef.current) {
+  //     // деякі браузери вимагають user gesture, тож ініціалізуємо контекст тут якщо потрібно
+  //     try {
+  //       const AudioContext = window.AudioContext || window.webkitAudioContext
+  //       const audioCtx = new AudioContext()
+  //       audioContextRef.current = audioCtx
+  //       const source = audioCtx.createMediaElementSource(audioRef.current)
+  //       const analyser = audioCtx.createAnalyser()
+  //       analyser.fftSize = 256
+  //       analyserRef.current = analyser
+  //       source.connect(analyser)
+  //       analyser.connect(audioCtx.destination)
+  //       dataArrayRef.current = new Uint8Array(analyser.frequencyBinCount)
+  //       startVisualizer()
+  //     } catch (e) {
+  //       console.warn('Init audio context failed:', e)
+  //     }
+  //   }
 
-    if (isPlaying) {
-      audioRef.current.pause()
-      setIsPlaying(false)
-    } else {
-      // resume audio context (для автоплей політик)
+  //   if (isPlaying) {
+  //     audioRef.current.pause()
+  //     setIsPlaying(false)
+  //   } else {
+  //     // resume audio context (для автоплей політик)
+  //     try {
+  //       if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
+  //         await audioContextRef.current.resume()
+  //       }
+  //     } catch (e) {}
+  //     try {
+  //       await audioRef.current.play()
+  //       setIsPlaying(true)
+  //     } catch (err) {
+  //       console.warn('Play failed:', err)
+  //     }
+  //   }
+  // }
+  const togglePlay = async () => {
+    if (!audioRef.current) return;
+  
+    if (!audioContextRef.current) {
       try {
-        if (audioContextRef.current && audioContextRef.current.state === 'suspended') {
-          await audioContextRef.current.resume()
-        }
-      } catch (e) {}
-      try {
-        await audioRef.current.play()
-        setIsPlaying(true)
-      } catch (err) {
-        console.warn('Play failed:', err)
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        const audioCtx = new AudioContext();
+        audioContextRef.current = audioCtx;
+  
+        const source = audioCtx.createMediaElementSource(audioRef.current);
+        const analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+        analyserRef.current = analyser;
+  
+        source.connect(analyser);
+        analyser.connect(audioCtx.destination);
+  
+        dataArrayRef.current = new Uint8Array(analyser.frequencyBinCount);
+        startVisualizer();
+      } catch (e) {
+        console.warn('Init audio context failed:', e);
       }
     }
-  }
+  
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      try {
+        if (audioContextRef.current?.state === 'suspended') {
+          await audioContextRef.current.resume();
+        }
+  
+        // 🔑 force the browser to reload the stream before play
+        audioRef.current.load();
+        await audioRef.current.play();
+  
+        setIsPlaying(true);
+      } catch (err) {
+        console.warn('Play failed:', err);
+      }
+    }
+  };
+  
 
   const toggleMute = () => {
     setIsMuted(prev => !prev)
@@ -281,6 +325,7 @@ useEffect(() => {
     }, 6000)
     return () => clearInterval(interval)
   }, [backgroundImages])
+  
   return (
     <main className='home'  style={{
       backgroundImage: `url(${backgroundImages[currentIndex] || '/back.png'})`,
