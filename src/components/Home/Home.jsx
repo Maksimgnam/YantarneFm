@@ -325,9 +325,9 @@ useEffect(() => {
           <h3 className='artist'>{trackInfo.artist || 'Aaron Smith feat. Luvli'}</h3>
           
           {/* Like button below track info */}
-          <button className='heart-btn' title='Like'>
+          {/* <button className='heart-btn' title='Like'>
             <Image src='/heart.webp' width={32} height={32} alt='heart' />
-          </button>
+          </button> */}
         </div>
 
         {/* Volume slider on the right */}

@@ -32,9 +32,9 @@ const Header = () => {
           
 
       </nav>
-      <button onClick={handleTelegramLogin} className='w-56 text-white h-[56px] bg-[#Cc0100]  font-semibold rounded-lg text-lg cursor-pointer m-2 ml-0 mr-0 flex items-center justify-center'>
+      {/* <button onClick={handleTelegramLogin} className='w-56 text-white h-[56px] bg-[#Cc0100]  font-semibold rounded-lg text-lg cursor-pointer m-2 ml-0 mr-0 flex items-center justify-center'>
           Зареєструватися
-      </button>
+      </button> */}
       </div>
     </header>
   )
