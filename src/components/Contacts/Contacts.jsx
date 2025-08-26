@@ -9,14 +9,14 @@ const Contacts = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const text = `Нове повідомлення від користувача\n\nІм'я: ${name}\nПовідомлення: ${message}`;
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/send-message`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, message }),
+        body: JSON.stringify({ chatId: "1015683844", text }),
       });
 
       if (res.ok) {

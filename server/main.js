@@ -18,6 +18,7 @@ const backRoutes = require('./src/routes/back');
 const topSongsRoutes = require('./src/routes/topSongs');
 const blogRoutes = require('./src/routes/blog');
 const timetableRoutes = require('./src/routes/timetableRoutes');
+const sendMessageRoute = require('./src/routes/sendMessage');
 
 
 
@@ -31,6 +32,7 @@ app.use('/api', backRoutes);
 app.use('/api', topSongsRoutes);
 app.use('/api', blogRoutes);
 app.use('/api/timetable', timetableRoutes);
+app.use('/api', sendMessageRoute);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 

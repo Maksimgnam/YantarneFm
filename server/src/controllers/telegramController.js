@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const { listFilesInFolder, downloadFile } = require('../services/driveService');
 const User = require('../models/User')
+const {bot} = require('../bot/bot');
 
 const FOLDER_ID = '15M1t-6FAJh1TSDar9Sl-UMVmbkoon8ud';
 
@@ -91,4 +92,15 @@ async function handleGetSongs(bot, chatId) {
   }
 }
 
-module.exports = { handleGetSong, handleGetSongs, handleDownloadAudio, handleDeleteMessage };
+async function sendToAdmin(req, res){
+  const { chatId, text } = req.body;
+  try {
+    await bot.sendMessage(chatId, text);
+    res.status(200).json({ message: 'Message sent successfully' });
+  } catch (error) {
+    console.log('Error during sendToAdmin:', error);
+    res.status(500).json({ message: 'Failed to send message' });
+  }
+};
+
+module.exports = { handleGetSong, handleGetSongs, handleDownloadAudio, handleDeleteMessage, sendToAdmin };
