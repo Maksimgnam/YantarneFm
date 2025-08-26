@@ -26,20 +26,20 @@ canvas{
 }
 
 .cnn-text {
-  position: absolute;
-  white-space: nowrap;
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 40px;
-  animation: 120s cnn-marquee   linear infinite;
+  position:  relative;
+  overflow-y: hidden;
+  width: max-content;
+  max-width: 100%;
+  height: 50px;
+  animation: scroll-left 10s linear infinite;;
+  background-color: #CC0100;
 }
 
-@keyframes cnn-marquee {
+@keyframes scroll-left {
   0% {
-    transform: translateX(0%);
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%); 
   }
 }
