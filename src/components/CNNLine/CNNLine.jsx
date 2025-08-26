@@ -24,11 +24,10 @@ const CNNLine = () => {
     : Array(30).fill("Yantarne FM").join(" • ");
 
   return (
-    <main className="h-10 bg-red-600">
+    <main className="h-10 w-full bg-red-600">
       <div className="cnn-text">
         {displayText}
         {displayText}
-
       </div>
     </main>
   );
