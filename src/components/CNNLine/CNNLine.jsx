@@ -24,9 +24,8 @@ const CNNLine = () => {
     : Array(30).fill("Yantarne FM").join(" • ");
 
   return (
-    <main className="w-full h-10 bg-red-600 overflow-hidden relative flex items-center">
-      <div className="cnn-text whitespace-nowrap text-white text-lg f">
-        {displayText}
+    <main className="h-10 w-full bg-red-600">
+      <div className="cnn-text">
         {displayText}
         {displayText}
       </div>

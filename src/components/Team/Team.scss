@@ -35,12 +35,13 @@ span{
   display: flex;
   width: max-content;
   margin-top: 40px ;
+  animation: scroll-left 20s linear infinite;
 }
 
 .team__track {
   display: flex;
   gap: 20px;
-  animation: scroll-left 10s linear infinite;
+
 }
 
 .team-card {
@@ -52,15 +53,7 @@ span{
   margin: 20px;
 }
 
-/* Ключове: рухаємо весь блок назовсім */
-@keyframes scroll-left {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
+
 
 
 .team-image{
@@ -113,7 +106,7 @@ border: 1px solid white;
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%); // половина дубльованого списку
+    transform: translateX(-50%); 
   }
 }
 
