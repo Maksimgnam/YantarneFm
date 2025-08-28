@@ -6,6 +6,8 @@ export default function Timetable() {
   const [timetable, setTimetable] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [currentDayIndex, setCurrentDayIndex] = useState(new Date().getDay() === 0 ? 6 : new Date().getDay() - 1); // Поточний день тижня (0 = Пн, 6 = Нд)
   
   // Завантаження подій з API
   useEffect(() => {
@@ -89,6 +91,23 @@ export default function Timetable() {
 
   // позиція поточного часу (в пікселях від початку області годин)
   const [currentTimePx, setCurrentTimePx] = useState(null);
+  
+  // Check for mobile devices and update on resize
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    
+    // Initial check
+    checkIfMobile();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkIfMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
+  
   useEffect(() => {
     const update = () => {
       const now = new Date();
@@ -156,16 +175,32 @@ export default function Timetable() {
     return false;
   };
 
+  // Функції для перемикання між днями
+  const goToPreviousDay = () => {
+    setCurrentDayIndex((prevIndex) => (prevIndex === 0 ? 6 : prevIndex - 1));
+  };
+
+  const goToNextDay = () => {
+    setCurrentDayIndex((prevIndex) => (prevIndex === 6 ? 0 : prevIndex + 1));
+  };
+
   return (
     <div id="timetable" className="timetable">
       <div className="header">
         <div className="title">Розклад</div>
         <div className="line"></div>
+        {isMobile && (
+          <div className="mobile-day-selector">
+            <button onClick={goToPreviousDay} className="day-nav-btn prev-day">❮</button>
+            <div className="current-day">{days[currentDayIndex]}</div>
+            <button onClick={goToNextDay} className="day-nav-btn next-day">❯</button>
+          </div>
+        )}
       </div>
     <div
       className="schedule"
       style={{
-        padding: "0 40px", // зовнішні відступи
+        padding: isMobile ? "0 10px 0 40px" : "0 40px", // зовнішні відступи, зменшені для мобільних
         // передаємо CSS-змінні
         "--time-col-width": `${TIME_COL_WIDTH}px`,
         "--header-height": `${HEADER_HEIGHT}px`,
@@ -179,9 +214,14 @@ export default function Timetable() {
       >
         {/* header row (автоматично піде в перший рядок grid) */}
         <div className="time-col-header" />
-        {days.map((d, i) => (
-          <div key={i} className="day-col-header">{d}</div>
-        ))}
+        {/* На мобільних показуємо тільки поточний день, на десктопі - всі дні */}
+        {isMobile ? (
+          <div className="day-col-header">{days[currentDayIndex]}</div>
+        ) : (
+          days.map((d, i) => (
+            <div key={i} className="day-col-header">{d}</div>
+          ))
+        )}
 
         {/* body: часова колонка (стає в другому рядку, першому стовпчику) */}
         <div className="time-col">
@@ -191,14 +231,14 @@ export default function Timetable() {
         </div>
 
         {/* колонки днів (другий рядок, колонки 2..8) */}
-        {days.map((_, dayIndex) => (
+        {isMobile ? (
+          // На мобільних показуємо тільки поточний день
           <div
-            key={dayIndex}
             className="day-col"
             style={{ minHeight: `calc(var(--hour-height) * var(--hours))` }}
           >
             {timetable
-              .filter((ev) => isEventOnDay(ev, dayIndex))
+              .filter((ev) => isEventOnDay(ev, currentDayIndex))
               .map((ev, idx) => {
                 const { top, height } = getPositionPx(ev.start_time, ev.end_time);
                 return (
@@ -218,7 +258,37 @@ export default function Timetable() {
                 );
               })}
           </div>
-        ))}
+        ) : (
+          // На десктопі показуємо всі дні
+          days.map((_, dayIndex) => (
+            <div
+              key={dayIndex}
+              className="day-col"
+              style={{ minHeight: `calc(var(--hour-height) * var(--hours))` }}
+            >
+              {timetable
+                .filter((ev) => isEventOnDay(ev, dayIndex))
+                .map((ev, idx) => {
+                  const { top, height } = getPositionPx(ev.start_time, ev.end_time);
+                  return (
+                    <div
+                      key={idx}
+                      className="event"
+                      style={{
+                        top: `${top}px`,
+                        height: `${height}px`,
+                        backgroundColor: ev.color
+                      }}
+                      title={`${ev.title} — ${ev.start_time}–${ev.end_time}`}
+                    >
+                      <div className="title">{ev.title}</div>
+                      <div className="time">{ev.start_time}–{ev.end_time}</div>
+                    </div>
+                  );
+                })}
+            </div>
+          ))
+        )}
 
         {/* Шар сітки: горизонтальні лінії через усю ширину (включно з колонкою часу) */}
         <div

@@ -4,6 +4,7 @@
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
+  overflow-x: auto; /* Enable horizontal scrolling for small screens */
 
   .header {
     width: 100%;
@@ -11,6 +12,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    margin-bottom: 20px;
 
     .title {
       font-size: 50px;
@@ -19,6 +21,55 @@
       span {
         color: #CC0100;
       }
+    }
+    
+    .line {
+      margin-bottom: 15px;
+    }
+    
+    .mobile-day-selector {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 15px;
+      margin-bottom: 15px;
+      
+      .current-day {
+        font-size: 24px;
+        font-weight: 600;
+        margin: 0 20px;
+        min-width: 60px;
+        text-align: center;
+      }
+      
+      .day-nav-btn {
+        background-color: #CC0100;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.2s, transform 0.2s;
+        
+        &:hover {
+          background-color: #a30000; /* Замість darken(#CC0100, 10%) */
+        }
+        
+        &:active {
+          transform: scale(0.95);
+        }
+      }
+    }
+    
+    @keyframes fadeInOut {
+      0% { opacity: 0.7; }
+      50% { opacity: 1; }
+      100% { opacity: 0.7; }
     }
   }
 
@@ -29,11 +80,16 @@
     --hours: 15;
 
     width: 100%;
+    min-width: 768px; /* Minimum width for desktop view */
 
-    margin-top: 100px;
+    margin-top: 40px;
 
     box-sizing: border-box;
     position: relative;
+    
+    @media (max-width: 768px) {
+      min-width: auto; /* Remove minimum width for mobile view */
+    }
 
     .schedule-grid {
       position: relative;
@@ -45,6 +101,11 @@
       width: 100%;
       height: calc(var(--hour-height) * var(--hours) + var(--header-height));
       overflow: hidden;
+      margin-top: 150px;
+      
+      @media (max-width: 768px) {
+        grid-template-columns: var(--time-col-width) 1fr; /* Одна колонка для дня на мобільних */
+      }
     }
 
     /* --- Header (row 1) --- */
@@ -116,6 +177,18 @@
       flex-direction: column;
       justify-content: space-between;
       overflow: hidden;
+      
+      .title {
+        font-weight: 600;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      
+      .time {
+        font-size: 11px;
+        margin-top: 4px;
+      }
     }
 
     /* Шар сітки — горизонтальні лінії через всю ширину */
@@ -148,6 +221,90 @@
       pointer-events: none;
       background: linear-gradient(90deg, rgba(255, 165, 0, 1), rgba(255, 110, 0, 1));
       box-shadow: 0 0 8px rgba(255, 140, 0, 0.5);
+    }
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 1024px) {
+    .schedule {
+      padding: 0 20px !important;
+      margin-top: 30px;
+      
+      .event {
+        padding: 6px 8px;
+        font-size: 12px;
+        
+        .time {
+          font-size: 10px;
+        }
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .header {
+      .title {
+        font-size: 36px;
+      }
+      
+      .mobile-day-selector {
+        margin-top: 20px;
+        margin-bottom: 20px;
+        
+        .current-day {
+          font-size: 28px;
+        }
+      }
+    }
+    
+    .schedule {
+      margin-top: 20px;
+      overflow-x: visible; /* Змінено з auto на visible, оскільки прокрутка не потрібна */
+      -webkit-overflow-scrolling: touch;
+      padding: 0 !important;
+      
+      .day-col-header {
+        font-size: 18px;
+        font-weight: 700;
+      }
+      
+      .day-col {
+        border-left: none; /* Прибираємо ліву межу для мобільної версії */
+        border-top: 3px solid rgba(180, 0, 0, 0.95);
+        padding-top: 10px;
+      }
+      
+      .event {
+        left: 3%;
+        width: 94%;
+      }
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .header .title {
+      font-size: 28px;
+    }
+    
+    .schedule {
+      --hour-height: 50px;
+      margin-top: 30px;
+      
+      .time-cell {
+        font-size: 10px;
+        padding-left: 4px;
+      }
+      
+      .event {
+        left: 4%;
+        width: 92%;
+        padding: 4px 6px;
+        font-size: 11px;
+        
+        .time {
+          font-size: 9px;
+        }
+      }
     }
   }
 }
