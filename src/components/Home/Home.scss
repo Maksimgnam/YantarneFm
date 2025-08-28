@@ -1,5 +1,6 @@
 @use "sass:color";
 
+
 .home {
   position: relative;
   width: 100%;
@@ -38,16 +39,16 @@
 
 .track-info {
   text-align: center;
-  max-width: 60%;
+  max-width: 70%;
   display: flex;
   flex-direction: column;
   align-items: center;
   
   .title {
-    font-size: 80px;
+    font-size: 70px;
     font-weight: 800;
     margin: 0;
-    letter-spacing: -1px;
+    letter-spacing: 2px;
     color: #fff;
     /* First letter in red */
     &::first-letter { color: #cc0100; }
@@ -105,8 +106,8 @@
   }
 
   .grey_btn{
-    width: 200px;
-    height: 200px;
+    width: 80%;
+    height: 80%;
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.25);
     display: flex;
@@ -117,8 +118,8 @@
   }
 
   .play-btn {
-    width: 140px;
-    height: 140px;
+    width: 70%;
+    height: 70%;
     border-radius: 50%;
     background: #cc0100;
     border: none;
@@ -137,6 +138,7 @@
     svg { 
       display: block; 
       filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+      width: 57%;
     }
   }
 }
@@ -260,7 +262,15 @@
   .left .title { font-size: 42px; }
   .left .artist { font-size: 20px; }
   .play-btn { width: 110px; height: 110px; }
-  .volume-vertical { display: none; } /* приховати на мобайлі */
+  .volume-vertical { display: none; }
+  .player-container{ flex-direction: column; justify-content: center;}
+  .track-info { max-width: 100%; }
+  .controls .border_btn {margin-left: 0;}
 }
 
+@media (max-width: 560px) {
+  .track-info .title { font-size: 52px; letter-spacing: 0;}
+  .track-info .artist { font-size: 28px; }
+  .controls .border_btn { width: 200px; height: 200px; }
+}
 
