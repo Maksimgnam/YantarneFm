@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import './Home.scss'
+import Header from '../Header/Header'
 
 const Home = () => {
   const [volume, setVolume] = useState(50)

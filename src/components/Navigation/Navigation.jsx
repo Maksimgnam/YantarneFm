@@ -5,10 +5,12 @@ import Link from 'next/link';
 const Navigation = () => {
   return (
     <main className='navigation'>
-        <div className="header">
+        <div className="navigation-header">
+        <Link href={'/'}>
             <button>X</button>
+            </Link>    
         </div>
-        <div className="top">
+        {/* <div className="top">
             <Link href={'/account'}>
                 <button className='btn'>
                 Мій профіль
@@ -20,7 +22,7 @@ const Navigation = () => {
                 </button>
             </Link>
         </div>
-        <div className='line'></div>
+        <div className='line'></div> */}
         <div className='button-container'>
             <Link className='w-full' href={'/home'}>
                 <button>Головна</button>

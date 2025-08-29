@@ -24,21 +24,51 @@ canvas{
   width: 100%;
   height: 100%;
 }
-.cnn-text {
-  position: absolute;
+.cnn {
+  width: 100%;
+  height: 40px;
+  background: #cc0100;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.cnn__container {
+  display: flex;
+  width: max-content;
+  animation: scroll-left 40s linear infinite;
+}
+
+.cnn__track {
+  display: flex;
   white-space: nowrap;
+}
+
+.item {
   color: white;
   font-weight: bold;
   font-size: 18px;
   line-height: 40px;
-  animation: cnn-marquee 80s linear infinite;
+  position: relative;
 }
 
-@keyframes cnn-marquee {
+.item::after {
+  content: "•";
+  color: white;
+  opacity: 0.9;
+  margin: 10px;
+}
+
+/* останній елемент без крапки */
+.item:last-child::after {
+  content: "";
+}
+
+@keyframes scroll-left {
   0% {
-    transform: translateX(0%);
+    transform: translateX(0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 }
