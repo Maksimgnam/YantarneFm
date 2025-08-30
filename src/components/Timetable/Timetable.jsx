@@ -8,6 +8,8 @@ export default function Timetable() {
   const [error, setError] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [currentDayIndex, setCurrentDayIndex] = useState(new Date().getDay() === 0 ? 6 : new Date().getDay() - 1); // Поточний день тижня (0 = Пн, 6 = Нд)
+  const [popupEvent, setPopupEvent] = useState(null);
+  const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
   
   // Завантаження подій з API
   useEffect(() => {
@@ -18,7 +20,7 @@ export default function Timetable() {
         const response = await fetch('http://localhost:2000/api/timetable/events');
         
         // Якщо API недоступне, використовуємо тестові дані
-        if (!response.ok) {
+        if (response.ok) {
           // Тестові дані для відображення
           const defaultEvents = [
             {
@@ -82,7 +84,7 @@ export default function Timetable() {
   const HEADER_HEIGHT = 44; // px
   const HOUR_START = 8;
   const HOUR_END = 23;
-  const HOUR_HEIGHT = 60; // px на годину
+  const HOUR_HEIGHT = 80; // px на годину - збільшено відстань між годинами
   const TOTAL_HOURS = HOUR_END - HOUR_START;
   const MINUTE_PX = HOUR_HEIGHT / 60;
 
@@ -183,9 +185,22 @@ export default function Timetable() {
   const goToNextDay = () => {
     setCurrentDayIndex((prevIndex) => (prevIndex === 6 ? 0 : prevIndex + 1));
   };
+  
+  // Функція для відображення попапу з інформацією про подію
+  const showEventPopup = (event) => {
+    setPopupEvent(event);
+    // Для повноекранного попапу не потрібно розраховувати позицію
+    document.body.style.overflow = 'hidden'; // Блокуємо скролінг основної сторінки
+  };
+  
+  // Закриття попапу
+  const closePopup = () => {
+    setPopupEvent(null);
+    document.body.style.overflow = ''; // Відновлюємо скролінг основної сторінки
+  };
 
   return (
-    <div id="timetable" className="timetable">
+    <div id="timetable" className="timetable" onClick={popupEvent ? closePopup : undefined}>
       <div className="header">
         <div className="title">Розклад</div>
         <div className="line"></div>
@@ -251,6 +266,10 @@ export default function Timetable() {
                       backgroundColor: ev.color
                     }}
                     title={`${ev.title} — ${ev.start_time}–${ev.end_time}`}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      showEventPopup(ev);
+                    }}
                   >
                     <div className="title">{ev.title}</div>
                     <div className="time">{ev.start_time}–{ev.end_time}</div>
@@ -280,6 +299,10 @@ export default function Timetable() {
                         backgroundColor: ev.color
                       }}
                       title={`${ev.title} — ${ev.start_time}–${ev.end_time}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        showEventPopup(ev);
+                      }}
                     >
                       <div className="title">{ev.title}</div>
                       <div className="time">{ev.start_time}–{ev.end_time}</div>
@@ -305,6 +328,27 @@ export default function Timetable() {
         )}
       </div>
     </div>
+    
+    {/* Попап з інформацією про подію */}
+    {popupEvent && (
+      <div 
+        className="event-popup"
+        onClick={closePopup}
+      >
+        <div className="popup-content" onClick={(e) => e.stopPropagation()}>
+          <div className="popup-header" style={{ backgroundColor: popupEvent.color }}>
+            <h3>{popupEvent.title}</h3>
+            <button className="close-popup" onClick={closePopup}>×</button>
+          </div>
+          <p className="popup-time"><strong>Час:</strong> {popupEvent.start_time}–{popupEvent.end_time}</p>
+          <p className="popup-days">
+            <strong>Дні:</strong> {popupEvent.days ? 
+              popupEvent.days.map(d => days[d]).join(', ') : 
+              (popupEvent.date ? new Date(popupEvent.date).toLocaleDateString('uk-UA') : 'Не вказано')}
+          </p>
+        </div>
+      </div>
+    )}
     </div>
   );
 }

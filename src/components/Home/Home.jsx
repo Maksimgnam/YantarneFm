@@ -367,8 +367,8 @@ useEffect(() => {
         
         {/* Track info in the center */}
         <div className='track-info'>
-          <h2 className='title'>{trackInfo.title || 'Dancin Krono Remix' }</h2>
-          <h3 className='artist'>{trackInfo.artist || 'Aaron Smith feat. Luvli'}</h3>
+          <h2 className='title'>{trackInfo.title || 'YantarneFM' }</h2>
+          <h3 className='artist'>{trackInfo.artist || 'Радіо рідного міста'}</h3>
           
           {/* Like button below track info */}
           {/* <button className='heart-btn' title='Like'>
