@@ -27,7 +27,7 @@ const Navigation = () => {
             <Link className='w-full' href={'/home'}>
                 <button>Головна</button>
             </Link>
-            <Link className='w-full' href={'/home/#timatable'}>
+            <Link className='w-full' href={'/home/#timetable'}>
                 <button>Розклад</button>
             </Link>
             <Link className='w-full' href={'/home/#about'}>
