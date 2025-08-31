@@ -22,8 +22,8 @@ const BlogMore = () => {
       });
   }, [id]);
 
-  if (loading) return <p>Завантаження...</p>;
-  if (!blog) return <p>Блог не знайдено</p>;
+  if (loading) return  <div className='loader'><p>Завантаження...</p></div>
+  if (!blog) return    <div className='loader'><p>Блог не знайдено</p>;</div>
 
   return (
     <main className='blog-more'>
@@ -31,7 +31,7 @@ const BlogMore = () => {
         <Link href={'/home'}>
           <button>{'<'}</button>
         </Link>
-   
+       
         <div className='menu'>
           <div className="menu-line"></div>
           <div className="menu-line"></div>

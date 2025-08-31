@@ -2,10 +2,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import './TopSongs.scss';
 import TopSongCard from './TopSongCard/TopSongCard';
-import { useStore } from '@/store/store';
 
 const AdminTopSongs = () => {
-  const { isTopSongPopupOpen } = useStore();
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -18,6 +16,7 @@ const AdminTopSongs = () => {
       setSongs(data.songs || []);
     } catch (err) {
       console.error(err);
+      setSongs([]); // ensure empty array on error
     } finally {
       setLoading(false);
     }
@@ -25,34 +24,35 @@ const AdminTopSongs = () => {
 
   useEffect(() => {
     fetchSongs();
-
-  }, []);
-
-
+  }, [fetchSongs]);
 
   return (
     <main id='topsongs' className='topsongs'>
       <h2><span>ТОП</span> Пісень</h2>
       <div className="line"></div>
 
-      {loading ? ( 
-          <div className='loader'>
-            <p>Завантаження...</p>
-          </div>
-        ) :
-      songs.map((song, idx) => (
-        <TopSongCard
-          key={song._id}
-          index={idx + 1}
-          title={song.title}
-          artist={song.artist}
-          image={song.image}
-          audio={song.audio}
-          refreshSongs={fetchSongs} 
-          id={song._id}
-        />
-      ))}
-
+      {loading ? (
+        <div className='loader'>
+          <p>Завантаження...</p>
+        </div>
+      ) : songs.length ? (
+        songs.map((song, idx) => (
+          <TopSongCard
+            key={song._id}
+            index={idx + 1}
+            title={song.title}
+            artist={song.artist}
+            image={song.image}
+            audio={song.audio}
+            refreshSongs={fetchSongs} 
+            id={song._id}
+          />
+        ))
+      ) : (
+        <div className='loader'>
+          <p>Пісень немає</p>
+        </div>
+      )}
     </main>
   );
 };
