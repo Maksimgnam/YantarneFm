@@ -57,14 +57,14 @@ const Ads = () => {
       </h1>
       <div className='line'></div>
       <div className="ads-center-card animate-pulse">
-          <Image src={'/about/sound.webp'} width={170} height={170} alt=''/>
+          <Image src={'/about/sound.webp'} width={170} height={170} alt='sound'/>
           <p className='pt-3'>        Реклама в прямому ефірі</p>
         </div>
       <div className='ads__container'>
      
         {adsOptions.map((item, index) => (
           <div key={index} className='ads-card'>
-            <Image className='ads-card-img' src={item.image} width={110} height={110} alt=''/>
+            <Image className='ads-card-img' src={item.image} width={110} height={110} alt='card_img'/>
             <h2>{item.title}</h2>
             <p>
               {item.features.map((line, idx) => (
@@ -80,7 +80,7 @@ const Ads = () => {
 
         {/* Червоне коло по центру */}
         <div className="ads-center-circle animate-pulse">
-          <Image src={'/about/sound.webp'} width={170} height={170}/>
+          <Image src={'/about/sound.webp'} width={170} height={170} alt='sound'/>
           <p className='pt-3'>        Реклама в прямому ефірі</p>
         </div>
       </div>
