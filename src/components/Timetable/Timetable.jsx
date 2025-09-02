@@ -17,7 +17,7 @@ export default function Timetable() {
       try {
         setLoading(true);
         // Запит до API для отримання подій
-        const response = await fetch('http://localhost:2000/api/timetable/events');
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/timetable/events`);
         
         // Якщо API недоступне, використовуємо тестові дані
         if (response.ok) {
