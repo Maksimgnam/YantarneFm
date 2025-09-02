@@ -20,7 +20,7 @@ export default function Timetable() {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/timetable/events`);
         
         // Якщо API недоступне, використовуємо тестові дані
-        if (response.ok) {
+        if (!response.ok) {
           // Тестові дані для відображення
           const defaultEvents = [
             {
