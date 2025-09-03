@@ -16,7 +16,7 @@ const Contacts = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ chatId: "1015683844", text }),
+        body: JSON.stringify({ chatId: "1608433214", text }),
       });
 
       if (res.ok) {
