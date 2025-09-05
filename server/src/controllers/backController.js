@@ -8,7 +8,7 @@ exports.uploadBackImages = async (req, res) => {
       return res.status(400).json({ error: 'No files uploaded' });
     }
 
-    // Upload all images to Cloudinary
+
     const uploadPromises = req.files.map(file =>
       cloudinary.uploader.upload(file.path, { folder: 'backgrounds' })
     );
@@ -16,15 +16,15 @@ exports.uploadBackImages = async (req, res) => {
 
     const newImages = results.map(r => r.secure_url);
 
-    // Find or create Back document
+
     let backDoc = await Back.findOne();
 
     if (backDoc) {
-      // Append new images, max 5
+
       backDoc.backgroundImages = [
         ...backDoc.backgroundImages,
         ...newImages
-      ].slice(-5); // keep only latest 5
+      ].slice(-5); 
       await backDoc.save();
     } else {
       backDoc = await Back.create({

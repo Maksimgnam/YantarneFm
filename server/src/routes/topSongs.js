@@ -1,12 +1,14 @@
 const express = require('express');
+const multer = require('multer');
+const { getTopSongs, updateTopSong } = require('../controllers/topSongsController');
+
 const router = express.Router();
-const topSongsController = require('../controllers/topSongsController');
+const upload = multer({ dest: 'uploads/' }); 
 
-// GET all
-router.get('/top-songs', topSongsController.getTopSongs);
 
-// UPDATE one song
-router.put('/top-songs/:id', topSongsController.updateTopSong);
+router.get('/top-songs', getTopSongs);
 
-// OPTIONAL: Seed data
+
+router.put('/top-songs/:id', upload.single('audio'), updateTopSong);
+
 module.exports = router;
