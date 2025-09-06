@@ -68,7 +68,7 @@ const Account = () => {
       {user ? (
         <div>
           <h1 className="text-xl font-bold">Account Details</h1>
-          <p><strong>Name:</strong> {user.firstName}</p>
+          <p><strong>Names:</strong> {user.firstName}</p>
           <p><strong>Email:</strong> {user.email}</p>
 
           <button
