@@ -47,13 +47,12 @@ const Support = () => {
         allowFullScreen
       ></iframe>
       <div className="support-footer">
-        <h2 className='title'><span>П</span>ідтримати нас</h2>
-        <div className='line'></div>
+      
         <div className='support-footer-card'>
           <div className='support-footer-card-block'>
             <Image src={'/support/coffee.webp'} width={40} height={40} alt='' />
           </div>
-          <h2>Будемо вдячні 😊</h2>
+          <h2 className='text-center'>Будемо вдячні  за <br /> підтримку 😊</h2>
           <a href="https://buymeacoffee.com/yantarne.fm" target='_blank'>
             <button>Підтримати</button>
           </a>
