@@ -81,7 +81,7 @@ const Ads = () => {
         {/* Червоне коло по центру */}
         <div className="ads-center-circle animate-pulse">
           <Image src={'/about/sound.webp'} width={170} height={170} alt='sound'/>
-          <p className='pt-3'>        Реклама в прямому ефірі</p>
+          <p className='pt-3'>Реклама в прямому ефірі</p>
         </div>
       </div>
     </main>
