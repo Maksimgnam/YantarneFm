@@ -34,7 +34,7 @@ const Support = () => {
   }, [news])
 
   return (
-    <main id='support' className='support'>
+    <main id='news' className='support'>
       <h2 className='title'><span>{news.text.slice(0, 1)}</span>{news.text.slice(1)}</h2>
       <div className='line'></div>
       <iframe

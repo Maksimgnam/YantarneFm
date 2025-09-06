@@ -26,7 +26,7 @@ const Header = () => {
         <a href="/home/#timetable">Розклад</a>
         <a href="/home/#about">Хто ми</a>
         <Link href="/blog">Блог</Link>
-        <a href="/home/#support">Підтримати</a>
+        <a href="/home/#news">Новини</a>
         <a href="/home/#team">Команда</a>
       </nav>
       {/* <button onClick={handleTelegramLogin} className="register-btn">
