@@ -58,11 +58,11 @@ const CNNLine = () => {
 
   // fallback якщо API порожній
   const items = cnnTexts.length
-    ? cnnTexts.map(item => item.text)
+    ? cnnTexts.map(item => item.text).join(' • ')
     : ["Нова частота 97.6 FM", "Yantarne FM", "Фестивалі", "Новини"];
 
   // множимо, щоб було багато тексту
-  const repeatedItems = Array(8).fill(items).flat();
+  const repeatedItems = Array(1).fill(items).flat();
 
   return (
     <div className="cnn">
