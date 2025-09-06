@@ -47,6 +47,8 @@ const Support = () => {
         allowFullScreen
       ></iframe>
       <div className="support-footer">
+        <h2 className='title'><span>П</span>ідтримати нас</h2>
+        <div className='line'></div>
         <div className='support-footer-card'>
           <div className='support-footer-card-block'>
             <Image src={'/support/coffee.webp'} width={40} height={40} alt='' />
