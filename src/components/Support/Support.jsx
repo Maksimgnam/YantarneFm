@@ -5,7 +5,7 @@ import Image from 'next/image'
 
 const Support = () => {
 
-  const [news, setNews] = useState({text: "loading...", url: "loading..."});
+  const [news, setNews] = useState({text: "Завантаження..", url: "Завантаження..."});
 
   const fetchNews = async () => {
     try {
