@@ -1,5 +1,6 @@
 .timetable {
   width: 100%;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,6 +9,7 @@
 
   .header {
     width: 100%;
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,7 +33,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-top: 15px;
+      margin-top: 10px;
       margin-bottom: 15px;
       
       .current-day {
@@ -82,7 +84,7 @@
     width: 100%;
     min-width: 768px; /* Minimum width for desktop view */
 
-    margin-top: 40px;
+    margin-top: 10px;
 
     box-sizing: border-box;
     position: relative;
