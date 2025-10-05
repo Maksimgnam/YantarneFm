@@ -44,25 +44,7 @@ canvas{
   white-space: nowrap;
 }
 
-.item {
-  color: white;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 40px;
-  position: relative;
-}
 
-.item::after {
-  content: "•";
-  color: white;
-  opacity: 0.9;
-  margin: 10px;
-}
-
-/* останній елемент без крапки */
-.item:last-child::after {
-  content: "";
-}
 
 @keyframes scroll-left {
   0% {
