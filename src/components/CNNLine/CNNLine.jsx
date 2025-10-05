@@ -34,9 +34,9 @@
 // };
 
 // export default CNNLine;
-
 'use client'
 import React, { useEffect, useState } from 'react';
+import './CNNLine.scss';
 
 const CNNLine = () => {
   const [cnnTexts, setCnnTexts] = useState([]);
@@ -56,27 +56,20 @@ const CNNLine = () => {
     fetchCnnTexts();
   }, []);
 
-  // fallback якщо API порожній
   const items = cnnTexts.length
     ? cnnTexts.map(item => item.text).join(' • ')
-    : ["Нова частота 97.6 FM", "Yantarne FM", "Фестивалі", "Новини","Нова частота 97.6 FM", "Yantarne FM", "Фестивалі", "Новини","Нова частота 97.6 FM", "Yantarne FM", "Фестивалі", "Новини","Нова частота 97.6 FM", "Yantarne FM", "Фестивалі", "Новини" ];
-
-  // множимо, щоб було багато тексту
-  const repeatedItems = Array(1).fill(items).flat();
+    : [
+        "Нова частота 97.6 FM",
+        "Yantarne FM",
+        "Фестивалі",
+        "Новини",
+        "Музика без перерв",
+      ].join(' • ');
 
   return (
     <div className="cnn">
-      <div className="cnn__container">
-        <div className="cnn__track">
-          {repeatedItems.map((text, i) => (
-            <span key={i} className="item">{text}</span>
-          ))}
-        </div>
-        <div className="cnn__track">
-          {repeatedItems.map((text, i) => (
-            <span key={`copy-${i}`} className="item">{text}</span>
-          ))}
-        </div>
+      <div className="cnn__track">
+        <div className="cnn__text">{items} • {items}</div>
       </div>
     </div>
   );
