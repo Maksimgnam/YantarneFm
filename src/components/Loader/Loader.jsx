@@ -9,7 +9,7 @@ const Loader = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push('/home');
+
     }, 3000); 
 
     return () => clearTimeout(timer);
@@ -19,8 +19,8 @@ const Loader = () => {
     <main className='loader'>
       <Image 
         src={'/logo.webp'} 
-        width={340} 
-        height={340} 
+        width={300} 
+        height={300} 
         alt='Logo' 
         className='m-4' 
       />

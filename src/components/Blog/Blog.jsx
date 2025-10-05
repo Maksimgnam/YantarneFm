@@ -29,18 +29,20 @@ const Blog = () => {
   return (
     <main className='blog'>
       <div className="blog-header">
-        <Link href={'/home'}>
+        <Link href={'/'}>
           <button>{'<'}</button>
         </Link>
         <div className='flex flex-col items-center'>
           <h2 className='title'><span>Y</span>antarne Блог</h2>
           <div className='line'></div>
         </div>
+        <Link href={'/'}>
         <div className='menu'>
           <div className="menu-line"></div>
           <div className="menu-line"></div>
           <div className="menu-line"></div>
         </div>
+        </Link>
         <div className='flex'></div>
       </div>
 
