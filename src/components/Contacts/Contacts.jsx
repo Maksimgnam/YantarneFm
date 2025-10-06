@@ -67,28 +67,68 @@ const Contacts = () => {
               <p><strong><span>С</span>тудія:</strong> +380982008688</p>
               <p><strong><span>Р</span>еклама:</strong> +380683020555</p>
             </div>
-            <div className='contacts-info-overlay-socials'>
-              <a href="https://www.instagram.com/yantarne.fm/#" target='_blank'>
-                <button className="contacts-info-overlay-social">
-                  <Image src={'/contacts/instagram.webp'} width={50} height={50} alt=""/>
-                </button>
-              </a>
-              <a href="https://www.facebook.com/yantarne.fm" target='_blank'>
-                <button className="contacts-info-overlay-social">
-                  <Image src={'/contacts/facebook.webp'} width={50} height={50} alt=""/>
-                </button>
-              </a>
-              <a href="https://www.youtube.com/channel/UCTaO-GLI_0srISh-Ase5NZw" target='_blank'>
-                <button className="contacts-info-overlay-social">
-                  <Image src={'/contacts/youtube.webp'} width={50} height={50} alt=""/>
-                </button>
-              </a>
-              <a href="https://soundcloud.com/andriy-yantarne" target='_blank'>
-                <button className="contacts-info-overlay-social">
-                  <Image src={'/contacts/soundcloud.webp'} width={50} height={50} alt=""/>
-                </button>
-              </a>
-            </div>
+            <div className="contacts-info-overlay-socials">
+  <a
+    href="https://www.instagram.com/yantarne.fm/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="contacts-info-overlay-social"
+    aria-label="Instagram Yantarne FM"
+  >
+    <Image
+      src="/contacts/instagram.webp"
+      width={50}
+      height={50}
+      alt="Instagram icon"
+    />
+  </a>
+
+  <a
+    href="https://www.facebook.com/yantarne.fm"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="contacts-info-overlay-social"
+    aria-label="Facebook Yantarne FM"
+  >
+    <Image
+      src="/contacts/facebook.webp"
+      width={50}
+      height={50}
+      alt="Facebook icon"
+    />
+  </a>
+
+  <a
+    href="https://www.youtube.com/channel/UCTaO-GLI_0srISh-Ase5NZw"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="contacts-info-overlay-social"
+    aria-label="YouTube Yantarne FM"
+  >
+    <Image
+      src="/contacts/youtube.webp"
+      width={50}
+      height={50}
+      alt="YouTube icon"
+    />
+  </a>
+
+  <a
+    href="https://soundcloud.com/andriy-yantarne"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="contacts-info-overlay-social"
+    aria-label="SoundCloud Yantarne FM"
+  >
+    <Image
+      src="/contacts/soundcloud.webp"
+      width={50}
+      height={50}
+      alt="SoundCloud icon"
+    />
+  </a>
+</div>
+
           </div>
         </div>
 

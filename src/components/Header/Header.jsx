@@ -17,7 +17,7 @@ const Header = () => {
   }
   return (
     <header className="header">
-    <Link href="/home">
+    <Link href="/home"  aria-label="На головну сторінку">
       <Image src="/logo.webp" width={150} height={150} alt="" className="logo" />
     </Link>
     <div className="nav-wrapper">
@@ -32,7 +32,7 @@ const Header = () => {
       {/* <button onClick={handleTelegramLogin} className="register-btn">
         Зареєструватися
       </button> */}
-        <Link href={'/navigation'}>
+        <Link href='/navigation' aria-label="Відкрити меню навігації">
     <div className="menu">
       <div className="menu-line"></div>
       <div className="menu-line"></div>

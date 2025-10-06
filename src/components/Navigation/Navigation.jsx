@@ -6,7 +6,7 @@ const Navigation = () => {
   return (
     <main className='navigation'>
         <div className="navigation-header">
-        <Link href={'/'}>
+        <Link href={'/'} aria-label="Відкрити меню навігації">
             <button>X</button>
             </Link>    
         </div>
