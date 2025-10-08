@@ -67,10 +67,14 @@ span{
   height: 35%;
   padding: 15px;
 
+  display: flex;
+  flex-direction: column; justify-content: space-between;
+  
+
 
 
 }
-.team-info h3{
+.team-name{
   font-size: 28px;
 
 }
@@ -83,17 +87,17 @@ span{
   height: auto;
   display: flex;
   justify-content: end;
+  
   .team-btn{
     width: 50px;
     height: 50px;
-border: 1px solid white;
-    border-radius: 15px;
-    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+margin-right: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
 
-     
 
   
   }

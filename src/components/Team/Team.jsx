@@ -34,20 +34,27 @@ const Team = () => {
            <div className="team-card" key={index}>
                        <img src={member.image} alt={member.name} className="team-image" />
                        <div className="team-info">
-                          <h3 className="team-name">{member.name}</h3>
+                          <h1 className="team-name">{member.name}</h1>
                          <p className="team-position">{member.position}</p>
                          <div className='team-social'>
                          <a
-                           href={member.instagram}
-                           className="team-instagram"
-                           target="_blank"
-                           rel="noopener noreferrer"
-                         >
-                           <button className='team-btn' >
-                             <img className='bg-cover'  src="/team/insta.webp" alt="" />
-                           </button>
-                    
-                         </a>
+  href={member.instagram}
+  className="team-instagram"
+  target="_blank"
+  rel="noopener noreferrer"
+  aria-label={`Відкрити Instagram ${member.name}`}
+>
+  <button 
+    className="team-btn" 
+    aria-label={`Instagram профіль ${member.name}`}
+  >
+    <img
+      className="bg-cover"
+      src="/team/insta.webp"
+      alt={`Instagram ${member.name}`}
+    />
+  </button>
+</a>
                          </div>
                        
                        </div>
