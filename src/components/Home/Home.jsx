@@ -319,7 +319,7 @@ useEffect(() => {
   
   return (
     <main className='home'  style={{
-      backgroundImage: `url(${backgroundImages[currentIndex] || '/back.png'})`,
+      backgroundImage: `url(${backgroundImages[currentIndex] || '/back.webp'})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       transition: 'background-image 1s ease-in-out'
