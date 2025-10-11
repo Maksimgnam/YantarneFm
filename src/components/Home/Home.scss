@@ -7,7 +7,7 @@
   height: auto;
   min-height: 100vh;
   overflow: hidden;
-  background-image: url('/back.png'); // DJ background image
+  background-image: url('/back.webp'); 
   background-size: cover;
   background-position: center;
   display: flex;
@@ -86,7 +86,7 @@
   }
 }
 
-/* Play button */
+
 .controls {
   display: flex;
   align-items: center;
@@ -144,7 +144,6 @@
   }
 }
 
-/* Vertical volume control on the right */
 .volume-vertical {
   position: relative;
   z-index: 5;
@@ -180,9 +179,9 @@
   }
 
   .vol-range {
-    /* use horizontal range rotated to vertical */
+
     -webkit-appearance: none;
-    width: 160px; /* actual length after rotation */
+    width: 160px; 
     height: 14px;
     transform: rotate(-90deg);
     cursor: pointer;
@@ -192,7 +191,7 @@
 
     &::-webkit-slider-runnable-track {
       height: 6px;
-      background: rgba(254,254,254,0.15);
+      background: rgba(254,254,254,0.7);
       border-radius: 4px;
     }
     &::-webkit-slider-thumb {
@@ -204,7 +203,7 @@
       margin-top: -6px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.4);
     }
-    /* firefox */
+
     &::-moz-range-track { height: 6px; background: rgba(255,255,255,0.15); border-radius: 4px; }
     &::-moz-range-thumb { width: 18px; height: 18px; border-radius: 50%; background: #cc0100; border: none; }
   }
@@ -231,7 +230,6 @@
   }
 }
 
-/* visualizer */
 .visualizer-wrap {
   position: absolute;
   bottom: 0;
@@ -258,7 +256,7 @@
   align-items: end;
 }
 
-/* адаптив */
+
 @media (max-width: 900px) {
   .left .title { font-size: 42px; }
   .left .artist { font-size: 20px; }
