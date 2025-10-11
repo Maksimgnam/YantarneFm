@@ -10,19 +10,6 @@ const Navigation = () => {
             <button>X</button>
             </Link>    
         </div>
-        {/* <div className="top">
-            <Link href={'/account'}>
-                <button className='btn'>
-                Мій профіль
-                </button>
-            </Link>   
-            <Link href={'/tapalka'}>
-                <button className='btn tapalka'>
-                Тапалка
-                </button>
-            </Link>
-        </div>
-        <div className='line'></div> */}
         <div className='button-container'>
             <Link className='w-full' href={'/home'}>
                 <button>Головна</button>

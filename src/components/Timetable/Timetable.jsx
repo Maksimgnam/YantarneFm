@@ -11,17 +11,16 @@ export default function Timetable() {
   const [popupEvent, setPopupEvent] = useState(null);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
   
-  // Завантаження подій з API
+
   useEffect(() => {
     const fetchTimetable = async () => {
       try {
         setLoading(true);
-        // Запит до API для отримання подій
+
         const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/timetable/events`);
         
-        // Якщо API недоступне, використовуємо тестові дані
         if (!response.ok) {
-          // Тестові дані для відображення
+
           const defaultEvents = [
             {
               title: "Ранкове шоу",
@@ -80,33 +79,32 @@ export default function Timetable() {
   }, []);
 
   // Налаштування сітки
-  const TIME_COL_WIDTH = 70; // px
-  const HEADER_HEIGHT = 44; // px
+  const TIME_COL_WIDTH = 70; 
+  const HEADER_HEIGHT = 44;
   const HOUR_START = 8;
   const HOUR_END = 23;
-  const HOUR_HEIGHT = 80; // px на годину - збільшено відстань між годинами
+  const HOUR_HEIGHT = 80; 
   const TOTAL_HOURS = HOUR_END - HOUR_START;
   const MINUTE_PX = HOUR_HEIGHT / 60;
 
   const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => HOUR_START + i);
   const days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"];
 
-  // позиція поточного часу (в пікселях від початку області годин)
+
   const [currentTimePx, setCurrentTimePx] = useState(null);
   
-  // Check for mobile devices and update on resize
+
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth <= 768);
     };
     
-    // Initial check
+
     checkIfMobile();
-    
-    // Add event listener for window resize
+
     window.addEventListener('resize', checkIfMobile);
     
-    // Cleanup
+
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
   
@@ -132,7 +130,6 @@ export default function Timetable() {
 
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
-  // повертає top і height в px (відносно початку області годин)
   const getPositionPx = (start, end) => {
     const s = parseHM(start);
     const e = parseHM(end);
@@ -168,7 +165,7 @@ export default function Timetable() {
   };
 
   const isEventOnDay = (ev, dayIndex) => {
-    // Перевіряємо, чи дата події актуальна
+
     if (ev.date && !isDateRelevant(ev.date)) return false;
     
     // Перевіряємо, чи подія відображається в цей день тижня
@@ -177,7 +174,6 @@ export default function Timetable() {
     return false;
   };
 
-  // Функції для перемикання між днями
   const goToPreviousDay = () => {
     setCurrentDayIndex((prevIndex) => (prevIndex === 0 ? 6 : prevIndex - 1));
   };
@@ -186,17 +182,15 @@ export default function Timetable() {
     setCurrentDayIndex((prevIndex) => (prevIndex === 6 ? 0 : prevIndex + 1));
   };
   
-  // Функція для відображення попапу з інформацією про подію
   const showEventPopup = (event) => {
     setPopupEvent(event);
-    // Для повноекранного попапу не потрібно розраховувати позицію
-    document.body.style.overflow = 'hidden'; // Блокуємо скролінг основної сторінки
+    document.body.style.overflow = 'hidden'; 
   };
   
-  // Закриття попапу
+  
   const closePopup = () => {
     setPopupEvent(null);
-    document.body.style.overflow = ''; // Відновлюємо скролінг основної сторінки
+    document.body.style.overflow = '';
   };
 
   return (
@@ -215,7 +209,7 @@ export default function Timetable() {
     <div
       className="schedule"
       style={{
-        padding: isMobile ? "0 10px 0 40px" : "0 40px", // зовнішні відступи, зменшені для мобільних
+        padding: isMobile ? "0 10px 0 40px" : "0 40px", 
         // передаємо CSS-змінні
         "--time-col-width": `${TIME_COL_WIDTH}px`,
         "--header-height": `${HEADER_HEIGHT}px`,
@@ -225,11 +219,11 @@ export default function Timetable() {
     >
       <div
         className="schedule-grid"
-        /* grid одночасно і для header і для body — тому дні точно над колонками */
+
       >
-        {/* header row (автоматично піде в перший рядок grid) */}
+
         <div className="time-col-header" />
-        {/* На мобільних показуємо тільки поточний день, на десктопі - всі дні */}
+
         {isMobile ? (
           <div className="day-col-header">{days[currentDayIndex]}</div>
         ) : (
@@ -238,16 +232,15 @@ export default function Timetable() {
           ))
         )}
 
-        {/* body: часова колонка (стає в другому рядку, першому стовпчику) */}
+
         <div className="time-col">
           {hours.map((h) => (
             <div key={h} className="time-cell">{String(h).padStart(2, "0")}:00</div>
           ))}
         </div>
 
-        {/* колонки днів (другий рядок, колонки 2..8) */}
         {isMobile ? (
-          // На мобільних показуємо тільки поточний день
+
           <div
             className="day-col"
             style={{ minHeight: `calc(var(--hour-height) * var(--hours))` }}
@@ -278,7 +271,7 @@ export default function Timetable() {
               })}
           </div>
         ) : (
-          // На десктопі показуємо всі дні
+
           days.map((_, dayIndex) => (
             <div
               key={dayIndex}
@@ -313,13 +306,13 @@ export default function Timetable() {
           ))
         )}
 
-        {/* Шар сітки: горизонтальні лінії через усю ширину (включно з колонкою часу) */}
+
         <div
           className="grid-lines"
-          /* абсолютний шар всередині .schedule-grid, фон — repeating-linear-gradient */
+
         />
 
-        {/* Оранжева лінія поточного часу (якщо у діапазоні) */}
+
         {currentTimePx !== null && (
           <div
             className="current-time-line"
@@ -328,8 +321,7 @@ export default function Timetable() {
         )}
       </div>
     </div>
-    
-    {/* Попап з інформацією про подію */}
+
     {popupEvent && (
       <div 
         className="event-popup"

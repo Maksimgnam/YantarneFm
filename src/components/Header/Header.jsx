@@ -29,10 +29,7 @@ const Header = () => {
         <a href="/home/#news">Новини</a>
         <a href="/home/#team">Команда</a>
       </nav>
-      {/* <button onClick={handleTelegramLogin} className="register-btn">
-        Зареєструватися
-      </button> */}
-        <Link href='/navigation' aria-label="Відкрити меню навігації">
+    <Link href='/navigation' aria-label="Відкрити меню навігації">
     <div className="menu">
       <div className="menu-line"></div>
       <div className="menu-line"></div>

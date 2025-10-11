@@ -1,5 +1,3 @@
-
-
 'use client'
 import React, { useEffect, useRef } from 'react';
 import './Team.scss';
@@ -9,7 +7,7 @@ const Team = () => {
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return; // <-- check if ref exists
+    if (!container) return;
     const totalWidth = container.scrollWidth / 2;
     container.style.setProperty('--scroll-width', `${totalWidth}px`);
   }, [])

@@ -36,7 +36,6 @@ const TopSongCard = ({ title, artist, image, audio, id, index }) => {
     }
   };
 
-  // Update audio volume
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = volume;
@@ -98,12 +97,12 @@ const TopSongCard = ({ title, artist, image, audio, id, index }) => {
       />
         <button className='play' onClick={togglePlay}  aria-label={isPlaying ? "Поставити на паузу" : "Відтворити"}>
           {isPlaying ? (
-            // Pause icon
+
             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" className='rounded' viewBox="0 0 24 24" fill="#CC0100">
               <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
             </svg>
           ) : (
-            // Play triangle
+
             <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#CC0100">
               <path d="M8 5v14l11-7z"/>
             </svg>

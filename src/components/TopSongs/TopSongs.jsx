@@ -16,7 +16,7 @@ const AdminTopSongs = () => {
       setSongs(data.songs || []);
     } catch (err) {
       console.error(err);
-      setSongs([]); // ensure empty array on error
+      setSongs([]); 
     } finally {
       setLoading(false);
     }

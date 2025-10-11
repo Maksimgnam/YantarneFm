@@ -31,13 +31,12 @@ useEffect(() => {
     img.onload = () => {
       loadedCount += 1;
       if (loadedCount === backgroundImages.length) {
-        setImagesLoaded(true); // all images loaded
+        setImagesLoaded(true); 
       }
     };
   });
 }, [backgroundImages]);
 
-// Start slider only when imagesLoaded
 useEffect(() => {
   if (!imagesLoaded || backgroundImages.length <= 1) return;
 
@@ -51,7 +50,7 @@ useEffect(() => {
   const streamUrl = 'https://complex.in.ua/yantarne' 
 
 
-  // Зміна гучності
+
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.volume = isMuted ? 0 : volume / 100
@@ -59,7 +58,6 @@ useEffect(() => {
   }, [volume, isMuted])
 
   useEffect(() => {
-    // detect mobile device
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   
     if (!isMobile) return; // 🚀 only run on mobile
@@ -109,12 +107,10 @@ useEffect(() => {
     return () => clearInterval(interval)
   }, [])
 
-  // Підключення WebAudio + Analyser
   useEffect(() => {
     const setup = () => {
       if (!audioRef.current) return
       try {
-        // щоб мати доступ до частот — потрібен crossOrigin
         audioRef.current.crossOrigin = 'anonymous'
 
         const AudioContext = window.AudioContext || window.webkitAudioContext
@@ -151,8 +147,7 @@ useEffect(() => {
         } catch (e) {}
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // лише один раз на mount
+  }, []) 
 
 
   const togglePlay = async () => {
@@ -188,7 +183,6 @@ useEffect(() => {
           await audioContextRef.current.resume();
         }
   
-        // 🔑 force the browser to reload the stream before play
         audioRef.current.load();
         await audioRef.current.play();
   
@@ -214,7 +208,6 @@ useEffect(() => {
   const increase = () => setVolume(v => Math.min(100, v + 10))
   const decrease = () => setVolume(v => Math.max(0, v - 10))
 
-  // Функція для малювання прямокутника з заокругленими кутами
   function drawRoundedRect(ctx, x, y, width, height, radius) {
     ctx.beginPath()
     ctx.moveTo(x + radius, y)
@@ -230,7 +223,7 @@ useEffect(() => {
     ctx.fill()
   }
 
-  // Візуалізатор
+
   function startVisualizer() {
     const canvas = canvasRef.current
     const analyser = analyserRef.current
@@ -259,9 +252,9 @@ useEffect(() => {
         ctx.fillStyle = grad
 
         // Малюємо заокруглені палички
-        drawRoundedRect(ctx, x, height - barHeight, barWidth, barHeight, 0) // радіус 4px
+        drawRoundedRect(ctx, x, height - barHeight, barWidth, barHeight, 0) 
 
-        x += barWidth + 10 // невеликий відступ між паличками
+        x += barWidth + 10 
       }
 
       rafRef.current = requestAnimationFrame(render)
@@ -275,7 +268,6 @@ useEffect(() => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current)
   }
 
-  // Масштабування canvas під DPR
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -308,7 +300,6 @@ useEffect(() => {
     fetchBackgroundImages()
   }, [])
 
-  // Auto slider every 3 seconds
   useEffect(() => {
     if (backgroundImages.length <= 1) return
     const interval = setInterval(() => {
@@ -330,7 +321,6 @@ useEffect(() => {
       <div className='overlay' />
 
       <div className='player-container'>
-        {/* Play button on the left */}
         <div className='controls'>
           <button
             onClick={togglePlay}
@@ -354,19 +344,15 @@ useEffect(() => {
           </div>
           </button>
         </div>
-        
-        {/* Track info in the center */}
+
         <div className='track-info'>
           <h2 className='title'>{trackInfo.title || 'YantarneFM' }</h2>
           <h3 className='artist'>{trackInfo.artist || 'Радіо рідного міста'}</h3>
           
-          {/* Like button below track info */}
-          {/* <button className='heart-btn' title='Like'>
-            <Image src='/heart.webp' width={32} height={32} alt='heart' />
-          </button> */}
+      
         </div>
 
-        {/* Volume slider on the right */}
+
         <div className='volume-vertical'>
           <button className='vol-icon top' onClick={increase} aria-label='increase'>
             <Image src='/volume1.webp' width={32} height={32} alt='volume up' />
@@ -403,7 +389,7 @@ useEffect(() => {
         </div>
       </div>
 
-      {/* Visualizer at the bottom */}
+
       <div className='visualizer-wrap'>
         <canvas ref={canvasRef} className='visualizer-canvas' />
       </div>
