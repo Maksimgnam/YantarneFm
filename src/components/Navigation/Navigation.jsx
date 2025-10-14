@@ -14,19 +14,19 @@ const Navigation = () => {
             <Link className='w-full' href={'/'}>
                 <button>Головна</button>
             </Link>
-            <Link className='w-full' href={'/home/#timetable'}>
+            <Link className='w-full' href={'/#timetable'}>
                 <button>Розклад</button>
             </Link>
-            <Link className='w-full' href={'/home/#about'}>
+            <Link className='w-full' href={'/#about'}>
                 <button>Хто ми</button>
             </Link>
             <Link className='w-full' href={'/blog'}>
                 <button>Блог</button>
             </Link>
-            <Link className='w-full' href={'/home/#team'}>
+            <Link className='w-full' href={'/#team'}>
                 <button>Команда</button>
             </Link>
-            <Link className='w-full' href={'/home/#contacts'}>
+            <Link className='w-full' href={'/#contacts'}>
                 <button>Контакти</button>
             </Link>
         </div>

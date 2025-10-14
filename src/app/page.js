@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -14,17 +15,22 @@ import Team from "@/components/Team/Team";
 import Timetable from "@/components/Timetable/Timetable";
 import TopSongs from "@/components/TopSongs/TopSongs";
 
-
-
 export default function Page() {
-  const [showLoader, setShowLoader] = useState(true);
+  const [showLoader, setShowLoader] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowLoader(false);
-    }, 3000); 
+    const hasVisited = sessionStorage.getItem("hasVisited");
 
-    return () => clearTimeout(timer);
+    if (!hasVisited) {
+
+      setShowLoader(true);
+      const timer = setTimeout(() => {
+        setShowLoader(false);
+        sessionStorage.setItem("hasVisited", "true");
+      }, 3000);
+
+      return () => clearTimeout(timer);
+    }
   }, []);
 
   if (showLoader) return <Loader />;
