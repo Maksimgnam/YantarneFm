@@ -10,7 +10,7 @@
   }
   
   .loading-line-container {
-    width: 350px; 
+    width: 280px; 
     height: 6px;
     background: #e0e0e0;
     border-radius: 4px;
@@ -43,10 +43,7 @@
   @media (max-width: 900px) {
     .loader{
       padding: 20px;
-        img{
-          width: 70%;
-          height: 140px;
-        }
+    
 
       .loading-line-container{
         width: 100%;
