@@ -18,7 +18,6 @@ const Team = () => {
         { name: "Тарас Федунь", position: "Ведучий", instagram: "https://www.instagram.com/tarasfedun/",  image: "/team/team4.webp" },
         { name: "Юрій Калагурка", position: "Менеджер по рекламі", instagram: "https://www.instagram.com/kalagurkaiurii/", image: "/team/team5.webp" },
       ];
-  const scrollingMembers = [...teamMembers, ...teamMembers];
 
   return (
     <main id='team' className="team">

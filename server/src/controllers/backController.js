@@ -57,19 +57,19 @@ exports.deleteBackImage = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Find document
+
     const backDoc = await Back.findOne();
     if (!backDoc) return res.status(404).json({ error: 'No backgrounds found' });
 
-    // Remove from Cloudinary
+
     const imageUrl = backDoc.backgroundImages[id];
     if (!imageUrl) return res.status(404).json({ error: 'Image not found' });
 
-    // extract public_id from URL
+
     const publicId = imageUrl.split('/').pop().split('.')[0];
     await cloudinary.uploader.destroy(`backgrounds/${publicId}`);
 
-    // Remove from DB array
+
     backDoc.backgroundImages.splice(id, 1);
     await backDoc.save();
 

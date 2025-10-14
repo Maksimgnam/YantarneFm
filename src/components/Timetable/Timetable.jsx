@@ -7,7 +7,7 @@ export default function Timetable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [currentDayIndex, setCurrentDayIndex] = useState(new Date().getDay() === 0 ? 6 : new Date().getDay() - 1); // Поточний день тижня (0 = Пн, 6 = Нд)
+  const [currentDayIndex, setCurrentDayIndex] = useState(new Date().getDay() === 0 ? 6 : new Date().getDay() - 1); 
   const [popupEvent, setPopupEvent] = useState(null);
   const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
   
@@ -42,7 +42,7 @@ export default function Timetable() {
           setTimetable(defaultEvents);
           console.warn('Використовуються тестові дані розкладу');
         } else {
-          // Використовуємо дані з API
+
           const data = await response.json();
           setTimetable(data);
         }
@@ -50,7 +50,7 @@ export default function Timetable() {
         console.error('Помилка завантаження розкладу:', err);
         setError('Не вдалося завантажити розклад');
         
-        // Використовуємо тестові дані у випадку помилки
+
         const defaultEvents = [
           {
             title: "Ранкове шоу",
@@ -78,7 +78,7 @@ export default function Timetable() {
     fetchTimetable();
   }, []);
 
-  // Налаштування сітки
+
   const TIME_COL_WIDTH = 70; 
   const HEADER_HEIGHT = 44;
   const HOUR_START = 8;
@@ -143,24 +143,22 @@ export default function Timetable() {
   const getDayIndexFromDate = (dateStr) => {
     const d = new Date(dateStr);
     if (isNaN(d)) return null;
-    const jsDay = d.getDay(); // 0 = Sun ... 6 = Sat
-    return jsDay === 0 ? 6 : jsDay - 1; // 0=Mon ... 6=Sun
+    const jsDay = d.getDay(); 
+    return jsDay === 0 ? 6 : jsDay - 1; 
   };
   
-  // Перевірка, чи дата події є актуальною (поточною або майбутньою)
+
   const isDateRelevant = (dateStr) => {
-    if (!dateStr) return true; // Якщо дата не вказана, вважаємо подію регулярною
+    if (!dateStr) return true; 
     
     const eventDate = new Date(dateStr);
-    if (isNaN(eventDate)) return true; // Якщо дата некоректна, показуємо подію
-    
-    // Встановлюємо час на початок дня для коректного порівняння
+    if (isNaN(eventDate)) return true; 
+
     eventDate.setHours(0, 0, 0, 0);
     
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
-    // Подія актуальна, якщо її дата >= сьогоднішній
+
     return eventDate >= today;
   };
 
@@ -168,7 +166,7 @@ export default function Timetable() {
 
     if (ev.date && !isDateRelevant(ev.date)) return false;
     
-    // Перевіряємо, чи подія відображається в цей день тижня
+ 
     if (ev.days && ev.days.length) return ev.days.includes(dayIndex);
     if (ev.date) return getDayIndexFromDate(ev.date) === dayIndex;
     return false;

@@ -1,13 +1,12 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import './TopSongCard.scss';
-import { useStore } from '@/store/store';
 
 let currentlyPlayingAudio = null;
 let currentlyPlayingSetPlaying = null;
 
 const TopSongCard = ({ title, artist, image, audio, id, index }) => {
-  const { openTopSongPopup } = useStore();
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(1);
   const [currentTime, setCurrentTime] = useState(0);

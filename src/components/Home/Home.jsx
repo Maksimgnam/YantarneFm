@@ -60,7 +60,7 @@ useEffect(() => {
   useEffect(() => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
   
-    if (!isMobile) return; // 🚀 only run on mobile
+    if (!isMobile) return; 
   
     const handleVisibilityChange = () => {
       if (document.hidden && audioRef.current && !audioRef.current.paused) {
@@ -119,7 +119,7 @@ useEffect(() => {
         const audioCtx = new AudioContext()
         audioContextRef.current = audioCtx
 
-        // джерело з <audio>
+
         const source = audioCtx.createMediaElementSource(audioRef.current)
         const analyser = audioCtx.createAnalyser()
         analyser.fftSize = 256
@@ -251,7 +251,6 @@ useEffect(() => {
         grad.addColorStop(1, 'rgba(255,255,255,1)')
         ctx.fillStyle = grad
 
-        // Малюємо заокруглені палички
         drawRoundedRect(ctx, x, height - barHeight, barWidth, barHeight, 0) 
 
         x += barWidth + 10 

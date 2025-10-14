@@ -32,7 +32,7 @@ exports.createBlog = async (req, res) => {
   try {
     let imageUrl = null;
 
-    // Upload image if exists
+
     if (req.file) {
       const result = await cloudinary.uploader.upload(req.file.path, {
         folder: 'blogs'
@@ -40,7 +40,6 @@ exports.createBlog = async (req, res) => {
       imageUrl = result.secure_url;
     }
 
-    // Text fields come from req.body (because Multer parses them)
     const title = req.body.title;
     const description = req.body.description;
 
@@ -63,7 +62,6 @@ exports.createBlog = async (req, res) => {
 };
 
 
-// Update blog
 exports.updateBlog = async (req, res) => {
   try {
     const { id } = req.params;

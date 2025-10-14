@@ -5,7 +5,7 @@
   flex-direction: column;
   align-items: center;
   margin-top: 30px;
-  position: relative; /* Для правильного позиціонування попапу */
+  position: relative; 
 
   .header {
     width: 100%;
@@ -59,7 +59,7 @@
         transition: background-color 0.2s, transform 0.2s;
         
         &:hover {
-          background-color: #a30000; /* Замість darken(#CC0100, 10%) */
+          background-color: #a30000; 
         }
         
         &:active {
@@ -82,7 +82,7 @@
     --hours: 15;
 
     width: 100%;
-    min-width: 768px; /* Minimum width for desktop view */
+    min-width: 768px; 
 
     margin-top: 10px;
 
@@ -90,7 +90,7 @@
     position: relative;
     
     @media (max-width: 768px) {
-      min-width: auto; /* Remove minimum width for mobile view */
+      min-width: auto; 
     }
 
     .schedule-grid {
@@ -106,13 +106,12 @@
       margin-top: 150px;
       
       @media (max-width: 768px) {
-        grid-template-columns: var(--time-col-width) 1fr; /* Одна колонка для дня на мобільних */
+        grid-template-columns: var(--time-col-width) 1fr; 
       }
     }
 
-    /* --- Header (row 1) --- */
+
     .time-col-header {
-      /* порожня клітинка ліворуч */
       grid-column: 1;
       grid-row: 1;
     }
@@ -127,7 +126,7 @@
       align-self: center;
     }
 
-    /* --- Body (row 2) --- */
+
     .time-col {
       grid-column: 1;
       grid-row: 2;
@@ -145,7 +144,7 @@
       padding-top: 6px;
       font-size: 12px;
       color: #bdbdbd;
-      /* прибрали border-top — лінії веде grid-lines шар */
+
       background: transparent;
       box-sizing: border-box;
     }
@@ -153,14 +152,12 @@
     .day-col {
       grid-row: 2;
       border-left: 3px solid rgba(180, 0, 0, 0.95);
-      /* вертикальні лінії товщиною 3px */
       position: relative;
       z-index: 3;
-      /* над grid-lines, під подіями */
       background: transparent;
     }
 
-    /* подія */
+
     .event {
       position: absolute;
       left: 6%;
@@ -173,8 +170,6 @@
       font-weight: 500;
       font-size: 13px;
       z-index: 6;
-      /* над усього */
-      // box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -194,7 +189,7 @@
       }
     }
 
-    /* Шар сітки — горизонтальні лінії через всю ширину */
+
     .grid-lines {
       position: absolute;
       left: 0;
@@ -203,9 +198,6 @@
       height: calc(var(--hour-height) * var(--hours));
       z-index: 1;
       pointer-events: none;
-
-      /* кожна година — період repeating-linear-gradient,
-       товщина червоної лінії = 3px */
       background-image: repeating-linear-gradient(to bottom,
           transparent 0 calc(var(--hour-height) - 3px),
           rgba(180, 0, 0, 0.95) calc(var(--hour-height) - 3px) var(--hour-height));
@@ -213,11 +205,10 @@
       background-size: 100% var(--hour-height);
     }
 
-    /* Поточний час — оранжева лінія */
+
     .current-time-line {
       position: absolute;
       left: var(--time-col-width);
-      /* починається після колонки часу */
       right: 0;
       height: 4px;
       z-index: 7;
@@ -227,7 +218,7 @@
     }
   }
   
-  /* Responsive styles */
+
   @media (max-width: 1024px) {
     .schedule {
       padding: 0 20px !important;
@@ -262,7 +253,7 @@
     
     .schedule {
       margin-top: 20px;
-      overflow-x: visible; /* Змінено з auto на visible, оскільки прокрутка не потрібна */
+      overflow-x: visible; 
       -webkit-overflow-scrolling: touch;
       padding: 0 !important;
       
@@ -272,7 +263,7 @@
       }
       
       .day-col {
-        border-left: none; /* Прибираємо ліву межу для мобільної версії */
+        border-left: none;
         border-top: 3px solid rgba(180, 0, 0, 0.95);
         padding-top: 10px;
       }
@@ -290,7 +281,7 @@
     }
     
     .schedule {
-      --hour-height: 70px; /* Збільшено відстань між годинами для мобільних пристроїв */
+      --hour-height: 70px; 
       margin-top: 30px;
       
       .time-cell {
@@ -311,7 +302,7 @@
     }
   }
   
-  /* Стилі для попапу з інформацією про подію */
+
   .event-popup {
     position: fixed;
     z-index: 1000;

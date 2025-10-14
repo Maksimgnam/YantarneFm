@@ -51,7 +51,7 @@
         width: 310px;
         height: 7px;
         border-radius: 3px;
-        background: rgba(255, 255, 255, 0.1); // unfilled part
+        background: rgba(255, 255, 255, 0.1); 
         margin-right: 40px;
     
         &::-webkit-slider-thumb {
@@ -62,7 +62,7 @@
           background: #CC0100;
           cursor: pointer;
           border: none;
-          margin-top: -4px; // center the thumb
+          margin-top: -4px; 
         }
     
         &::-moz-range-thumb {

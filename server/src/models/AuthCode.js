@@ -13,7 +13,7 @@ const authCodeSchema = new mongoose.Schema({
   expiresAt: {
     type: Date,
     required: true,
-    default: () => new Date(Date.now() + 60 * 1000) // 1 хвилина
+    default: () => new Date(Date.now() + 60 * 1000) 
   },
   isUsed: {
     type: Boolean,
@@ -25,10 +25,10 @@ const authCodeSchema = new mongoose.Schema({
   }
 });
 
-// Автоматичне видалення застарілих кодів
+
 authCodeSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
 
-// Індекси для оптимізації
+
 authCodeSchema.index({ telegramId: 1, code: 1 });
 authCodeSchema.index({ telegramId: 1, isUsed: 1 });
 

@@ -43,10 +43,10 @@ mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopol
   .then(() => console.log('✅ MongoDB connected'))
   .catch(err => console.error('❌ MongoDB connection error:', err));
 
-// Telegram Bot
+
 require('./src/bot/bot');
 
-// Routes (якщо потрібно додавати API)
+
 const telegramRoutes = require('./src/routes/telegramRoutes');
 app.use('/telegram', telegramRoutes);
 

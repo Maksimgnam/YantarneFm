@@ -22,7 +22,7 @@ export default function Page() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowLoader(false);
-    }, 3000); // hide after 3 seconds
+    }, 3000); 
 
     return () => clearTimeout(timer);
   }, []);

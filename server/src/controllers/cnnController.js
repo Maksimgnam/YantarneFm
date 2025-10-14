@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require('uuid');
 const CNN = require('../models/CNN');
 
-// GET CNN texts
+
 exports.getCnnTexts = async (req, res) => {
   try {
     const cnnId = '689ca2db2059cab0a253a27d';
@@ -14,7 +14,7 @@ exports.getCnnTexts = async (req, res) => {
   }
 };
 
-// ADD CNN text with ID
+
 exports.addCnnText = async (req, res) => {
   try {
     const cnnId = '689ca2db2059cab0a253a27d';
@@ -40,7 +40,6 @@ exports.addCnnText = async (req, res) => {
   }
 };
 
-// DELETE CNN text by id
 exports.deleteCnnText = async (req, res) => {
   try {
     const cnnId = '689ca2db2059cab0a253a27d';

@@ -1,6 +1,6 @@
 const TimetableEvent = require('../models/TimetableEvent');
 
-// Get all timetable events
+
 exports.getAllEvents = async (req, res) => {
   try {
     const events = await TimetableEvent.find().sort({ createdAt: -1 });
@@ -11,7 +11,7 @@ exports.getAllEvents = async (req, res) => {
   }
 };
 
-// Create a new timetable event
+
 exports.createEvent = async (req, res) => {
   try {
     const { title, start_time, end_time, days, date, color } = req.body;
@@ -37,7 +37,7 @@ exports.createEvent = async (req, res) => {
   }
 };
 
-// Update an existing timetable event
+
 exports.updateEvent = async (req, res) => {
   try {
     const { id } = req.params;
@@ -60,7 +60,7 @@ exports.updateEvent = async (req, res) => {
   }
 };
 
-// Delete a timetable event
+
 exports.deleteEvent = async (req, res) => {
   try {
     const { id } = req.params;
@@ -78,7 +78,7 @@ exports.deleteEvent = async (req, res) => {
   }
 };
 
-// Get a single timetable event by ID
+
 exports.getEventById = async (req, res) => {
   try {
     const { id } = req.params;

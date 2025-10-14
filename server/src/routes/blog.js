@@ -3,7 +3,7 @@ const router = express.Router();
 const blogController = require('../controllers/blogController');
 const multer = require('multer');
 const upload = multer({ dest: 'uploads/' });
-// Get all blogs
+
 router.get('/blogs', blogController.getAllBlogs);
 
 

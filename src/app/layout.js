@@ -2,8 +2,6 @@ import { Geist, Geist_Mono, Madimi_One, Montserrat_Alternates, Unbounded } from 
 import "./globals.css";
 import '../styles/global.scss'
 
-// import '../styles/global.scss';
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],

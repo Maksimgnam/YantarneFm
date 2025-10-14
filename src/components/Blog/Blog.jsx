@@ -32,18 +32,18 @@ const Blog = () => {
         <Link href={'/'}>
           <button>{'<'}</button>
         </Link>
-        <div className='flex flex-col items-center'>
+        <div  className='flex flex-col items-center justify-center'>
           <h2 className='title'><span>Y</span>antarne Блог</h2>
           <div className='line'></div>
         </div>
-        <Link href={'/'}>
-        <div className='menu'>
-          <div className="menu-line"></div>
-          <div className="menu-line"></div>
-          <div className="menu-line"></div>
-        </div>
-        </Link>
+       
         <div className='flex'></div>
+        <Link className='menu' href={'/'}>
+
+          <div className="menu-line"></div>
+          <div className="menu-line"></div>
+          <div className="menu-line"></div>
+        </Link>
       </div>
 
       <div className="blog-search">

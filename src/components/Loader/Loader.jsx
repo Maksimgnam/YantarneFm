@@ -19,7 +19,7 @@ const Loader = () => {
     <main className='loader'>
       <Image 
         src={'/logo.webp'} 
-        width={200} 
+        width={190} 
         height={180} 
         alt='Logo' 
         className='m-4' 

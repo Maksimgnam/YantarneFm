@@ -32,7 +32,6 @@ exports.login = async (req, res) => {
     }
   };
   
-// GET /api/admin (protected)
 exports.getAdmin = (req, res) => {
   res.json({ message: `Welcome ${req.user.username}, you are an admin!` });
 };

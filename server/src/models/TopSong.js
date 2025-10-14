@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 const topSongSchema = new mongoose.Schema({
-  index: Number, // for sorting
+  index: Number, 
   title: String,
   artist: String,
-  image: String, // cover URL
-  audio: String  // mp3 URL
+  image: String, 
+  audio: String  
 });
 
 module.exports = mongoose.model('TopSong', topSongSchema);
