@@ -11,7 +11,7 @@ const Navigation = () => {
             </Link>    
         </div>
         <div className='button-container'>
-            <Link className='w-full' href={'/home'}>
+            <Link className='w-full' href={'/'}>
                 <button>Головна</button>
             </Link>
             <Link className='w-full' href={'/home/#timetable'}>
