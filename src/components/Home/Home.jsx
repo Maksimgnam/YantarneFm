@@ -377,11 +377,11 @@ useEffect(() => {
           <button className='mute-btn' onClick={toggleMute} aria-label='mute'>
             {isMuted || volume === 0 ? (
               <div className='mute-ind'>
-                <Image src='/Volume_Off.svg' width={32} height={32} alt='volume mute' />
+                <Image src='/Volume_Off.svg' width={28} height={28} alt='volume mute' />
               </div>
             ) : (
               <div className='mute-ind'>
-                <Image src='/Volume_Max.svg' width={32} height={32} alt='volume turn on' />
+                <Image src='/Volume_Max.svg' width={25} height={25} alt='volume turn on' />
               </div>
             )}
           </button>

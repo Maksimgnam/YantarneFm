@@ -22,12 +22,12 @@ const Header = () => {
     </Link>
     <div className="nav-wrapper">
       <nav>
-        <a href="/home">Головна</a>
-        <a href="/home/#timetable">Розклад</a>
-        <a href="/home/#about">Хто ми</a>
+        <a href="/">Головна</a>
+        <a href="/#timetable">Розклад</a>
+        <a href="/#about">Хто ми</a>
         <Link href="/blog">Блог</Link>
-        <a href="/home/#news">Новини</a>
-        <a href="/home/#team">Команда</a>
+        <a href="/#news">Новини</a>
+        <a href="/#team">Команда</a>
       </nav>
     <Link href='/navigation' aria-label="Відкрити меню навігації">
     <div className="menu">
