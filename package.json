@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "dotenv": "^16.6.1",
-    "next": "15.3.3",
+    "next": "^16.0.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-slick": "^0.30.3",
