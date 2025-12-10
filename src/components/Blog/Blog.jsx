@@ -38,7 +38,7 @@ const Blog = () => {
         </div>
        
         <div className='flex'></div>
-        <Link className='menu' href={'/'}>
+        <Link className='menu' href={'/navigation'}>
 
           <div className="menu-line"></div>
           <div className="menu-line"></div>
