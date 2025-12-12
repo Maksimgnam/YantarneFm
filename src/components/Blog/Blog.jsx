@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useEffect, useState } from 'react';
 import './Blog.scss';
 import Link from 'next/link';
@@ -16,10 +17,7 @@ const Blog = () => {
         setBlogs(data);
         setLoading(false);
       })
-      .catch(err => {
-        console.error('Error fetching blogs:', err);
-        setLoading(false);
-      });
+      .catch(() => setLoading(false));
   }, []);
 
   const filteredBlogs = blogs.filter(blog =>
@@ -27,55 +25,58 @@ const Blog = () => {
   );
 
   return (
-    <main className='blog'>
-      <div className="blog-header">
-        <Link href={'/'}>
+    <main className="blog">
+      <header className="blog-header">
+        <Link href="/">
           <button>{'<'}</button>
         </Link>
-        <div  className='flex flex-col items-center justify-center'>
-          <h2 className='title'><span>Y</span>antarne Блог</h2>
-          <div className='line'></div>
+
+        <div className="flex flex-col items-center justify-center">
+          <h2 className="title">
+            <span>Y</span>antarne Блог
+          </h2>
+          <div className="line" />
         </div>
-       
-        <div className='flex'></div>
-        <Link className='menu' href={'/navigation'}>
 
-          <div className="menu-line"></div>
-          <div className="menu-line"></div>
-          <div className="menu-line"></div>
+        <div className="flex" />
+
+        <Link className="menu" href="/navigation">
+          <div className="menu-line" />
+          <div className="menu-line" />
+          <div className="menu-line" />
         </Link>
-      </div>
+      </header>
 
-      <div className="blog-search">
+      <section className="blog-search">
         <input
           type="text"
-          placeholder='Пошук публікації...'
+          placeholder="Пошук публікації..."
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
-      </div>
-      <div className="blog-card-container">
-  {loading ? (
-    <div className='loading'>
-      <p>Завантаження...</p>
-    </div>
-  ) : filteredBlogs.length === 0 ? (
-    <div className='not-found'>
-      <p>Публікацій не знайдено</p> 
-    </div>
-  ) : (
-    filteredBlogs.map(blog => (
-      <BlogCard
-        key={blog._id}
-        title={blog.title}
-        description={blog.description}
-        image={blog.image}
-        link={`/blog/${blog._id}`}
-      />
-    ))
-  )}
-</div>
+      </section>
 
+      <section className="blog-card-container">
+        {loading ? (
+          <div className="loading">
+            <p>Завантаження...</p>
+          </div>
+        ) : filteredBlogs.length === 0 ? (
+          <div className="not-found">
+            <p>Публікацій не знайдено</p>
+          </div>
+        ) : (
+          filteredBlogs.map(blog => (
+            <BlogCard
+              key={blog._id}
+              title={blog.title}
+              description={blog.description}
+              image={blog.image}
+              link={`/blog/${blog._id}`}
+            />
+          ))
+        )}
+      </section>
     </main>
   );
 };

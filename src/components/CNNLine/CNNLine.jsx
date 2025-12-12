@@ -1,4 +1,5 @@
-'use client'
+'use client';
+
 import React, { useEffect, useState } from 'react';
 import './CNNLine.scss';
 
@@ -12,9 +13,7 @@ const CNNLine = () => {
         if (!res.ok) throw new Error('Failed to fetch CNN texts');
         const data = await res.json();
         setCnnTexts(data.cnnTexts || []);
-      } catch (err) {
-        console.error('Error loading CNN texts:', err);
-      }
+      } catch {}
     };
 
     fetchCnnTexts();
@@ -27,15 +26,15 @@ const CNNLine = () => {
         "Yantarne FM",
         "Фестивалі",
         "Новини",
-        "Музика без перерв",
+        "Музика без перерв"
       ].join(' • ');
 
   return (
-    <div className="cnn">
+    <section className="cnn">
       <div className="cnn__track">
         <div className="cnn__text">{items} • {items}</div>
       </div>
-    </div>
+    </section>
   );
 };
 

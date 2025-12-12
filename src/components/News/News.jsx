@@ -1,9 +1,9 @@
 "use client";
 import React, {useState, useEffect} from 'react'
-import './Support.scss'
+import './News.scss'
 import Image from 'next/image'
 
-const Support = () => {
+const News = () => {
 
   const [news, setNews] = useState({text: "Завантаження..", url: "Завантаження..."});
 
@@ -34,11 +34,11 @@ const Support = () => {
   }, [news])
 
   return (
-    <main id='news' className='support'>
+    <main id='news' className='news'>
       <h2 className='title'><span>{news.text.slice(0, 1)}</span>{news.text.slice(1)}</h2>
       <div className='line'></div>
       <iframe
-        className='support-video'
+        className='news-video'
         src={`https://www.youtube.com/embed/${news.url.slice(17)}`}
         title="YouTube video player"
         frameBorder="0"
@@ -46,10 +46,10 @@ const Support = () => {
         referrerPolicy="strict-origin-when-cross-origin"
         allowFullScreen
       ></iframe>
-      <div className="support-footer">
+      <div className="news-footer">
       
-        <div className='support-footer-card'>
-          <div className='support-footer-card-block'>
+        <div className='news-footer-card'>
+          <div className='news-footer-card-block'>
             <Image src={'/support/coffee.webp'} width={40} height={40} alt='' />
           </div>
           <h2 className='text-center'>Будемо вдячні  за <br /> підтримку 😊</h2>
@@ -63,4 +63,4 @@ const Support = () => {
   )
 }
 
-export default Support
+export default News

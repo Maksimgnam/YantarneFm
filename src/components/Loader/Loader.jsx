@@ -9,8 +9,8 @@ const Loader = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-
-    }, 3000); 
+      router.push('/home'); 
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [router]);
@@ -18,7 +18,7 @@ const Loader = () => {
   return (
     <main className='loader'>
       <Image 
-        src={'/logo.webp'} 
+        src='/logo.webp' 
         width={230} 
         height={230} 
         alt='Logo' 
@@ -26,7 +26,7 @@ const Loader = () => {
       />
 
       <div className='loading-line-container'>
-        <div className="loading-line"></div>
+        <div className='loading-line'></div>
       </div>
     </main>
   );

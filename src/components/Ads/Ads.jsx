@@ -1,4 +1,5 @@
-'use client'
+'use client';
+
 import React from 'react';
 import './Ads.scss';
 import Image from 'next/image';
@@ -55,17 +56,27 @@ const Ads = () => {
       <h1 className="title">
         <span>Р</span>еклама на Yantarne.<span>FM</span>
       </h1>
+
       <div className='line'></div>
+
       <div className="ads-center-card animate-pulse">
-          <Image src={'/about/sound.webp'} width={170} height={170} alt='sound'/>
-          <p className='pt-3'>Реклама в прямому ефірі</p>
-        </div>
-      <div className='ads__container'>
-     
+        <Image src="/about/sound.webp" width={170} height={170} alt="sound" />
+        <p className='pt-3'>Реклама в прямому ефірі</p>
+      </div>
+
+      <section className='ads__container'>
         {adsOptions.map((item, index) => (
-          <div key={index} className='ads-card'>
-            <Image className='ads-card-img' src={item.image} width={110} height={110} alt='card_img'/>
+          <article key={index} className='ads-card'>
+            <Image
+              className='ads-card-img'
+              src={item.image}
+              width={110}
+              height={110}
+              alt={item.platform}
+            />
+
             <h2>{item.title}</h2>
+
             <p>
               {item.features.map((line, idx) => (
                 <React.Fragment key={idx}>
@@ -74,17 +85,18 @@ const Ads = () => {
                 </React.Fragment>
               ))}
             </p>
-            <div className="ads-card-line"></div>
-          </div>
+
+            <div className="ads-card-line" />
+          </article>
         ))}
 
         <div className="ads-center-circle animate-pulse">
-          <Image src={'/about/sound.webp'} width={170} height={170} alt='sound'/>
+          <Image src="/about/sound.webp" width={170} height={170} alt="sound" />
           <p className='pt-3'>Реклама в прямому ефірі</p>
         </div>
-      </div>
+      </section>
     </main>
-  )
-}
+  );
+};
 
 export default Ads;

@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from "react";
 import "./Timetable.scss";
 
@@ -7,192 +7,96 @@ export default function Timetable() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [currentDayIndex, setCurrentDayIndex] = useState(new Date().getDay() === 0 ? 6 : new Date().getDay() - 1); 
+  const [currentDayIndex, setCurrentDayIndex] = useState(new Date().getDay() === 0 ? 6 : new Date().getDay() - 1);
   const [popupEvent, setPopupEvent] = useState(null);
-  const [popupPosition, setPopupPosition] = useState({ x: 0, y: 0 });
-  
+  const [currentTimePx, setCurrentTimePx] = useState(null);
 
-  useEffect(() => {
-    const fetchTimetable = async () => {
-      try {
-        setLoading(true);
-
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/timetable/events`);
-        
-        if (!response.ok) {
-
-          const defaultEvents = [
-            {
-              title: "Ранкове шоу",
-              start_time: "8:00",
-              end_time: "12:00",
-              days: [0, 1, 2, 3, 4],
-              date: null,
-              color: "#E65E5E"
-            },
-            {
-              title: "Авторські музичні мікси від DJ StasON!",
-              start_time: "20:00",
-              end_time: "23:00",
-              days: [0, 1, 2, 3, 4, 5, 6],
-              date: null,
-              color: "#6FA9F5"
-            }
-          ];
-          setTimetable(defaultEvents);
-          console.warn('Використовуються тестові дані розкладу');
-        } else {
-
-          const data = await response.json();
-          setTimetable(data);
-        }
-      } catch (err) {
-        console.error('Помилка завантаження розкладу:', err);
-        setError('Не вдалося завантажити розклад');
-        
-
-        const defaultEvents = [
-          {
-            title: "Ранкове шоу",
-            start_time: "8:00",
-            end_time: "12:00",
-            days: [0, 1, 2, 3, 4],
-            date: null,
-            color: "#E65E5E"
-          },
-          {
-            title: "Авторські музичні мікси від DJ StasON!",
-            start_time: "20:00",
-            end_time: "23:00",
-            days: [0, 1, 2, 3, 4, 5, 6],
-            date: null,
-            color: "#6FA9F5"
-          }
-        ];
-        setTimetable(defaultEvents);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchTimetable();
-  }, []);
-
-
-  const TIME_COL_WIDTH = 70; 
+  const TIME_COL_WIDTH = 70;
   const HEADER_HEIGHT = 44;
   const HOUR_START = 8;
   const HOUR_END = 23;
-  const HOUR_HEIGHT = 80; 
+  const HOUR_HEIGHT = 80;
   const TOTAL_HOURS = HOUR_END - HOUR_START;
   const MINUTE_PX = HOUR_HEIGHT / 60;
 
   const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => HOUR_START + i);
   const days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"];
 
-
-  const [currentTimePx, setCurrentTimePx] = useState(null);
-  
-
   useEffect(() => {
-    const checkIfMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
-    
+    const fetchTimetable = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API}/api/timetable/events`);
+        if (!response.ok) throw new Error("API error");
 
-    checkIfMobile();
-
-    window.addEventListener('resize', checkIfMobile);
-    
-
-    return () => window.removeEventListener('resize', checkIfMobile);
-  }, []);
-  
-  useEffect(() => {
-    const update = () => {
-      const now = new Date();
-      const minutesSinceStart = (now.getHours() - HOUR_START) * 60 + now.getMinutes();
-      if (minutesSinceStart >= 0 && minutesSinceStart <= TOTAL_HOURS * 60) {
-        setCurrentTimePx(minutesSinceStart * MINUTE_PX);
-      } else {
-        setCurrentTimePx(null);
+        const data = await response.json();
+        setTimetable(data.length ? data : getDefaultEvents());
+      } catch (err) {
+        console.warn("Помилка завантаження розкладу, використані тестові дані", err);
+        setError("Не вдалося завантажити розклад");
+        setTimetable(getDefaultEvents());
+      } finally {
+        setLoading(false);
       }
     };
-    update();
-    const t = setInterval(update, 60 * 1000);
-    return () => clearInterval(t);
+    fetchTimetable();
   }, []);
 
-  const parseHM = (str) => {
-    const [h, m = 0] = str.split(":").map(Number);
-    return { h, m };
-  };
+  const getDefaultEvents = () => [
+    { title: "Ранкове шоу", start_time: "8:00", end_time: "12:00", days: [0, 1, 2, 3, 4], color: "#E65E5E" },
+    { title: "Авторські музичні мікси від DJ StasON!", start_time: "20:00", end_time: "23:00", days: [0, 1, 2, 3, 4, 5, 6], color: "#6FA9F5" }
+  ];
 
+  useEffect(() => {
+    setIsMobile(window.innerWidth <= 768);
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      const minutesSinceStart = (now.getHours() - HOUR_START) * 60 + now.getMinutes();
+      setCurrentTimePx(minutesSinceStart >= 0 && minutesSinceStart <= TOTAL_HOURS * 60 ? minutesSinceStart * MINUTE_PX : null);
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 60 * 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const parseHM = (str) => str.split(":").map(Number);
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-
   const getPositionPx = (start, end) => {
-    const s = parseHM(start);
-    const e = parseHM(end);
-    const startMin = (s.h - HOUR_START) * 60 + s.m;
-    const endMin = (e.h - HOUR_START) * 60 + e.m;
+    const [sh, sm] = parseHM(start);
+    const [eh, em] = parseHM(end);
+    const startMin = (sh - HOUR_START) * 60 + sm;
+    const endMin = (eh - HOUR_START) * 60 + em;
     const top = clamp(startMin, 0, TOTAL_HOURS * 60) * MINUTE_PX;
     const height = Math.max(6, clamp(endMin, 0, TOTAL_HOURS * 60) * MINUTE_PX - top);
     return { top, height };
   };
 
-  const getDayIndexFromDate = (dateStr) => {
-    const d = new Date(dateStr);
-    if (isNaN(d)) return null;
-    const jsDay = d.getDay(); 
-    return jsDay === 0 ? 6 : jsDay - 1; 
-  };
-  
-
-  const isDateRelevant = (dateStr) => {
-    if (!dateStr) return true; 
-    
-    const eventDate = new Date(dateStr);
-    if (isNaN(eventDate)) return true; 
-
-    eventDate.setHours(0, 0, 0, 0);
-    
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    return eventDate >= today;
-  };
-
   const isEventOnDay = (ev, dayIndex) => {
-
-    if (ev.date && !isDateRelevant(ev.date)) return false;
-    
- 
-    if (ev.days && ev.days.length) return ev.days.includes(dayIndex);
-    if (ev.date) return getDayIndexFromDate(ev.date) === dayIndex;
-    return false;
+    if (ev.date) {
+      const d = new Date(ev.date);
+      if (!isNaN(d)) {
+        d.setHours(0, 0, 0, 0);
+        const today = new Date(); today.setHours(0, 0, 0, 0);
+        if (d < today) return false;
+        return dayIndex === (d.getDay() === 0 ? 6 : d.getDay() - 1);
+      }
+    }
+    return ev.days?.includes(dayIndex);
   };
 
-  const goToPreviousDay = () => {
-    setCurrentDayIndex((prevIndex) => (prevIndex === 0 ? 6 : prevIndex - 1));
-  };
-
-  const goToNextDay = () => {
-    setCurrentDayIndex((prevIndex) => (prevIndex === 6 ? 0 : prevIndex + 1));
-  };
-  
-  const showEventPopup = (event) => {
-    setPopupEvent(event);
-    document.body.style.overflow = 'hidden'; 
-  };
-  
-  
-  const closePopup = () => {
-    setPopupEvent(null);
-    document.body.style.overflow = '';
-  };
+  const goToPreviousDay = () => setCurrentDayIndex(prev => (prev === 0 ? 6 : prev - 1));
+  const goToNextDay = () => setCurrentDayIndex(prev => (prev === 6 ? 0 : prev + 1));
+  const showEventPopup = (event) => { setPopupEvent(event); document.body.style.overflow = "hidden"; };
+  const closePopup = () => { setPopupEvent(null); document.body.style.overflow = ""; };
 
   return (
-    <div id="timetable" className="timetable" onClick={popupEvent ? closePopup : undefined}>
+    <main id="timetable" className="timetable" onClick={popupEvent ? closePopup : undefined}>
       <div className="header">
         <div className="title">Розклад</div>
         <div className="line"></div>
@@ -204,141 +108,59 @@ export default function Timetable() {
           </div>
         )}
       </div>
-    <div
-      className="schedule"
-      style={{
-        padding: isMobile ? "0 10px 0 40px" : "0 40px", 
-        // передаємо CSS-змінні
-        "--time-col-width": `${TIME_COL_WIDTH}px`,
-        "--header-height": `${HEADER_HEIGHT}px`,
-        "--hour-height": `${HOUR_HEIGHT}px`,
-        "--hours": TOTAL_HOURS
-      }}
-    >
+
       <div
-        className="schedule-grid"
-
+        className="schedule"
+        style={{
+          padding: isMobile ? "0 10px 0 40px" : "0 40px",
+          "--time-col-width": `${TIME_COL_WIDTH}px`,
+          "--header-height": `${HEADER_HEIGHT}px`,
+          "--hour-height": `${HOUR_HEIGHT}px`,
+          "--hours": TOTAL_HOURS
+        }}
       >
+        <div className="schedule-grid">
+          <div className="time-col-header" />
+          {isMobile ? <div className="day-col-header">{days[currentDayIndex]}</div> :
+            days.map((d, i) => <div key={i} className="day-col-header">{d}</div>)
+          }
 
-        <div className="time-col-header" />
+          <div className="time-col">{hours.map(h => <div key={h} className="time-cell">{String(h).padStart(2, "0")}:00</div>)}</div>
 
-        {isMobile ? (
-          <div className="day-col-header">{days[currentDayIndex]}</div>
-        ) : (
-          days.map((d, i) => (
-            <div key={i} className="day-col-header">{d}</div>
-          ))
-        )}
-
-
-        <div className="time-col">
-          {hours.map((h) => (
-            <div key={h} className="time-cell">{String(h).padStart(2, "0")}:00</div>
-          ))}
-        </div>
-
-        {isMobile ? (
-
-          <div
-            className="day-col"
-            style={{ minHeight: `calc(var(--hour-height) * var(--hours))` }}
-          >
-            {timetable
-              .filter((ev) => isEventOnDay(ev, currentDayIndex))
-              .map((ev, idx) => {
+          {(isMobile ? [currentDayIndex] : [...Array(7).keys()]).map(dayIndex => (
+            <div key={dayIndex} className="day-col" style={{ minHeight: `calc(var(--hour-height) * var(--hours))` }}>
+              {timetable.filter(ev => isEventOnDay(ev, dayIndex)).map((ev, idx) => {
                 const { top, height } = getPositionPx(ev.start_time, ev.end_time);
                 return (
-                  <div
-                    key={idx}
-                    className="event"
-                    style={{
-                      top: `${top}px`,
-                      height: `${height}px`,
-                      backgroundColor: ev.color
-                    }}
+                  <div key={idx} className="event" style={{ top: `${top}px`, height: `${height}px`, backgroundColor: ev.color }}
                     title={`${ev.title} — ${ev.start_time}–${ev.end_time}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      showEventPopup(ev);
-                    }}
+                    onClick={e => { e.stopPropagation(); showEventPopup(ev); }}
                   >
                     <div className="title">{ev.title}</div>
                     <div className="time">{ev.start_time}–{ev.end_time}</div>
                   </div>
                 );
               })}
-          </div>
-        ) : (
-
-          days.map((_, dayIndex) => (
-            <div
-              key={dayIndex}
-              className="day-col"
-              style={{ minHeight: `calc(var(--hour-height) * var(--hours))` }}
-            >
-              {timetable
-                .filter((ev) => isEventOnDay(ev, dayIndex))
-                .map((ev, idx) => {
-                  const { top, height } = getPositionPx(ev.start_time, ev.end_time);
-                  return (
-                    <div
-                      key={idx}
-                      className="event"
-                      style={{
-                        top: `${top}px`,
-                        height: `${height}px`,
-                        backgroundColor: ev.color
-                      }}
-                      title={`${ev.title} — ${ev.start_time}–${ev.end_time}`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        showEventPopup(ev);
-                      }}
-                    >
-                      <div className="title">{ev.title}</div>
-                      <div className="time">{ev.start_time}–{ev.end_time}</div>
-                    </div>
-                  );
-                })}
             </div>
-          ))
-        )}
+          ))}
 
-
-        <div
-          className="grid-lines"
-
-        />
-
-
-        {currentTimePx !== null && (
-          <div
-            className="current-time-line"
-            style={{ top: `calc(var(--header-height) + ${currentTimePx}px)` }}
-          />
-        )}
-      </div>
-    </div>
-
-    {popupEvent && (
-      <div 
-        className="event-popup"
-        onClick={closePopup}
-      >
-        <div className="popup-content" onClick={(e) => e.stopPropagation()}>
-          <div className="popup-header" style={{ backgroundColor: popupEvent.color }}>
-            <h3>{popupEvent.title}</h3>
-            <button className="close-popup" onClick={closePopup}>×</button>
-          </div>
-          <p className="popup-time"><strong>Час:</strong> {popupEvent.start_time}–{popupEvent.end_time}</p>
-          <p className="popup-days">
-            <strong>Дні:</strong> {popupEvent.days ? 
-              popupEvent.days.map(d => days[d]).join(', ') : 
-              (popupEvent.date ? new Date(popupEvent.date).toLocaleDateString('uk-UA') : 'Не вказано')}
-          </p>
+          <div className="grid-lines" />
+          {currentTimePx !== null && <div className="current-time-line" style={{ top: `calc(var(--header-height) + ${currentTimePx}px)` }} />}
         </div>
       </div>
-    )}
-    </div>
+
+      {popupEvent && (
+        <div className="event-popup" onClick={closePopup}>
+          <div className="popup-content" onClick={e => e.stopPropagation()}>
+            <div className="popup-header" style={{ backgroundColor: popupEvent.color }}>
+              <h3>{popupEvent.title}</h3>
+              <button className="close-popup" onClick={closePopup}>×</button>
+            </div>
+            <p className="popup-time"><strong>Час:</strong> {popupEvent.start_time}–{popupEvent.end_time}</p>
+            <p className="popup-days"><strong>Дні:</strong> {popupEvent.days ? popupEvent.days.map(d => days[d]).join(', ') : (popupEvent.date ? new Date(popupEvent.date).toLocaleDateString('uk-UA') : 'Не вказано')}</p>
+          </div>
+        </div>
+      )}
+    </main>
   );
 }
