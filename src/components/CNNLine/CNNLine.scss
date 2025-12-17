@@ -1,37 +1,98 @@
 @use "sass:color";
+
 .cnn {
-    width: 100%;
-    height: 40px;
-    background: #cc0100;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    position: relative;
-    white-space: nowrap;
+  width: 100%;
+  height: 43px;
+  background: #cc0100;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  position: relative;
+  white-space: nowrap;
+
+  /* MODERATE FLASH */
+  animation: cnn-flash 1.6s infinite ease-in-out;
+}
+
+/* BREAKING LABEL */
+.cnn__breaking {
+  background: #ffffff;
+  color: #cc0100;
+  font-weight: 800;
+  font-size: 14px;
+  padding: 6px 14px;
+  margin-left: 10px;
+  margin-right: 16px;
+  border-radius: 3px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  /* MODERATE BLINK */
+  animation: breaking-blink 1.1s infinite ease-in-out;
+}
+
+/* SCROLLING TRACK */
+.cnn__track {
+  display: inline-block;
+  min-width: 100%;
+  animation: scroll-left 15s linear infinite;
+}
+
+/* TEXT */
+.cnn__text {
+  color: white;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 40px;
+  display: inline-block;
+  padding-right: 50px;
+}
+
+/* TEXT SCROLL */
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
   }
-  
-  .cnn__track {
-    display: inline-block;
-    min-width: 100%;
-    animation: scroll-left 15s linear infinite;
+  to {
+    transform: translateX(-50%);
   }
-  
-  .cnn__text {
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 40px;
-    display: inline-block;
-    padding-right: 50px; 
-  }
- 
-  @keyframes scroll-left {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
+}
+
+/* MODERATE RED FLASH */
+@keyframes cnn-flash {
+  0% {
+    background-color: #cc0100;
   }
 
-  
+  50% {
+    background-color: #8f0000;
+  }
+
+  100% {
+    background-color: #b50404;
+  }
+}
+
+/* MODERATE BREAKING BLINK */
+@keyframes breaking-blink {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  .cnn,
+  .cnn__breaking,
+  .cnn__track {
+    animation: none;
+  }
+}
