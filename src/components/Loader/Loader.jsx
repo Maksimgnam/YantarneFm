@@ -9,7 +9,7 @@ const Loader = () => {
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.push('/home'); 
+      router.push('/'); 
     }, 3000);
 
     return () => clearTimeout(timer);
