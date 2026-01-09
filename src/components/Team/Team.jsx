@@ -6,11 +6,15 @@ const Team = () => {
   const containerRef = useRef(null);
 
   const teamMembers = [
-    { name: "Андрій Стасишин", position: "Директор та муз. редактор", instagram: "https://www.instagram.com/djstason", image: "/team/team1.webp" },
-    { name: "Софія Труш", position: "Програмний директор, ведуча", instagram: "https://www.instagram.com/_trush_sofia_/", image: "/team/team2.webp" },
+    { name: "Андрій Стасишин", position: "Музичний редактор та Директор Радіостанції", instagram: "https://www.instagram.com/djstason", image: "/team/team1.webp" },
+    { name: "Софія Труш", position: "Ведуча ракового шоу Не спати Програмний Директор", instagram: "https://www.instagram.com/_trush_sofia_/", image: "/team/team2.webp" },
     { name: "Марія Канцелярист", position: "Ведуча новин", instagram: "https://www.instagram.com/kantseliarist/", image: "/team/team3.webp" },
-    { name: "Тарас Федунь", position: "Ведучий", instagram: "https://www.instagram.com/tarasfedun/", image: "/team/team4.webp" },
-    { name: "Юрій Калагурка", position: "Менеджер по рекламі", instagram: "https://www.instagram.com/kalagurkaiurii/", image: "/team/team5.webp" },
+    { name: "Тарас Федунь", position: "Ведучий ранкового шоу Не Спати", instagram: "https://www.instagram.com/tarasfedun/", image: "/team/team4.webp" },
+    { name: "Вікторія Дребот", position: "Ведуча Суботнього шоу", instagram: "https://www.instagram.com/vika_drebot/", image: "/team/team5.webp" },
+    { name: "Андрій Бакалов", position: "Ведучий Суботнього шоу", instagram: "https://www.instagram.com/andrew.bakalov/", image: "/team/team6.webp" },
+    { name: "Дмитро Дида", position: "Ведучий Суботнього шоу", instagram: "https://www.instagram.com/dima_dyda/", image: "/team/team7.webp" },
+
+
   ];
 
   useEffect(() => {

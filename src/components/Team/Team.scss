@@ -35,7 +35,7 @@ span{
   display: flex;
   width: max-content;
   margin-top: 40px ;
-  animation: scroll-left 20s linear infinite;
+  animation: scroll-left 30s linear infinite;
 }
 
 .team__track {
@@ -56,15 +56,18 @@ span{
 
 
 
+
 .team-image{
   
   background-size: cover;
   border-radius: 20px;
+  max-height: 450px;
+  width: 100%;
 }
 
 .team-info{
   width: 100%;
-  height: 35%;
+  height: auto;
   padding: 15px;
 
   display: flex;
@@ -79,7 +82,7 @@ span{
 
 }
 .team-info p{
-  font-size: 20px;
+  font-size: 17px;
 
 }
 .team-social{

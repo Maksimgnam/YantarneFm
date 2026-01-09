@@ -3,78 +3,87 @@
 import React from 'react';
 import './Ads.scss';
 import Image from 'next/image';
+import { FaTelegramPlane, FaMicrophone, FaHandshake, FaLightbulb } from 'react-icons/fa';
+import { BsFillMicFill, BsHandThumbsUp, BsLightbulbFill } from 'react-icons/bs';
+import { MdOutlineRssFeed } from 'react-icons/md';
 
 const Ads = () => {
   const adsOptions = [
     {
-      platform: "Telegram",
-      title: "📢 Реклама у Telegram-каналі",
+      title: 'Реклама в соціальних мережах',
+      icon: <MdOutlineRssFeed />,
       features: [
-        "📲 Пост про твій бізнес — стильна подача та реальні охоплення на 5000 підписників",
-        "🔷 Ідеально для брендів, івентів, сервісів та онлайн-магазинів",
-        "✨ Стильна подача, реальні охоплення, зацікавлена аудиторія"
+        'Просуваємо ваш бізнес там, де нас читають і дивляться щодня',
+        'Формати:',
+        '• пост у Telegram',
+        '• пост у Facebook',
+        '• Instagram Stories',
+        'Підходить для акцій, подій, новинок, відкриттів та спецпропозицій',
       ],
-      image: "/ads/telegram.png"
     },
     {
-      platform: "Instagram",
-      title: "📸 Реклама у Instagram",
+      title: 'Блокова реклама в ефірі',
+      icon: <BsFillMicFill />,
       features: [
-        "🎯 5 000+ активних підписників",
-        "📲 Сторіс про твій бізнес",
-        "🔷 Ідеально для локальних брендів, івентів, сервісів та онлайн-магазинів",
-        "✨ Стильна подача, реальні охоплення, зацікавлена аудиторія"
+        'Класичні рекламні ролики в ефірі радіо Yantarne.FM',
+        'Ваша реклама звучить у визначені години',
+        'Регулярно та чітко доносить інформацію до слухачів нашої громади',
       ],
-      image: "/ads/insta.webp"
     },
     {
-      platform: "Facebook",
-      title: "📘 Реклама у Facebook",
+      title: 'Інформаційна реклама від ведучих',
+      icon: <FaMicrophone />,
       features: [
-        "🎯 Доступ до понад 6 000+ активних підписників",
-        "📣 Розміщення постів про ваш бізнес, івенти або послуги",
-        "🔷 Ідеально для локальних брендів, сервісів та онлайн-магазинів",
-        "✨ Ефективна подача і реальні охоплення"
+        'Реклама у форматі живої рекомендації від ведучих в ефірі',
+        'Звучить природно, довірливо',
+        'Особливо ефективно у ранковому шоу - як особиста порада, а не стандартний ролик',
       ],
-      image: "/ads/facebook.webp"
     },
     {
-      platform: "Website",
-      title: "🌐 Реклама на Сайті",
+      title: 'Партнерство з радіо',
+      icon: <FaHandshake />,
       features: [
-        "🎯 Демонструйте вашу рекламу онлайн перед понад 20 000 активних відвідувачів щомісяця",
-        "📣 Показ реклами у вигляді банерів, текстових оголошень на сайті",
-        "🔷 Ідеально для локальних брендів, сервісів, подій та онлайн-магазинів",
-        "✨ Висока видимість та зацікавлена аудиторія"
+        'Станьте офіційним партнером наших програм та проєктів',
+        'Можливі формати:',
+        '• партнер погоди',
+        '• партнер точної години',
+        '• партнер спеціальних рубрик чи проєктів',
+        'Це довготривала присутність вашого бренду в ефірі та асоціація з контентом, який люблять слухачі',
       ],
-      image: "/ads/site.webp"
-    }
+    },
+    {
+      title: 'Індивідуальна співпраця',
+      icon: <FaLightbulb />,
+      features: [
+        'Маєте ідею - ми допоможемо її реалізувати',
+        'Відкриті до нестандартних рекламних форматів',
+        'Спецпроєктів, інтеграцій та рішень під конкретні цілі вашого бізнесу',
+      ],
+    },
   ];
 
   return (
-    <main className='ads'>
+    <main className="ads">
       <h1 className="title">
         <span>Р</span>еклама на Yantarne.<span>FM</span>
       </h1>
 
-      <div className='line'></div>
+      <div className="line" />
 
       <div className="ads-center-card animate-pulse">
         <Image src="/about/sound.webp" width={170} height={170} alt="sound" />
-        <p className='pt-3'>Реклама в прямому ефірі</p>
+        <p className="pt-3">Реклама в прямому ефірі</p>
       </div>
 
-      <section className='ads__container'>
+      <section className="ads__container">
         {adsOptions.map((item, index) => (
-          <article key={index} className='ads-card'>
-            <Image
-              className='ads-card-img'
-              src={item.image}
-              width={110}
-              height={110}
-              alt={item.platform}
-            />
+          <article
+            key={index}
+            className={`ads-card ${index === 4 ? 'ads-card--full' : ''}`}
+          >
+            <div className="ads-card-icon">{item.icon}</div>
 
+        
             <h2>{item.title}</h2>
 
             <p>
@@ -89,11 +98,6 @@ const Ads = () => {
             <div className="ads-card-line" />
           </article>
         ))}
-
-        <div className="ads-center-circle animate-pulse">
-          <Image src="/about/sound.webp" width={170} height={170} alt="sound" />
-          <p className='pt-3'>Реклама в прямому ефірі</p>
-        </div>
       </section>
     </main>
   );
