@@ -38,16 +38,28 @@
 display: flex;
     }
 
-    button{
-      width: 50px;
-      height: 50px;
-      background-color: #CC0100;
-      border-radius: 10px;
-      font-size: 22px;
+    button {
+      width: 47px;
+      height: 47px;
+      background: linear-gradient(145deg, #e10000, #b80000);
+      border-radius: 14px;
+    
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    
+      font-size: 19px;
       font-weight: 600;
+      color: #fff;
+    
       cursor: pointer;
-
+      border: none;
+      outline: none;
+    
+   
     }
+
+    
 
     .title{
       font-size: 35px;

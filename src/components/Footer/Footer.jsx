@@ -4,24 +4,24 @@ import './Footer.scss';
 
 const Footer = () => {
   return (
-    <footer className="w-full bg-[#252525]">
-      <div className="w-full h-1 bg-[#CC0100]" />
+    <footer>
+      <div className="top-line" />
 
-      <div className="w-full flex flex-col justify-center items-center p-12">
+      <div className="footer-content">
         <Image src="/logo.webp" width={200} height={200} alt="Logo" />
 
-        <p className="text-center font-semibold m-5">
-          <span className="text-[#CC0100]">Якщо</span> у вас є новина, якою хочете поділитися — надсилайте нам.
+        <p>
+          <span>Якщо</span> у вас є новина, якою хочете поділитися — надсилайте нам.
           <br />
           Якщо ви хочете стати частинкою команди або маєте класні ідеї — пишіть нам.
           <br />
           Якщо у вас виникли запитання стосовно реклами та співпраці — телефонуйте!
         </p>
 
-        <div className="w-96 h-1.5 bg-[#CC0100] rounded-2xl my-10" />
+        <div className="separator" />
 
-        <p className="text-3xl text-center font-semibold">
-          <span className="text-[#CC0100]">©</span> 2025 Усі права захищені
+        <p className="copyright">
+          <span>©</span> 2025 Усі права захищені
         </p>
       </div>
     </footer>

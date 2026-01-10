@@ -4,15 +4,11 @@ import './TopSongs.scss';
 import TopSongCard from './TopSongCard/TopSongCard';
 
 const AdminTopSongs = () => {
-  // ------------------------------
-  // State
-  // ------------------------------
+
   const [songs, setSongs] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // ------------------------------
-  // Fetch Songs
-  // ------------------------------
+
   const fetchSongs = useCallback(async () => {
     try {
       setLoading(true);
@@ -22,32 +18,28 @@ const AdminTopSongs = () => {
       setSongs(data.songs || []);
     } catch (err) {
       console.error(err);
-      setSongs([]); // fallback if API fails
+      setSongs([]); 
     } finally {
       setLoading(false);
     }
   }, []);
 
-  // ------------------------------
-  // Effects
-  // ------------------------------
+
   useEffect(() => {
     fetchSongs();
   }, [fetchSongs]);
 
-  // ------------------------------
-  // Render
-  // ------------------------------
+
   return (
     <main id='topsongs' className='topsongs'>
 
-      {/* ===== HEADER ===== */}
+
       <section className="topsongs-header">
         <h2><span>ТОП</span> Пісень</h2>
         <div className="line"></div>
       </section>
 
-      {/* ===== CONTENT ===== */}
+
       <section className="topsongs-content">
         {loading ? (
           <div className='loader'>
