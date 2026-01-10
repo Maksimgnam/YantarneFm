@@ -1,18 +1,40 @@
 'use client';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './MiniPlayer.scss';
+import usePlayerStore from '@/store/usePlayerStore';
 
 const MiniPlayer = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [trackInfo, setTrackInfo] = useState({ title: '', artist: '' });
+  const { 
+    isPlaying, 
+    trackInfo, 
+    setAudioElement, 
+    setTrackInfo, 
+    togglePlay,
+    initializeAudioContext
+  } = usePlayerStore();
+
   const [isMounted, setIsMounted] = useState(false);
-  
   const audioRef = useRef(null);
   const streamUrl = 'https://complex.in.ua/yantarne';
 
   useEffect(() => {
     setIsMounted(true);
-    
+  }, []);
+
+  useEffect(() => {
+    if (isMounted && audioRef.current) {
+      setAudioElement(audioRef.current);
+    }
+  }, [isMounted, setAudioElement]);
+
+  // Intercept play to ensure AudioContext is ready
+  const handlePlayClick = async () => {
+    initializeAudioContext();
+    await togglePlay();
+  };
+
+  // Metadata fetching
+  useEffect(() => {
     const fetchTrackInfo = async () => {
       try {
         const res = await fetch('https://complex.in.ua/status-json.xsl?mount=/yantarne');
@@ -32,28 +54,7 @@ const MiniPlayer = () => {
     fetchTrackInfo();
     const interval = setInterval(fetchTrackInfo, 30000);
     return () => clearInterval(interval);
-  }, []);
-
-  const togglePlay = async () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (isPlaying) {
-      audio.pause();
-      setIsPlaying(false);
-    } else {
-      try {
-        if (audio.src !== streamUrl) {
-            audio.src = streamUrl;
-            audio.load();
-        }
-        await audio.play();
-        setIsPlaying(true);
-      } catch (err) {
-        console.error('Playback failed:', err);
-      }
-    }
-  };
+  }, [setTrackInfo]);
 
   const fullTrackName = trackInfo.title 
     ? `${trackInfo.artist} - ${trackInfo.title}` 
@@ -63,22 +64,27 @@ const MiniPlayer = () => {
 
   return (
     <div className="mini-player-wrapper">
-      <audio ref={audioRef} src={streamUrl} preload="none" crossOrigin="anonymous" />
+      <audio 
+        ref={audioRef} 
+        src={streamUrl} 
+        preload="none" 
+        crossOrigin="anonymous" 
+        onPlay={() => usePlayerStore.setState({ isPlaying: true })}
+        onPause={() => usePlayerStore.setState({ isPlaying: false })}
+      />
 
       <div className="mini-player-glass">
         <button 
           className="mp-btn" 
-          onClick={togglePlay}
+          onClick={handlePlayClick}
           aria-label={isPlaying ? "Pause" : "Play"}
         >
           {isPlaying ? (
-            // PAUSE ICON (Рівна сама по собі)
             <svg viewBox="0 0 24 24" fill="currentColor">
                <rect x="6" y="4" width="4" height="16" rx="1" />
                <rect x="14" y="4" width="4" height="16" rx="1" />
             </svg>
           ) : (
-            // PLAY ICON (Додано клас play-icon для вирівнювання)
             <svg viewBox="0 0 24 24" fill="currentColor" className="play-icon">
                <path d="M8 5v14l11-7z" />
             </svg>

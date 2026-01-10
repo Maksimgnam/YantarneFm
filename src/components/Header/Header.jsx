@@ -19,7 +19,7 @@ const Header = () => {
 
   return (
     <header className="header">
-      <Link href="/home" aria-label="На головну сторінку">
+      <Link href="/" aria-label="На головну сторінку">
         <Image src="/logo.webp" width={150} height={150} alt="Yantarne FM Logo" className="logo" />
       </Link>
 
