@@ -10,8 +10,16 @@ const BlogCard = ({ title, description, image, link }) => {
       <img src={image || "/back.png"} alt={title} />
 
       <div className="blog-card-block">
-        <h2>{title}</h2>
-        <p>{description}</p>
+        <>
+  
+        <h1>{title}</h1>
+        <p>
+  {description.length > 100 
+    ? description.substring(0, 200) + '...'
+    : description}
+</p>
+</>
+
 
         <div className="btn-container">
           <Link href={link} className="link">

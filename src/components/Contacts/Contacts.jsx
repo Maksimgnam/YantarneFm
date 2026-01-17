@@ -16,7 +16,7 @@ const Contacts = () => {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/send-message`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chatId: '1608433214', text }),
+        body: JSON.stringify({ chatId: '613281017', text }),
       });
 
       if (res.ok) {

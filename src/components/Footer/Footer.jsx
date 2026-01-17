@@ -18,7 +18,19 @@ const Footer = () => {
           Якщо у вас виникли запитання стосовно реклами та співпраці — телефонуйте!
         </p>
 
+
+
         <div className="separator" />
+        <p className="footer-legal">
+          Громадська організація «<strong>Медіа Фронт</strong>», код згідно з ЄДРПОУ:
+          <strong> 44902972</strong>
+      
+          <br />
+          Голова громадської організації «Медіа Фронт» —
+          <span className="accent"> Андрій СТАСИШИН</span>
+        </p>
+
+  
 
         <p className="copyright">
           <span>©</span> 2025 Усі права захищені
