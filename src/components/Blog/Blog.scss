@@ -2,62 +2,19 @@
   width: 100%;
   height: 100vh;
   padding: 10px;
-  padding-left: 30px;
-  padding-right: 30px;
+
 
   .blog-header{
     width: 100%;
     height: auto;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
+    position: relative;
+    top: 80px;
 
-    .menu{
-      width: 50px;
-      height: 50px;
-      border-radius: 10px;
-      padding: 5px;
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      .menu-line{
-        width: 100%;
-        height: 3px;
-        background-color: #CC0100;
-        border-radius: 10px;
-        margin: 5px;
-        margin-left: 0;
-        margin-right: 0;
-      }
 
-   
-    }
 
-    .flex{
-display: flex;
-    }
-
-    button {
-      width: 47px;
-      height: 47px;
-      background: linear-gradient(145deg, #e10000, #b80000);
-      border-radius: 14px;
-    
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    
-      font-size: 19px;
-      font-weight: 600;
-      color: #fff;
-    
-      cursor: pointer;
-      border: none;
-      outline: none;
-    
-   
-    }
 
     
 
@@ -71,14 +28,7 @@ display: flex;
     }
     
     
-    .line{
-      width: 250px;
-      height: 5px; 
-      background-color: #CC0100;
-      border-radius: 5px;
-      margin:3px; 
-      display: flex;
-    }
+
 
    
   }
@@ -88,7 +38,8 @@ display: flex;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 35px;
+    position: relative;
+    top: 100px;
 
 
     input{
@@ -121,6 +72,8 @@ display: flex;
     padding-left: 30px;
     padding-right: 30px;
     padding-top: 20px;
+    position: relative;
+    top: 100px;
 
  
   }
@@ -141,7 +94,7 @@ display: flex;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 60px;
+    font-size: 50px;
   }
 }
 

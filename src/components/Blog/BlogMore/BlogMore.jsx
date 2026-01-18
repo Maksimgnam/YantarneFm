@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import './BlogMore.scss';
+import Header from '@/components/Header/Header';
 
 const BlogMore = () => {
   const { id } = useParams();
@@ -36,25 +37,21 @@ const BlogMore = () => {
 
   return (
     <main className="blog-more">
-      <header className="blog-header">
-        <Link href="/home">
-          <button>{'<'}</button>
-        </Link>
-
-        <div className="menu">
-          <div className="menu-line" />
-          <div className="menu-line" />
-          <div className="menu-line" />
-        </div>
-      </header>
-
+    {/* <header className="blog-header">
+      <Link href="/" className="back-btn">← Назад</Link>
+    </header> */}
+    <Header/>
+  
+    <section className="blog-container">
       <img src={blog.image || "/back.png"} alt={blog.title} />
-
+  
       <article className="blog-more-text">
         <h1>{blog.title}</h1>
         <p>{blog.description}</p>
       </article>
-    </main>
+    </section>
+  </main>
+  
   );
 };
 

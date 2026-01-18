@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import './Blog.scss';
 import Link from 'next/link';
 import BlogCard from './BlogCard/BlogCard';
+import Header from '../Header/Header';
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -26,25 +27,16 @@ const Blog = () => {
 
   return (
     <main className="blog">
+      <Header/>
       <header className="blog-header">
-        <Link href="/">
-          <button>{'<'}</button>
-        </Link>
+     
 
         <div className="flex flex-col items-center justify-center">
           <h2 className="title">
             <span>Y</span>antarne Блог
           </h2>
-          <div className="line" />
         </div>
 
-        <div className="flex" />
-
-        <Link className="menu" href="/navigation">
-          <div className="menu-line" />
-          <div className="menu-line" />
-          <div className="menu-line" />
-        </Link>
       </header>
 
       <section className="blog-search">
