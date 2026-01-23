@@ -15,7 +15,7 @@ export default function Timetable() {
   const HEADER_HEIGHT = 44;
   const HOUR_START = 8;
   const HOUR_END = 23;
-  const HOUR_HEIGHT = 80;
+  const HOUR_HEIGHT = 180;
   const TOTAL_HOURS = HOUR_END - HOUR_START;
   const MINUTE_PX = HOUR_HEIGHT / 60;
 
@@ -44,7 +44,8 @@ export default function Timetable() {
 
   const getDefaultEvents = () => [
     { title: "Ранкове шоу", start_time: "8:00", end_time: "12:00", days: [0, 1, 2, 3, 4], color: "#E65E5E" },
-    { title: "Авторські музичні мікси від DJ StasON!", start_time: "20:00", end_time: "23:00", days: [0, 1, 2, 3, 4, 5, 6], color: "#6FA9F5" }
+    { title: "Авторські музичні мікси від DJ StasON!", start_time: "20:00", end_time: "23:00", days: [0, 1, 2, 3, 4, 5, 6], color: "#6FA9F5" },
+    { title: "Ранкове шоу", start_time: "12:00", end_time: "12:10", days: [0, 1, 2, 3, 4], color: "#57ff6eff" },
   ];
 
   useEffect(() => {
