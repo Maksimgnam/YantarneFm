@@ -134,7 +134,7 @@ export default function Timetable() {
   return (
     <main id="timetable" className="timetable" onClick={popupEvent ? closePopup : undefined}>
       <div className="header">
-        <div className="title">Розклад</div>
+        <div className="title"><span>Р</span>озклад</div>
         <div className="line"></div>
         {isMobile && (
           <div className="mobile-day-selector">
