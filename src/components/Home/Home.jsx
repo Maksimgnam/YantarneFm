@@ -38,7 +38,6 @@ const Home = () => {
   useEffect(() => {
     if (!analyser) return;
 
-    // Initialize data array if needed (analyser.frequencyBinCount is usually 128 for fftSize 256)
     if (!dataArrayRef.current || dataArrayRef.current.length !== analyser.frequencyBinCount) {
         dataArrayRef.current = new Uint8Array(analyser.frequencyBinCount);
     }
@@ -59,25 +58,32 @@ const Home = () => {
 
       ctx.clearRect(0, 0, width, height);
       
-      // Calculate bar width with spacing
-      const spacing = 4;
-      // Note: we're iterating over the whole bufferLength, so we need to account for spacing in total width
-      const barWidth = Math.max(2, (width / bufferLength) - spacing);
-      let x = 0;
+      // 1. НАЛАШТУВАННЯ КОЛЬОРУ (НЕ ПРОЗОРИЙ)
+      ctx.fillStyle = '#FFFFFF'; // Суцільний білий колір
 
-      for (let i = 0; i < bufferLength; i++) {
+      // 2. ОБРІЗКА ПОРОЖНІХ ЧАСТОТ
+      // Високі частоти (останні ~25-30%) часто пусті. Ми беремо тільки перші 70%,
+      // щоб візуалізація виглядала "повною" до самого краю екрана.
+      const usefulBufferLength = Math.floor(bufferLength * 0.70);
+      
+      const spacing = 4; // Відступ між стовпчиками
+      // Розтягуємо usefulBufferLength на всю ширину (width)
+      const slotWidth = width / usefulBufferLength; 
+
+      for (let i = 0; i < usefulBufferLength; i++) {
+        // Нормалізація висоти (0..255 -> 0..height)
         const v = dataArray[i] / 255;
         const barHeight = v * height; 
         
-        const grad = ctx.createLinearGradient(0, height - barHeight, 0, height);
-        grad.addColorStop(0, 'rgba(255,255,255,0.8)');
-        grad.addColorStop(1, 'rgba(255,255,255,0.2)');
-
-        ctx.fillStyle = grad;
+        // Розрахунок позиції
+        const x = i * slotWidth;
         
-        ctx.fillRect(x, height - barHeight, barWidth, barHeight);
+        // Ширина стовпчика (slotWidth мінус відступ)
+        // Math.max(2, ...) гарантує, що стовпчик не зникне
+        const barWidth = Math.max(2, slotWidth - spacing);
 
-        x += barWidth + spacing;
+        // Малюємо
+        ctx.fillRect(x, height - barHeight, barWidth, barHeight);
       }
 
       rafRef.current = requestAnimationFrame(draw);
@@ -90,21 +96,27 @@ const Home = () => {
     };
   }, [analyser]);
 
+  // Resize logic
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
   
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
-  
+      
+      // Використовуємо window.innerWidth для точної ширини вікна
       const logicalWidth = window.innerWidth;
-      const logicalHeight = window.innerHeight * 0.3;
+      const logicalHeight = window.innerHeight * 0.35; // Трохи збільшив висоту (35% екрану)
   
       canvas.width = logicalWidth * dpr;
       canvas.height = logicalHeight * dpr;
-  
+      
+      // Стилі для коректного відображення на екрані
+      canvas.style.width = `${logicalWidth}px`;
+      canvas.style.height = `${logicalHeight}px`;
+
       const ctx = canvas.getContext('2d');
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.scale(dpr, dpr);
     };
   
     resize();
@@ -143,7 +155,7 @@ const Home = () => {
   };
 
   const increaseVolume = () => setVolume(Math.min(100, volume + 10));
-  const decreaseVolume = () => setVolume(Math.max(0, volume - 10)); // Unused in original but useful
+  const decreaseVolume = () => setVolume(Math.max(0, volume - 10));
 
   return (
     <main
@@ -153,6 +165,8 @@ const Home = () => {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         transition: 'background-image 1s ease-in-out',
+        position: 'relative', // Важливо для абсолютного позиціонування всередині
+        overflow: 'hidden'    // Щоб нічого не вилазило
       }}
     >
       {/* Visualizer Canvas */}
@@ -162,17 +176,18 @@ const Home = () => {
           position: 'absolute',
           bottom: 0,
           left: 0,
-          width: '100vw',
-          height: '30vh',
           zIndex: 1,
           pointerEvents: 'none',
-
+          // Розміри контролюються через JS (resize ефект), 
+          // але тут задаємо базові для надійності
+          width: '100vw', 
+          height: '35vh' 
         }}
       />
 
       <div className="overlay" />
 
-      <div className="player-container">
+      <div className="player-container" style={{ zIndex: 10 }}> 
         <div className="controls">
           <button onClick={handlePlayClick} className="border_btn" aria-label={isPlaying ? 'Pause' : 'Play'}>
             <div className="grey_btn">
