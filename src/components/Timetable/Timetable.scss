@@ -1,3 +1,18 @@
+.view-full-timetable{
+  font-size: 22px;
+  font-weight: 600;
+  transition: background-color 0.2s;
+  margin-top: 40px;
+  padding: 20px 30px;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #CC0100;
+  color: white;
+  &:hover {
+    background-color: #8d0000;
+  }
+}
+
 .timetable {
   width: 100%;
   height: auto;
@@ -174,7 +189,6 @@
       flex-direction: column;
       justify-content: space-between;
       overflow: hidden;
-      margin: 10px;
       
       .title {
         font-weight: 600;
