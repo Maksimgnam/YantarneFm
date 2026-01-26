@@ -75,7 +75,7 @@ const Account = () => {
             onClick={handleLikeAudio}
             className='w-[300px] text-white h-[72px] bg-[#CC0100] font-bold rounded-lg text-xl cursor-pointer m-2 ml-0 mr-0 flex items-center justify-center'
           >
-            ❤️ Like Audio
+            Like Audio
           </button>
         </div>
       ) : (
