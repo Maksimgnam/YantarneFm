@@ -158,15 +158,65 @@
     width: 280px;
   }
 }
-
 @media (max-width: 480px) {
+  .team__wrapper {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .team__container {
+    flex-direction: row;
+    width: max-content;
+    margin-top: 20px;
+    gap: 16px;
+    animation: scroll-left 20s linear infinite;
+  }
+
+  .team__track:last-child {
+    display: flex;
+  }
+
+  .team__track {
+    flex-direction: row;
+    gap: 16px;
+  }
+
   .team-card {
-    width: 240px;
+    width: 75vw;
+    margin: 5px;
+    flex: 0 0 auto;
+    border-radius: 24px;
   }
+
+  .team-image {
+    max-height: 320px;
+    object-fit: cover;
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+  }
+
+  .team-info {
+    padding: 20px;
+  }
+
   .team-name {
-    font-size: 22px;
+    font-size: 28px;
+    margin-bottom: 8px;
   }
+
   .team-info p {
-    font-size: 14px;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  .team-social .team-btn {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+
+    img {
+      width: 28px;
+      height: 28px;
+    }
   }
 }
