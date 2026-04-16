@@ -52,6 +52,7 @@ const About = () => {
         <article className="about_block">
           <Image
             src="/about/micro.webp"
+            className="about-micro"
             width={40}
             height={40}
             alt="Мікрофон"
