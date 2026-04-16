@@ -205,3 +205,26 @@
     }
   }
 }
+
+
+.about-micro {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .about-micro {
+    display: none;
+  }
+ 
+}
+@media (max-width: 768px) {
+  .about_block {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .about_block-h2 {
+    text-align: center;
+  }
+}
