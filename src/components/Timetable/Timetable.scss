@@ -45,7 +45,6 @@ position: relative;
       height: 6px;
       background: linear-gradient(90deg, #CC0100, #ff6b6b);
       border-radius: 5px;
-      margin: 8px auto 30px;
       display: none;
     }
 
@@ -65,7 +64,9 @@ position: relative;
       transition: background-color 0.2s, border-color 0.2s, color 0.2s;
       white-space: nowrap;
       flex-shrink: 0;
-      margin: 5px;
+      position: relative;
+      bottom: 5px;
+
 
       &:hover {
         background-color: rgba(150, 150, 150, 0.12);
@@ -157,7 +158,7 @@ position: relative;
 
       @media (max-width: 768px) {
         grid-template-columns: var(--time-col-width) 1fr;
-        margin-top: 20px; // ← fixed: was effectively broken/370px causing layout shift
+        margin-top: 0; // ← fixed: was effectively broken/370px causing layout shift
       }
     }
 
@@ -317,6 +318,8 @@ position: relative;
       -webkit-overflow-scrolling: touch;
       padding: 0 !important;
 
+     
+
       // On mobile, replace the vertical left-border with a top border on the content column
       .day-col {
         border-left: none;
@@ -340,12 +343,12 @@ position: relative;
     }
 
     .header .title {
-      font-size: 28px;
+      font-size: 35px;
     }
 
     .schedule {
       --hour-height: 70px;
-      margin-top: 30px;
+      margin-top:0;
 
       .time-cell {
         font-size: 10px;
