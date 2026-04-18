@@ -46,6 +46,7 @@ position: relative;
       background: linear-gradient(90deg, #CC0100, #ff6b6b);
       border-radius: 5px;
       margin: 8px auto 30px;
+      display: none;
     }
 
     .toggle-schedule-btn {
@@ -295,6 +296,9 @@ position: relative;
     .header {
       .title {
         font-size: 36px;
+      }
+      .line{
+        display: flex;
       }
 
       .mobile-day-selector {
