@@ -71,7 +71,7 @@ const Ads = () => {
       <div className="line" />
 
       <div className="ads-center-card animate-pulse">
-        <Image src="/about/sound.webp" width={170} height={170} alt="sound" />
+        <Image src="/about/sound.webp" width={50} height={50} alt="sound" className='sound-image' />
         <p className="pt-3">Реклама в прямому ефірі</p>
       </div>
 

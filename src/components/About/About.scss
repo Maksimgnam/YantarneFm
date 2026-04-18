@@ -11,7 +11,7 @@
   /* ================= TITLE ================= */
   .title {
     font-size: 52px;
-    font-weight: 600;
+    font-weight: 500;
     text-align: center;
 
     span {
@@ -192,6 +192,9 @@
   .about {
     .about__container {
       text-align: center;
+    }
+    .line {
+      width: 160px;
     }
 
     .about-features {

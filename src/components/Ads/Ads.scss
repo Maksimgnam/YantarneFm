@@ -140,11 +140,11 @@
       margin-top: 40px;
       text-align: center;
       font-weight: 600;
-      font-size: 30px;
+      font-size: 26px;
 
       img {
-        width: 200px;
-        height: 100px;
+        width: 150px;
+        height: 70px;
       }
     }
 
@@ -170,7 +170,7 @@
     }
 
     .line {
-      width: 60%;
+      width: 160px;
     }
 
     .ads-card {
@@ -190,5 +190,9 @@
       flex-direction: column;
       height: auto;
     }
+    .ads-card-line{
+      display: none;
+    }
   }
 }
+

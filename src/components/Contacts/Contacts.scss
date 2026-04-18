@@ -173,8 +173,8 @@ height: auto;
     .title{
       font-size: 45px;
     }
-    .line{
-      width:200px
+    .line {
+      width: 160px;
     }
     .contacts__container{
 
@@ -203,8 +203,8 @@ height: auto;
     .title{
       font-size: 45px;
     }
-    .line{
-      width:200px
+    .line {
+      width: 160px;
     }
     .contacts__container{
       flex-direction: column;
@@ -239,6 +239,9 @@ height: auto;
   .contacts{
     .title{
       font-size: 40px;
+    }
+    .line {
+      width: 160px;
     }
     .contacts__container{
       .contacts-form{

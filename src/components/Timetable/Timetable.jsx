@@ -11,6 +11,10 @@ export default function Timetable() {
   const [currentDayIndex, setCurrentDayIndex] = useState(new Date().getDay() === 0 ? 6 : new Date().getDay() - 1);
   const [popupEvent, setPopupEvent] = useState(null);
   const [currentTimePx, setCurrentTimePx] = useState(null);
+  const [isSchedule, setIsSchedule] = useState(true)
+  const toggleSchedule = () => {
+    setIsSchedule(prev => !prev);
+  };
 
   const TIME_COL_WIDTH = 70;
   const HEADER_HEIGHT = 44;
@@ -131,21 +135,37 @@ export default function Timetable() {
   const showEventPopup = (event) => { setPopupEvent(event); document.body.style.overflow = "hidden"; };
   const closePopup = () => { setPopupEvent(null); document.body.style.overflow = ""; };
 
+
   return (
     <main id="timetable" className="timetable" onClick={popupEvent ? closePopup : undefined}>
       <div className="header">
+        <div className="w-full h-auto flex md:flex-row flex-col items-center md:justify-between justify-center">
         <div className="title"><span>Р</span>озклад</div>
         <div className="line"></div>
-        {isMobile && (
+        <button      className={`toggle-schedule-btn${!isSchedule ? " hidden" : ""}`} onClick={toggleSchedule}>
+  {isSchedule ? "Сховати" : "Показати"}
+</button>
+        </div>
+        {
+  isSchedule && (
+    <>
+       {isMobile && (
           <div className="mobile-day-selector">
             <button onClick={goToPreviousDay} className="day-nav-btn prev-day">❮</button>
             <div className="current-day">{days[currentDayIndex]}</div>
             <button onClick={goToNextDay} className="day-nav-btn next-day">❯</button>
           </div>
         )}
-      </div>
+    </>
+  )
+}
+        
 
-      <div
+
+     
+      </div>
+      {isSchedule ?   <>
+         <div
         className="schedule"
         style={{
           padding: isMobile ? "0 10px 0 40px" : "0 40px",
@@ -183,7 +203,9 @@ export default function Timetable() {
           <div className="grid-lines" />
           {currentTimePx !== null && <div className="current-time-line" style={{ top: `calc(var(--header-height) + ${currentTimePx}px)` }} />}
         </div>
-      </div>
+      </div> 
+    
+   
 
       {popupEvent && (
         <div className="event-popup" onClick={closePopup}>
@@ -199,7 +221,9 @@ export default function Timetable() {
       )}
 
       <Link href="/timetable" className="view-full-timetable">Переглянути детальний розклад</Link>
-      
+      </> : <div className="w-full h-[20vh] md:mt-10  text-center md:text-4xl text-3xl font-medium flex items-center justify-center">Розклад приховано</div>}
+
+    
     </main>
   );
 }
