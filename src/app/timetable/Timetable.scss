@@ -22,6 +22,7 @@
       align-items: center;
       flex-direction: column;
       margin-bottom: 20px;
+      position: relative;
   
       .title {
         font-size: 50px;
@@ -29,7 +30,12 @@
         span { color: #CC0100; }
       }
       
-      .line { margin-bottom: 15px; }
+      .line {   width: 230px;
+        height: 6px;
+        background: linear-gradient(90deg, #CC0100, #ff6b6b);
+        border-radius: 5px;
+        margin: 10px;
+       }
       
       .mobile-day-selector {
         display: flex;
@@ -92,10 +98,11 @@
         width: 100%;
         height: calc(var(--hour-height) * var(--hours) + var(--header-height));
         overflow: hidden;
-        margin-top: 150px;
+        margin-top: 20px;
         
         @media (max-width: 768px) {
           grid-template-columns: var(--time-col-width) 1fr; 
+          margin-top: 0;
         }
       }
   
@@ -252,6 +259,9 @@
           margin-top: 20px;
           margin-bottom: 20px;
           .current-day { font-size: 28px; }
+        }
+        .line{
+          width: 160px;
         }
       }
       
