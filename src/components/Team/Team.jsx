@@ -11,8 +11,7 @@ const Team = () => {
     { name: "Марія Канцелярист", position: "Ведуча новин", instagram: "https://www.instagram.com/kantseliarist/", image: "/team/team3.webp" },
     { name: "Тарас Федунь", position: "Ведучий ранкового шоу Не Спати", instagram: "https://www.instagram.com/tarasfedun/", image: "/team/team4.webp" },
     { name: "Вікторія Дребот", position: "Ведуча Суботнього шоу", instagram: "https://www.instagram.com/vika_drebot/", image: "/team/team5.webp" },
-    { name: "Андрій Бакалов", position: "Ведучий Суботнього шоу", instagram: "https://www.instagram.com/andrew.bakalov/", image: "/team/team6.webp" },
-    { name: "Дмитро Дида", position: "Ведучий Суботнього шоу", instagram: "https://www.instagram.com/dima_dyda/", image: "/team/team7.webp" },
+    { name: "Андрій Бакалов", position: "Ведучий Суботнього шоу", instagram: "https://www.instagram.com/andrew.bakalov/", image: "/team/team6.webp" }
 
 
   ];
