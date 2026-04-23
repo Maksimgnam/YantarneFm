@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
+import Header from "@/components/Header/Header";
 import "./Timetable.scss";
 
 export default function Timetable() {
@@ -20,38 +20,27 @@ export default function Timetable() {
   const HEADER_HEIGHT = 44;
   const HOUR_START = 8;
   const HOUR_END = 23;
-  const HOUR_HEIGHT = 110;
+  const HOUR_HEIGHT = 200; // Велика висота години для деталізації
   const TOTAL_HOURS = HOUR_END - HOUR_START;
   const MINUTE_PX = HOUR_HEIGHT / 60;
 
   const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => HOUR_START + i);
   const days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"];
 
-  // --- ДОПОМІЖНІ ФУНКЦІЇ ДЛЯ ОБРОБКИ ДАНИХ ---
-
-  // Перетворює "08:30" в загальну кількість хвилин (наприклад, 8*60+30 = 510)
+  // --- ЛОГІКА ---
   const timeToMinutes = (timeStr) => {
+    if (!timeStr) return 0;
     const [h, m] = timeStr.split(":").map(Number);
     return h * 60 + m;
   };
 
-  // Фільтрація (> 20 хв) та сортування
   const processEvents = (events) => {
-    return events
-      .filter((ev) => {
-        const start = timeToMinutes(ev.start_time);
-        const end = timeToMinutes(ev.end_time);
-        const duration = end - start;
-        // Показувати тільки якщо тривалість більше 20 хвилин
-        return duration > 20;
-      })
-      .sort((a, b) => {
-        // Сортування від раннього до пізнього
-        return timeToMinutes(a.start_time) - timeToMinutes(b.start_time);
-      });
+    // Тільки сортуємо, нічого не видаляємо
+    return events.sort((a, b) => {
+      return timeToMinutes(a.start_time) - timeToMinutes(b.start_time);
+    });
   };
-
-  // -------------------------------------------
+  // --------------
 
   useEffect(() => {
     const fetchTimetable = async () => {
@@ -61,17 +50,12 @@ export default function Timetable() {
         if (!response.ok) throw new Error("API error");
 
         const data = await response.json();
-        
-        // Використовуємо отримані дані або дефолтні
         const rawEvents = data.length ? data : getDefaultEvents();
         
-        // Застосовуємо сортування та фільтрацію
         setTimetable(processEvents(rawEvents));
-
       } catch (err) {
-        console.warn("Помилка завантаження розкладу, використані тестові дані", err);
+        console.warn("Помилка завантаження, використані тестові дані", err);
         setError("Не вдалося завантажити розклад");
-        // Застосовуємо сортування та фільтрацію також для дефолтних даних при помилці
         setTimetable(processEvents(getDefaultEvents()));
       } finally {
         setLoading(false);
@@ -82,16 +66,18 @@ export default function Timetable() {
 
   const getDefaultEvents = () => [
     { title: "Ранкове шоу", start_time: "8:00", end_time: "12:00", days: [0, 1, 2, 3, 4], color: "#E65E5E" },
-    { title: "Авторські музичні мікси від DJ StasON!", start_time: "20:00", end_time: "23:00", days: [0, 1, 2, 3, 4, 5, 6], color: "#6FA9F5" },
-    { title: "Коротке шоу (не відобразиться)", start_time: "12:00", end_time: "12:10", days: [0, 1, 2, 3, 4], color: "#57ff6eff" },
-    { title: "Новини", start_time: "13:00", end_time: "13:30", days: [0, 1, 2, 3, 4], color: "#FFA500" },
+    { title: "Вечірній драйв", start_time: "20:00", end_time: "23:00", days: [0, 1, 2, 3, 4, 5, 6], color: "#6FA9F5" },
+    // Короткі події для тесту "гарного відображення":
+    { title: "Новини", start_time: "12:00", end_time: "12:10", days: [0, 1, 2, 3, 4], color: "#57ff6eff" },
+    { title: "Погода", start_time: "12:15", end_time: "12:25", days: [0, 1, 2, 3, 4], color: "#FFA500" },
+    { title: "Реклама", start_time: "12:30", end_time: "12:45", days: [0, 1, 2, 3, 4], color: "#D3D3D3" },
   ];
 
   useEffect(() => {
-    setIsMobile(window.innerWidth <= 768);
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   useEffect(() => {
@@ -107,13 +93,17 @@ export default function Timetable() {
 
   const parseHM = (str) => str.split(":").map(Number);
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+  
   const getPositionPx = (start, end) => {
     const [sh, sm] = parseHM(start);
     const [eh, em] = parseHM(end);
     const startMin = (sh - HOUR_START) * 60 + sm;
     const endMin = (eh - HOUR_START) * 60 + em;
+    
     const top = clamp(startMin, 0, TOTAL_HOURS * 60) * MINUTE_PX;
-    const height = Math.max(6, clamp(endMin, 0, TOTAL_HOURS * 60) * MINUTE_PX - top);
+    // Мінімальна висота 20px, щоб блок не зникав, якщо тривалість 0 хв
+    const height = Math.max(20, clamp(endMin, 0, TOTAL_HOURS * 60) * MINUTE_PX - top);
+    
     return { top, height };
   };
 
@@ -135,10 +125,11 @@ export default function Timetable() {
   const showEventPopup = (event) => { setPopupEvent(event); document.body.style.overflow = "hidden"; };
   const closePopup = () => { setPopupEvent(null); document.body.style.overflow = ""; };
 
-
   return (
+
+
     <main id="timetable" className="timetable" onClick={popupEvent ? closePopup : undefined}>
-      <div className="header">
+        <div className="header">
         <div className="w-full h-auto flex md:flex-row flex-col items-center md:justify-between justify-center">
         <div className="title"><span>Р</span>озклад</div>
         <div className="line"></div>
@@ -159,13 +150,12 @@ export default function Timetable() {
     </>
   )
 }
-        
+</div> 
 
 
      
-      </div>
-      {isSchedule ?   <>
-         <div
+{isSchedule ?   <>
+      <div
         className="schedule"
         style={{
           padding: isMobile ? "0 10px 0 40px" : "0 40px",
@@ -187,8 +177,15 @@ export default function Timetable() {
             <div key={dayIndex} className="day-col" style={{ minHeight: `calc(var(--hour-height) * var(--hours))` }}>
               {timetable.filter(ev => isEventOnDay(ev, dayIndex)).map((ev, idx) => {
                 const { top, height } = getPositionPx(ev.start_time, ev.end_time);
+                
+                // Якщо висота блоку менше 50px, вмикаємо режим "short-mode"
+                const isShortEvent = height < 50;
+
                 return (
-                  <div key={idx} className="event" style={{ top: `${top}px`, height: `${height}px`, backgroundColor: ev.color }}
+                  <div 
+                    key={idx} 
+                    className={`event ${isShortEvent ? 'short-mode' : ''}`} 
+                    style={{ top: `${top}px`, height: `${height}px`, backgroundColor: ev.color }}
                     title={`${ev.title} — ${ev.start_time}–${ev.end_time}`}
                     onClick={e => { e.stopPropagation(); showEventPopup(ev); }}
                   >
@@ -203,9 +200,7 @@ export default function Timetable() {
           <div className="grid-lines" />
           {currentTimePx !== null && <div className="current-time-line" style={{ top: `calc(var(--header-height) + ${currentTimePx}px)` }} />}
         </div>
-      </div> 
-    
-   
+      </div>
 
       {popupEvent && (
         <div className="event-popup" onClick={closePopup}>
@@ -219,11 +214,9 @@ export default function Timetable() {
           </div>
         </div>
       )}
-
-      <Link href="/timetable" className="view-full-timetable">Переглянути детальний розклад</Link>
-      </> : <div className="w-full h-[20vh] md:mt-10  text-center md:text-4xl text-3xl font-medium flex items-center justify-center">Розклад приховано</div>}
-
-    
+            </> : <div className="w-full h-[20vh] md:mt-10  text-center md:text-4xl text-3xl font-medium flex items-center justify-center">Розклад приховано</div>}
     </main>
+    
+
   );
 }

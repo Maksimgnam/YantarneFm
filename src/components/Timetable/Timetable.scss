@@ -1,16 +1,6 @@
-.view-full-timetable {
-  font-size: 22px;
-  font-weight: 600;
-  transition: background-color 0.2s;
-  margin-top: 40px;
-  padding: 20px 30px;
-  border-radius: 10px;
-  cursor: pointer;
-  background-color: #CC0100;
-  color: white;
-  &:hover {
-    background-color: #8d0000;
-  }
+.timetable-container{
+  width: 100%;
+  height: auto;
 }
 
 .timetable {
@@ -64,8 +54,7 @@ position: relative;
       transition: background-color 0.2s, border-color 0.2s, color 0.2s;
       white-space: nowrap;
       flex-shrink: 0;
-      position: relative;
-      bottom: 5px;
+
 
 
       &:hover {
@@ -131,17 +120,17 @@ position: relative;
   .schedule {
     --time-col-width: 70px;
     --header-height: 44px;
-    --hour-height: 60px;
+    --hour-height: 60px; /* Перевизначається в JS */
     --hours: 15;
 
     width: 100%;
-    min-width: 768px;
+    min-width: 768px; 
     margin-top: 10px;
     box-sizing: border-box;
     position: relative;
-
+    
     @media (max-width: 768px) {
-      min-width: auto;
+      min-width: auto; 
     }
 
     .schedule-grid {
@@ -162,10 +151,7 @@ position: relative;
       }
     }
 
-    .time-col-header {
-      grid-column: 1;
-      grid-row: 1;
-    }
+    .time-col-header { grid-column: 1; grid-row: 1; }
 
     .day-col-header {
       grid-row: 1;
@@ -175,11 +161,6 @@ position: relative;
       font-size: 14px;
       user-select: none;
       align-self: center;
-
-      // ← FIX: hide grid day headers on mobile — the mobile-day-selector in .header handles this
-      @media (max-width: 768px) {
-        display: none;
-      }
     }
 
     .time-col {
@@ -210,35 +191,70 @@ position: relative;
       background: transparent;
     }
 
+    /* --- СТИЛІ ПОДІЙ --- */
     .event {
       position: absolute;
       left: 6%;
       width: 88%;
-      border-radius: 10px;
-      padding: 8px 10px;
+      border-radius: 8px;
+      padding: 6px 8px;
       box-sizing: border-box;
       color: #111;
       font-family: Montserrat Alternates, sans-serif;
       font-weight: 500;
       font-size: 13px;
       z-index: 6;
+      
       display: flex;
-      flex-direction: column;
+      flex-direction: column; /* Звичайний режим: стовпчик */
       justify-content: space-between;
+      
       overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      transition: transform 0.1s ease, z-index 0.1s;
       cursor: pointer;
 
       .title {
-        font-weight: 600;
+        font-weight: 700;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        max-width: 100%;
+        width: 100%;
+        line-height: 1.2;
       }
-
+      
       .time {
         font-size: 11px;
-        margin-top: 4px;
+        margin-top: 2px;
+        opacity: 0.85;
+        white-space: nowrap;
+      }
+      
+      /* --- РЕЖИМ ДЛЯ КОРОТКИХ ПОДІЙ (< 50px) --- */
+      &.short-mode {
+        flex-direction: row; /* Горизонтальний режим */
+        align-items: center; /* Центрування по вертикалі */
+        justify-content: flex-start;
+        gap: 8px; /* Відступ між назвою і часом */
+        padding: 0 6px;
+
+        .title {
+          flex: 1; /* Назва бере все вільне місце */
+          margin-bottom: 0;
+          font-size: 12px;
+        }
+
+        .time {
+          flex-shrink: 0; /* Час не стискається */
+          margin-top: 0;
+          font-size: 10px;
+          font-weight: 600;
+        }
+      }
+
+      &:hover {
+        z-index: 20;
+        transform: scale(1.02);
       }
     }
 
@@ -250,11 +266,9 @@ position: relative;
       height: calc(var(--hour-height) * var(--hours));
       z-index: 1;
       pointer-events: none;
-      background-image: repeating-linear-gradient(
-        to bottom,
-        transparent 0 calc(var(--hour-height) - 3px),
-        rgba(180, 0, 0, 0.95) calc(var(--hour-height) - 3px) var(--hour-height)
-      );
+      background-image: repeating-linear-gradient(to bottom,
+          transparent 0 calc(var(--hour-height) - 3px),
+          rgba(180, 0, 0, 0.95) calc(var(--hour-height) - 3px) var(--hour-height));
       background-repeat: repeat;
       background-size: 100% var(--hour-height);
     }
@@ -275,178 +289,98 @@ position: relative;
     .schedule {
       padding: 0 20px !important;
       margin-top: 30px;
-
       .event {
-        padding: 6px 8px;
+        padding: 4px 6px;
         font-size: 12px;
-
-        .time {
-          font-size: 10px;
-        }
+        .time { font-size: 10px; }
       }
     }
   }
-
+  
   @media (max-width: 768px) {
-    .view-full-timetable {
-      font-size: 18px;
-      padding: 16px 22px;
-      margin-top: 30px;
-    }
-
     .header {
-      .title {
-        font-size: 36px;
-      }
-      .line{
-        display: flex;
-      }
-
+      .title { font-size: 36px; }
+.toggle-schedule-btn{
+  margin-bottom: 18px;
+}
       .mobile-day-selector {
         margin-top: 20px;
         margin-bottom: 20px;
+        .current-day { font-size: 28px; }
+      }
+      .line{
+        display: flex;
 
-        .current-day {
-          font-size: 28px;
-        }
       }
     }
-
+    
     .schedule {
       margin-top: 20px;
-      overflow-x: visible;
+      overflow-x: visible; 
       -webkit-overflow-scrolling: touch;
       padding: 0 !important;
-
-     
-
-      // On mobile, replace the vertical left-border with a top border on the content column
+      
+      .day-col-header { font-size: 18px; font-weight: 700; }
       .day-col {
         border-left: none;
         border-top: 3px solid rgba(180, 0, 0, 0.95);
         padding-top: 10px;
       }
-
-      .event {
-        left: 3%;
-        width: 94%;
-      }
+      .event { left: 3%; width: 94%; }
     }
   }
-
+  
   @media (max-width: 480px) {
-    .view-full-timetable {
-      font-size: 15px;
-      padding: 12px 18px;
-      margin-top: 20px;
-      border-radius: 8px;
-    }
-
-    .header .title {
-      font-size: 35px;
-    }
-
+    .header .title { font-size: 28px; }
     .schedule {
-      --hour-height: 70px;
-      margin-top:0;
-
-      .time-cell {
-        font-size: 10px;
-        padding-left: 4px;
-      }
-
+      --hour-height: 70px; 
+      margin-top: 30px;
+      .time-cell { font-size: 10px; padding-left: 4px; }
       .event {
-        left: 4%;
-        width: 92%;
-        padding: 4px 6px;
-        font-size: 11px;
-
-        .time {
-          font-size: 9px;
-        }
+        left: 4%; width: 92%; padding: 4px 6px; font-size: 11px;
+        .time { font-size: 9px; }
       }
     }
   }
-
+  
   .event-popup {
     position: fixed;
     z-index: 1000;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: flex; justify-content: center; align-items: center;
     overflow-y: auto;
-
+    
     .popup-header {
       padding: 16px 20px;
       position: relative;
-
-      h3 {
-        margin: 0;
-        font-size: 20px;
-        font-weight: 600;
-        color: #111;
-        padding-right: 40px;
-      }
-
+      h3 { margin: 0; font-size: 20px; font-weight: 600; color: #111; padding-right: 40px; }
       .close-popup {
-        position: absolute;
-        top: 12px;
-        right: 12px;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
+        position: absolute; top: 12px; right: 12px;
+        width: 32px; height: 32px; border-radius: 50%;
         background-color: rgba(0, 0, 0, 0.3);
-        border: none;
-        color: white;
-        font-size: 24px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background-color 0.2s;
-
-        &:hover {
-          background-color: rgba(0, 0, 0, 0.5);
-        }
+        border: none; color: white; font-size: 24px;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; transition: background-color 0.2s;
+        &:hover { background-color: rgba(0, 0, 0, 0.5); }
       }
     }
-
+    
     .popup-content {
-      max-width: 500px;
-      width: 90%;
-      margin: 10% auto;
-      background-color: white;
-      border-radius: 12px;
+      max-width: 500px; width: 90%; margin: 10% auto;
+      background-color: white; border-radius: 12px;
       box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
       overflow: hidden;
-
       p {
-        margin: 12px 0;
-        font-size: 16px;
-        line-height: 1.5;
-        padding: 0 20px 20px;
-        color: #333;
+        margin: 12px 0; font-size: 16px; line-height: 1.5;
+        padding: 0 20px 20px; color: #333;
       }
     }
-
+    
     @media (max-width: 768px) {
-      .popup-content {
-        width: 95%;
-        margin: 20% auto;
-      }
-
-      .popup-header h3 {
-        font-size: 18px;
-      }
-
-      .popup-content p {
-        font-size: 15px;
-      }
+      .popup-content { width: 95%; margin: 20% auto; }
+      .popup-header h3 { font-size: 18px; }
+      .popup-content p { font-size: 15px; }
     }
   }
 }

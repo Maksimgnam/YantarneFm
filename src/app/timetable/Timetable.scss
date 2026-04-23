@@ -10,9 +10,7 @@
     flex-direction: column;
     align-items: center;
     margin-top: 30px;
-    position: relative; 
-    top: 100px;
-    padding-bottom: 100px;
+    position: relative;
   
     .header {
       width: 100%;
@@ -21,29 +19,71 @@
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      margin-bottom: 20px;
-      position: relative;
+  position: relative;
   
       .title {
         font-size: 50px;
         font-weight: 500;
-        span { color: #CC0100; }
+        
+  
+        span {
+          color: #CC0100;
+        }
       }
-      
-      .line {   width: 230px;
+      .line {
+        width: 150px;
         height: 6px;
         background: linear-gradient(90deg, #CC0100, #ff6b6b);
         border-radius: 5px;
-        margin: 10px;
-       }
-      
+        display: none;
+      }
+  
+      .toggle-schedule-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 60px;
+        border-radius: 10px;
+        border: 1.5px solid rgba(150, 150, 150, 0.35);
+        background: transparent;
+        color: inherit;
+        font-family: inherit;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+        white-space: nowrap;
+        flex-shrink: 0;
+
+  
+  
+        &:hover {
+          background-color: rgba(150, 150, 150, 0.12);
+        }
+  
+        &:active {
+          transform: scale(0.97);
+        }
+  
+        &.hidden {
+          background-color: #CC0100;
+          color: white;
+          border-color: #CC0100;
+  
+          &:hover {
+            background-color: #a30000;
+            border-color: #a30000;
+          }
+        }
+      }
+  
       .mobile-day-selector {
         display: flex;
         align-items: center;
         justify-content: center;
         margin-top: 10px;
         margin-bottom: 15px;
-        
+  
         .current-day {
           font-size: 24px;
           font-weight: 600;
@@ -51,7 +91,7 @@
           min-width: 60px;
           text-align: center;
         }
-        
+  
         .day-nav-btn {
           background-color: #CC0100;
           color: white;
@@ -65,9 +105,14 @@
           justify-content: center;
           cursor: pointer;
           transition: background-color 0.2s, transform 0.2s;
-          
-          &:hover { background-color: #a30000; }
-          &:active { transform: scale(0.95); }
+  
+          &:hover {
+            background-color: #a30000;
+          }
+  
+          &:active {
+            transform: scale(0.95);
+          }
         }
       }
     }
@@ -99,10 +144,10 @@
         height: calc(var(--hour-height) * var(--hours) + var(--header-height));
         overflow: hidden;
         margin-top: 20px;
-        
+
         @media (max-width: 768px) {
-          grid-template-columns: var(--time-col-width) 1fr; 
-          margin-top: 0;
+          grid-template-columns: var(--time-col-width) 1fr;
+          margin-top: 0; // ← fixed: was effectively broken/370px causing layout shift
         }
       }
   
@@ -255,13 +300,17 @@
     @media (max-width: 768px) {
       .header {
         .title { font-size: 36px; }
+        .toggle-schedule-btn{
+          margin-top: 20px;
+        }
         .mobile-day-selector {
           margin-top: 20px;
           margin-bottom: 20px;
           .current-day { font-size: 28px; }
         }
         .line{
-          width: 160px;
+          display: flex;
+
         }
       }
       
