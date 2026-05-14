@@ -8,7 +8,7 @@ const Contacts = () => {
   const [message, setMessage] = useState('');
 
   // 👇 multiple chat IDs here
-  const chatIds = ['1608433214'];
+  const chatIds = ['942292811', '613281017'];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
