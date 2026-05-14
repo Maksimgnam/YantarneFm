@@ -8,7 +8,7 @@ const Contacts = () => {
   const [message, setMessage] = useState('');
 
   // 👇 multiple chat IDs here
-  const chatIds = ['613281017', '942292811'];
+  const chatIds = ['1608433214'];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -98,21 +98,26 @@ const Contacts = () => {
             </div>
 
             <div className="contacts-info-overlay-socials">
+            <div className="contacts-info-overlay-social">
               <a href="https://www.instagram.com/yantarne.fm/" target="_blank" rel="noopener noreferrer">
                 <Image src="/contacts/instagram.webp" width={50} height={50} alt="Instagram icon" />
               </a>
-
+              </div>
+              <div className="contacts-info-overlay-social">
               <a href="https://www.facebook.com/yantarne.fm" target="_blank" rel="noopener noreferrer">
                 <Image src="/contacts/facebook.webp" width={50} height={50} alt="Facebook icon" />
               </a>
-
+              </div>
+              <div className="contacts-info-overlay-social">
               <a href="https://www.youtube.com/channel/UCTaO-GLI_0srISh-Ase5NZw" target="_blank" rel="noopener noreferrer">
                 <Image src="/contacts/youtube.webp" width={50} height={50} alt="YouTube icon" />
               </a>
-
+              </div>
+              <div className="contacts-info-overlay-social">
               <a href="https://soundcloud.com/andriy-yantarne" target="_blank" rel="noopener noreferrer">
                 <Image src="/contacts/soundcloud.webp" width={50} height={50} alt="SoundCloud icon" />
               </a>
+              </div>
             </div>
 
           </div>
