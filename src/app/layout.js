@@ -24,34 +24,25 @@ export const metadata = {
   title: "Yantarne FM – радіо рідного міста Новояворівськ | 97.6 FM",
   description:
     "Yantarne.FM — радіо рідного міста Новояворівськ. Слухайте нас онлайн та на хвилі 97,6 FM. Музика, новини, події та рідний настрій щодня.",
+
+  verification: {
+    google: "Kr1uNeAWUgWGTAaH2zoKxKNautFfvYh5DZfNyUtpyWI",
+  },
+
   keywords: [
     "Yantarne FM",
     "Янтарне FM",
     "Новояворівськ радіо",
     "97.6 FM",
-    "слухати радіо онлайн",
-    "радіостанція Новояворівськ",
   ],
+
   openGraph: {
     title: "Yantarne FM – радіо рідного міста Новояворівськ | 97.6 FM",
     description:
-      "Слухайте Yantarne.FM онлайн та на частоті 97,6 FM у Новояворівську. Музика, новини та події нашого міста.",
+      "Слухайте Yantarne.FM онлайн та на частоті 97,6 FM у Новояворівську.",
     url: "https://yantarne.fm",
     siteName: "Yantarne FM",
     type: "website",
-    images: [
-      {
-        url: "/og-image.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Yantarne FM – радіо рідного міста Новояворівськ",
-      },
-    ],
-  },
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
-    apple: "/favicon.ico",
   },
 };
 
