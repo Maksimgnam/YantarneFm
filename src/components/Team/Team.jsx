@@ -7,7 +7,7 @@ const Team = () => {
 
   const teamMembers = [
     { name: "Андрій Стасишин", position: "Музичний редактор та Директор Радіостанції", instagram: "https://www.instagram.com/djstason", image: "/team/team1.webp" },
-    { name: "Софія Труш", position: "Ведуча ракового шоу Не спати Програмний Директор", instagram: "https://www.instagram.com/_trush_sofia_/", image: "/team/team2.webp" },
+    { name: "Софія Труш", position: "Ведуча ранкового шоу Не спати та Програмний Директор", instagram: "https://www.instagram.com/_trush_sofia_/", image: "/team/team2.webp" },
     { name: "Марія Канцелярист", position: "Ведуча новин", instagram: "https://www.instagram.com/kantseliarist/", image: "/team/team3.webp" },
     { name: "Тарас Федунь", position: "Ведучий ранкового шоу Не Спати", instagram: "https://www.instagram.com/tarasfedun/", image: "/team/team4.webp" },
     { name: "Вікторія Дребот", position: "Ведуча Суботнього шоу", instagram: "https://www.instagram.com/vika_drebot/", image: "/team/team5.webp" },
