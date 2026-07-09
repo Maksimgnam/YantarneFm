@@ -1,4 +1,5 @@
 import { Geist, Geist_Mono, Montserrat_Alternates } from "next/font/google";
+import Script from 'next/script';
 import "./globals.css";
 import '../styles/global.scss';
 import MiniPlayer from '@/components/MiniPlayer/MiniPlayer'
@@ -54,6 +55,20 @@ export default function RootLayout({ children }) {
       >
         {children}
         <MiniPlayer />
+
+        {/* Google Analytics */}
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-8S1CVFR5GM"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-8S1CVFR5GM');
+          `}
+        </Script>
       </body>
     </html>
   );
