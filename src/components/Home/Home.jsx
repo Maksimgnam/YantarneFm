@@ -5,16 +5,17 @@ import './Home.scss';
 import usePlayerStore from '@/store/usePlayerStore';
 
 const Home = () => {
-  const { 
-    isPlaying, 
-    trackInfo, 
-    volume, 
-    isMuted, 
-    analyser, 
-    togglePlay, 
-    setVolume, 
+  const {
+    isPlaying,
+    connectionStatus,
+    trackInfo,
+    volume,
+    isMuted,
+    analyser,
+    togglePlay,
+    setVolume,
     setIsMuted,
-    initializeAudioContext 
+    initializeAudioContext,
   } = usePlayerStore();
 
   const [backgroundImages, setBackgroundImages] = useState(['/back.webp']);
@@ -35,17 +36,20 @@ const Home = () => {
   }, [backgroundImages]);
 
   // Visualizer loop
+  // ВИПРАВЛЕНО: доданий !isPlaying у гард і в залежності ефекту, щоб raf-цикл
+  // не молотив getByteFrequencyData/requestAnimationFrame вхолосту на паузі
+  // (зайве навантаження CPU/батареї, особливо на мобільних).
   useEffect(() => {
-    if (!analyser) return;
+    if (!analyser || !isPlaying) return;
 
     if (!dataArrayRef.current || dataArrayRef.current.length !== analyser.frequencyBinCount) {
-        dataArrayRef.current = new Uint8Array(analyser.frequencyBinCount);
+      dataArrayRef.current = new Uint8Array(analyser.frequencyBinCount);
     }
 
     const draw = () => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      
+
       const ctx = canvas.getContext('2d');
       if (!ctx) return;
 
@@ -57,7 +61,7 @@ const Home = () => {
       analyser.getByteFrequencyData(dataArray);
 
       ctx.clearRect(0, 0, width, height);
-      
+
       // 1. НАЛАШТУВАННЯ КОЛЬОРУ (НЕ ПРОЗОРИЙ)
       ctx.fillStyle = '#FFFFFF'; // Суцільний білий колір
 
@@ -65,19 +69,19 @@ const Home = () => {
       // Високі частоти (останні ~25-30%) часто пусті. Ми беремо тільки перші 70%,
       // щоб візуалізація виглядала "повною" до самого краю екрана.
       const usefulBufferLength = Math.floor(bufferLength * 0.70);
-      
+
       const spacing = 4; // Відступ між стовпчиками
       // Розтягуємо usefulBufferLength на всю ширину (width)
-      const slotWidth = width / usefulBufferLength; 
+      const slotWidth = width / usefulBufferLength;
 
       for (let i = 0; i < usefulBufferLength; i++) {
         // Нормалізація висоти (0..255 -> 0..height)
         const v = dataArray[i] / 255;
-        const barHeight = v * height; 
-        
+        const barHeight = v * height;
+
         // Розрахунок позиції
         const x = i * slotWidth;
-        
+
         // Ширина стовпчика (slotWidth мінус відступ)
         // Math.max(2, ...) гарантує, що стовпчик не зникне
         const barWidth = Math.max(2, slotWidth - spacing);
@@ -94,23 +98,23 @@ const Home = () => {
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [analyser]);
+  }, [analyser, isPlaying]);
 
   // Resize logic
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-  
+
     const resize = () => {
       const dpr = window.devicePixelRatio || 1;
-      
+
       // Використовуємо window.innerWidth для точної ширини вікна
       const logicalWidth = window.innerWidth;
       const logicalHeight = window.innerHeight * 0.35; // Трохи збільшив висоту (35% екрану)
-  
+
       canvas.width = logicalWidth * dpr;
       canvas.height = logicalHeight * dpr;
-      
+
       // Стилі для коректного відображення на екрані
       canvas.style.width = `${logicalWidth}px`;
       canvas.style.height = `${logicalHeight}px`;
@@ -118,12 +122,11 @@ const Home = () => {
       const ctx = canvas.getContext('2d');
       ctx.scale(dpr, dpr);
     };
-  
+
     resize();
     window.addEventListener('resize', resize);
     return () => window.removeEventListener('resize', resize);
   }, []);
-  
 
   // Fetch background images
   useEffect(() => {
@@ -132,7 +135,7 @@ const Home = () => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API}/api/back-images`);
         const data = await res.json();
         if (data?.backgroundImages?.length) {
-            setBackgroundImages(data.backgroundImages);
+          setBackgroundImages(data.backgroundImages);
         }
       } catch (err) {
         console.error('Failed to fetch background images:', err);
@@ -141,9 +144,17 @@ const Home = () => {
     fetchBackgroundImages();
   }, []);
 
+  // ВИПРАВЛЕНО: обгорнуто в try/catch. togglePlay() є async і може кинути
+  // помилку (наприклад NotAllowedError через autoplay policy браузера) —
+  // раніше вона йшла в необроблений reject і UI міг лишитись у стані,
+  // що не відповідає реальному відтворенню.
   const handlePlayClick = async () => {
-    initializeAudioContext();
-    await togglePlay();
+    try {
+      initializeAudioContext();
+      await togglePlay();
+    } catch (err) {
+      console.error('Play/pause toggle failed:', err);
+    }
   };
 
   const handleMuteToggle = () => setIsMuted(!isMuted);
@@ -157,6 +168,15 @@ const Home = () => {
   const increaseVolume = () => setVolume(Math.min(100, volume + 10));
   const decreaseVolume = () => setVolume(Math.max(0, volume - 10));
 
+  // ДОДАНО: людський текст статусу з'єднання (використовує connectionStatus
+  // з оновленого usePlayerStore — 'connecting' | 'playing' | 'reconnecting' | 'stalled' | 'error' | 'idle')
+  const statusLabel = {
+    connecting: "Підключення…",
+    reconnecting: "Перепідключення…",
+    stalled: "Втрачено з'єднання, пробуємо знову…",
+    error: "Помилка з'єднання, пробуємо знову…",
+  }[connectionStatus];
+
   return (
     <main
       className="home"
@@ -166,28 +186,28 @@ const Home = () => {
         backgroundPosition: 'center',
         transition: 'background-image 1s ease-in-out',
         position: 'relative', // Важливо для абсолютного позиціонування всередині
-        overflow: 'hidden'    // Щоб нічого не вилазило
+        overflow: 'hidden', // Щоб нічого не вилазило
       }}
     >
       {/* Visualizer Canvas */}
-      <canvas 
-        ref={canvasRef} 
+      <canvas
+        ref={canvasRef}
         style={{
           position: 'absolute',
           bottom: 0,
           left: 0,
           zIndex: 1,
           pointerEvents: 'none',
-          // Розміри контролюються через JS (resize ефект), 
+          // Розміри контролюються через JS (resize ефект),
           // але тут задаємо базові для надійності
-          width: '100vw', 
-          height: '35vh' 
+          width: '100vw',
+          height: '35vh',
         }}
       />
 
       <div className="overlay" />
 
-      <div className="player-container" style={{ zIndex: 10 }}> 
+      <div className="player-container" style={{ zIndex: 10 }}>
         <div className="controls">
           <button onClick={handlePlayClick} className="border_btn" aria-label={isPlaying ? 'Pause' : 'Play'}>
             <div className="grey_btn">
@@ -209,6 +229,9 @@ const Home = () => {
         <div className="track-info">
           <h2 className="title">{trackInfo.title || 'YantarneFM'}</h2>
           <h3 className="artist">{trackInfo.artist || 'Радіо рідного міста'}</h3>
+          {/* ДОДАНО: індикація стану з'єднання, щоб користувач бачив,
+              що плеєр сам бореться з розривом, а не думав, що сайт зламався */}
+          {statusLabel && <p className="stream-status">{statusLabel}</p>}
         </div>
 
         <div className="volume-vertical">
