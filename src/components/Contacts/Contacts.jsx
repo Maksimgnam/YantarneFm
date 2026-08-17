@@ -51,27 +51,35 @@ const Contacts = () => {
       <div className="line" />
 
       <div className="contacts__container">
-
         <div className="contacts-form">
-          <h2>
-            Надіслати <span>повідомлення</span>
-          </h2>
+          <div className="contacts-form__header">
+            <h2>
+              Надіслати <span>повідомлення</span>
+            </h2>
+            <p className="form-note">
+              💡 Якщо ви чекаєте від нас відповідь, будь ласка, залиште свої контакти у повідомленні.
+            </p>
+          </div>
 
           <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder="Введіть своє ім’я"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+            <div className="input-group">
+              <input
+                type="text"
+                placeholder="Введіть своє ім’я"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
 
-            <textarea
-              placeholder="Введіть повідомлення"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              required
-            />
+            <div className="input-group">
+              <textarea
+                placeholder="Введіть повідомлення..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                required
+              />
+            </div>
 
             <button type="submit">Надіслати</button>
           </form>
@@ -83,43 +91,40 @@ const Contacts = () => {
           <div className="contacts-info-overlay">
             <div></div>
 
-            <div>
+            <div className="contacts-info-list">
               <p>
                 <strong><span>Є</span>мейл:</strong> yantarne.fm@gmail.com
               </p>
-
               <p>
                 <strong><span>С</span>тудія:</strong> +380982008688
               </p>
-
               <p>
                 <strong><span>Р</span>еклама:</strong> +380683020555
               </p>
             </div>
 
             <div className="contacts-info-overlay-socials">
-            <div className="contacts-info-overlay-social">
-              <a href="https://www.instagram.com/yantarne.fm/" target="_blank" rel="noopener noreferrer">
-                <Image src="/contacts/instagram.webp" width={50} height={50} alt="Instagram icon" />
-              </a>
+              <div className="contacts-info-overlay-social">
+                <a href="https://www.instagram.com/yantarne.fm/" target="_blank" rel="noopener noreferrer">
+                  <Image src="/contacts/instagram.webp" width={30} height={30} alt="Instagram icon" />
+                </a>
               </div>
               <div className="contacts-info-overlay-social">
-              <a href="https://www.facebook.com/yantarne.fm" target="_blank" rel="noopener noreferrer">
-                <Image src="/contacts/facebook.webp" width={50} height={50} alt="Facebook icon" />
-              </a>
+                <a href="https://www.facebook.com/yantarne.fm" target="_blank" rel="noopener noreferrer">
+                  <Image src="/contacts/facebook.webp" width={30} height={30} alt="Facebook icon" />
+                </a>
               </div>
               <div className="contacts-info-overlay-social">
-              <a href="https://www.youtube.com/channel/UCTaO-GLI_0srISh-Ase5NZw" target="_blank" rel="noopener noreferrer">
-                <Image src="/contacts/youtube.webp" width={50} height={50} alt="YouTube icon" />
-              </a>
+                <a href="https://www.youtube.com/channel/UCTaO-GLI_0srISh-Ase5NZw" target="_blank" rel="noopener noreferrer">
+                  <Image src="/contacts/youtube.webp" width={30} height={30} alt="YouTube icon" />
+                </a>
               </div>
               <div className="contacts-info-overlay-social">
-              <a href="https://soundcloud.com/andriy-yantarne" target="_blank" rel="noopener noreferrer">
-                <Image src="/contacts/soundcloud.webp" width={50} height={50} alt="SoundCloud icon" />
-              </a>
+                <a href="https://soundcloud.com/andriy-yantarne" target="_blank" rel="noopener noreferrer">
+                  <Image src="/contacts/soundcloud.webp" width={30} height={30} alt="SoundCloud icon" />
+                </a>
               </div>
             </div>
-
           </div>
         </div>
       </div>

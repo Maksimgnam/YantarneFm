@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import './Home.scss';
 import usePlayerStore from '@/store/usePlayerStore';
+import StreamDebugOverlay from '../ StreamDebugOverlay';
 
 const Home = () => {
   const {
@@ -268,6 +269,7 @@ const Home = () => {
           </button>
         </div>
       </div>
+      <StreamDebugOverlay />
     </main>
   );
 };

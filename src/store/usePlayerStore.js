@@ -5,8 +5,20 @@ const MAX_RECONNECT_DELAY = 30000; // 30с — стеля backoff
 const BASE_RECONNECT_DELAY = 1000; // старт з 1с
 const STALL_TIMEOUT = 15000; // якщо 15с нема прогресу — вважаємо стрім мертвим
 
+// ДОДАНО: захист від "накопичення" буфера (buffer drift).
+// Для живого <audio> стріму без сегментації (звичайний Icecast/MP3/AAC progressive
+// download) браузер може з часом буферизувати більше даних наперед, ніж потрібно
+// для стабільного відтворення — і фактична затримка від ефіру поступово росте
+// протягом сесії прослуховування (годинами може дійти до десятків секунд).
+// Періодично перевіряємо, наскільки буфер випереджає currentTime, і якщо це
+// перевищує ціль — тихо перепідключаємось на live edge (без видимого "reconnecting"
+// в UI, слухач майже не помітить коротку паузу ~100-300мс).
+const BUFFER_DRIFT_THRESHOLD = 12; // сек — якщо буфер випереджає більше — ресинк
+const RESYNC_CHECK_INTERVAL = 30000; // перевіряти кожні 30с під час відтворення
+
 let reconnectTimer = null;
 let stallTimer = null;
+let resyncCheckTimer = null;
 let reconnectAttempts = 0;
 
 const usePlayerStore = create((set, get) => ({
@@ -91,6 +103,7 @@ const usePlayerStore = create((set, get) => ({
 
     if (isPlaying) {
       clearReconnect();
+      clearResyncCheck();
       audioElement.pause();
       set({ isPlaying: false, connectionStatus: 'idle' });
     } else {
@@ -99,7 +112,10 @@ const usePlayerStore = create((set, get) => ({
   },
 }));
 
-async function startPlayback(get, set, { isReconnect = false } = {}) {
+// ДОДАНО: параметр silent — для тихого ресинку на live edge без блимання
+// статусу "reconnecting" в UI (юзер не мав ставити на паузу і не мав помітити
+// втрату зв'язку, тому не варто лякати індикатором)
+async function startPlayback(get, set, { isReconnect = false, silent = false } = {}) {
   const { audioElement, audioContext } = get();
   if (!audioElement) return;
 
@@ -111,7 +127,9 @@ async function startPlayback(get, set, { isReconnect = false } = {}) {
     }
   }
 
-  set({ connectionStatus: isReconnect ? 'reconnecting' : 'connecting' });
+  if (!silent) {
+    set({ connectionStatus: isReconnect ? 'reconnecting' : 'connecting' });
+  }
 
   try {
     // cache-busting query — без нього браузер/проксі можуть повторно
@@ -123,9 +141,12 @@ async function startPlayback(get, set, { isReconnect = false } = {}) {
     set({ isPlaying: true, connectionStatus: 'playing' });
     reconnectAttempts = 0;
     armStallTimer(get, set);
+    armResyncCheck(get, set);
   } catch (err) {
     console.error('Playback failed:', err);
-    set({ isPlaying: false, connectionStatus: 'error' });
+    if (!silent) {
+      set({ isPlaying: false, connectionStatus: 'error' });
+    }
     scheduleReconnect(get, set);
   }
 }
@@ -165,6 +186,38 @@ function armStallTimer(get, set) {
       scheduleReconnect(get, set);
     }
   }, STALL_TIMEOUT);
+}
+
+// ДОДАНО: періодична перевірка "наскільки буфер випереджає точку відтворення".
+// audioElement.buffered — це TimeRanges того, що браузер вже завантажив.
+// Якщо кінець останнього завантаженого діапазону значно попереду currentTime,
+// значить накопичився зайвий буфер і слухач чує ефір із зайвою затримкою.
+function armResyncCheck(get, set) {
+  clearResyncCheck();
+  resyncCheckTimer = setInterval(() => checkBufferDrift(get, set), RESYNC_CHECK_INTERVAL);
+}
+
+function clearResyncCheck() {
+  if (resyncCheckTimer) clearInterval(resyncCheckTimer);
+  resyncCheckTimer = null;
+}
+
+function checkBufferDrift(get, set) {
+  const { audioElement, isPlaying } = get();
+  if (!audioElement || !isPlaying || audioElement.paused) return;
+
+  const buffered = audioElement.buffered;
+  if (!buffered || buffered.length === 0) return;
+
+  const bufferedEnd = buffered.end(buffered.length - 1);
+  const aheadSeconds = bufferedEnd - audioElement.currentTime;
+
+  if (aheadSeconds > BUFFER_DRIFT_THRESHOLD) {
+    console.info(
+      `[stream] Буфер випереджає на ${aheadSeconds.toFixed(1)}с (ціль ≤${BUFFER_DRIFT_THRESHOLD}с) — тихий ресинк на live edge`
+    );
+    startPlayback(get, set, { isReconnect: true, silent: true });
+  }
 }
 
 function attachListeners(el, get, set) {
