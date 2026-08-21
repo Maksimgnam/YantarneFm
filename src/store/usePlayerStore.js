@@ -184,8 +184,25 @@ async function startPlayback(get, set, { isReconnect = false, silent = false } =
 }
 
 // ВИПРАВЛЕНО: додано параметр silent, який реально пробрасывается далі
+// ВИПРАВЛЕНО (v2): поки сторінка у фоні — жодного src/load()-реконекту.
+// Максимум — м'який повторний .play() на вже наявному елементі (без зміни
+// ресурсу), що з набагато більшою ймовірністю дозволений браузером, бо це
+// "продовження" вже дозволеної сесії, а не нова. Повноцінний реконект
+// відбудеться при поверненні у форграунд через recoverAfterForeground.
 function scheduleReconnect(get, set, silent = false) {
   clearReconnect();
+
+  if (isHidden()) {
+    const { audioElement } = get();
+    if (audioElement && audioElement.paused) {
+      audioElement.play().catch(() => {
+        // не вдалось — це очікувано у фоні; довершимо відновлення на
+        // recoverAfterForeground, коли користувач поверне сторінку
+      });
+    }
+    return; // жодного backoff/src-реконекту, поки сторінка схована
+  }
+
   const delay = Math.min(
     BASE_RECONNECT_DELAY * 2 ** reconnectAttempts,
     MAX_RECONNECT_DELAY
@@ -209,6 +226,20 @@ function clearReconnect() {
   reconnectTimer = null;
   if (stallTimer) clearTimeout(stallTimer);
   stallTimer = null;
+}
+
+// ДОДАНО (v2 — реальна причина швидкого й однакового на iOS/Android розриву):
+// поки document.hidden === true, НІКОЛИ не можна чіпати audioElement.src /
+// викликати .load(). Мобільні браузери трактують зміну src + повторний
+// .play() як старт НОВОЇ медіа-сесії (а не продовження вже дозволеної) — і
+// такий play(), ініційований скриптом (не прямим тапом користувача), поки
+// сторінка згорнута/заблокована, ВІДХИЛЯЄТЬСЯ політикою автовідтворення.
+// Саме це вбивало звук: періодичний checkBufferDrift (кожні 30с) чи
+// watchdog у фоні намагались "тихо" перепідключитись через src+load(),
+// отримували відмову браузера — і назавжди лишали audio мовчазним, поки
+// isPlaying в сторі й далі показував true (кнопка "грає").
+function isHidden() {
+  return typeof document !== 'undefined' && document.hidden;
 }
 
 function armStallTimer(get, set) {
@@ -270,6 +301,11 @@ function clearResyncCheck() {
 }
 
 function checkBufferDrift(get, set) {
+  // ВИПРАВЛЕНО (v2): поки сторінка згорнута, ресинк буфера нікому не чутно
+  // (екран заблокований) — а спроба його зробити якраз і була причиною
+  // "мовчазного" зависання: src-реконект у фоні браузер відхиляє.
+  if (isHidden()) return;
+
   const { audioElement, isPlaying } = get();
   if (!audioElement || !isPlaying || audioElement.paused) return;
 
@@ -381,22 +417,35 @@ function recoverAfterForeground(get, set) {
 function attachListeners(el, get, set) {
   el._onError = () => {
     console.warn('Audio error:', el.error);
+    // ВИПРАВЛЕНО (v2): у фоні НЕ скидаємо isPlaying — інакше
+    // recoverAfterForeground (який діє лише коли isPlaying === true) не
+    // зможе полагодити стрім, коли користувач поверне сторінку.
+    // connectionStatus теж не чіпаємо у фоні — все одно невидимо користувачу.
+    if (isHidden()) {
+      scheduleReconnect(get, set); // сам розбереться (м'який play() у фоні)
+      return;
+    }
     set({ isPlaying: false, connectionStatus: 'error' });
     scheduleReconnect(get, set);
   };
   el._onStalled = () => {
     // 'stalled' = браузер намагався отримати дані, але не зміг (типово для розриву Icecast)
-    set({ connectionStatus: 'stalled' });
+    if (!isHidden()) set({ connectionStatus: 'stalled' });
     scheduleReconnect(get, set);
   };
   el._onWaiting = () => {
     // 'waiting' = буферизація; даємо шанс відновитись самостійно,
     // але страхуємось таймером на випадок, якщо буферизація ніколи не завершиться
-    set({ connectionStatus: 'connecting' });
+    if (!isHidden()) set({ connectionStatus: 'connecting' });
     armStallTimer(get, set);
   };
   el._onEnded = () => {
     // Для живого стріму 'ended' зазвичай означає, що сервер закрив з'єднання
+    // ВИПРАВЛЕНО (v2): та сама логіка — не скидаємо isPlaying у фоні
+    if (isHidden()) {
+      scheduleReconnect(get, set);
+      return;
+    }
     set({ isPlaying: false, connectionStatus: 'error' });
     scheduleReconnect(get, set);
   };
