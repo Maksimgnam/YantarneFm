@@ -19,19 +19,16 @@ const RESYNC_CHECK_INTERVAL = 30000; // перевіряти кожні 30с п�
 const CONTEXT_WATCHDOG_INTERVAL = 5000; // перевіряти кожні 5с, поки isPlaying
 
 // ДОДАНО: артворк для Lock Screen / notification panel.
-// ЗАМІНИ шляхи на реальні іконки радіо у /public (бажано мінімум 2 розміри).
 const MEDIA_ARTWORK = [
-  { src: '/icon-96.png', sizes: '96x96', type: 'image/png' },
-  { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-  { src: '/icon-512.png', sizes: '512x512', type: 'image/png' },
+  { src: '/logo.webp', sizes: '512x512', type: 'image/webp' },
 ];
 
 let reconnectTimer = null;
 let stallTimer = null;
 let resyncCheckTimer = null;
-let contextWatchdogTimer = null; // ДОДАНО
+let contextWatchdogTimer = null;
 let reconnectAttempts = 0;
-let mediaSessionInitialized = false; // ДОДАНО
+let mediaSessionInitialized = false;
 
 const usePlayerStore = create((set, get) => ({
   isPlaying: false,
@@ -48,22 +45,19 @@ const usePlayerStore = create((set, get) => ({
     const prev = get().audioElement;
     if (prev) detachListeners(prev);
     if (el) {
-      // ВАЖЛИВО: виставляти crossOrigin ДО src, якщо стрім на іншому домені
-      // і сервер віддає CORS-заголовки. Якщо CORS не налаштований на сервері —
-      // прибери цей рядок і не використовуй createMediaElementSource (п.1.2 аналізу).
       el.crossOrigin = 'anonymous';
+      const { volume, isMuted } = get();
+      el.volume = isMuted ? 0 : volume / 100;
       attachListeners(el, get, set);
     }
     set({ audioElement: el });
-    setupMediaSession(get, set); // ДОДАНО: реєструємо play/pause на Lock Screen один раз
+    setupMediaSession(get, set);
   },
 
   setAnalyser: (analyser) => set({ analyser }),
   setAudioContext: (ctx) => set({ audioContext: ctx }),
   setIsPlaying: (isPlaying) => set({ isPlaying }),
 
-  // ВИПРАВЛЕНО: оновлюємо ще й Media Session metadata (назва/артист/обкладинка
-  // на Lock Screen мають синхронно змінюватись разом з треком)
   setTrackInfo: (info) => {
     set({ trackInfo: info });
     updateMediaSessionMetadata(info);
@@ -97,12 +91,6 @@ const usePlayerStore = create((set, get) => ({
       source.connect(analyser);
       analyser.connect(audioCtx.destination);
 
-      // Автопробудження AudioContext, якщо він засне під час відтворення (п.1.3).
-      // Це вже було в оригіналі, але саме по собі НЕ рятує фонове відтворення на
-      // iOS: поки сторінка у фоні, iOS може взагалі не виконувати JS на сторінці,
-      // тож onstatechange може просто не встигнути спрацювати вчасно. Тому нижче
-      // додано ще й активний watchdog (armContextWatchdog) + перевірку одразу
-      // при поверненні у форграунд (recoverAfterForeground).
       audioCtx.onstatechange = () => {
         if (audioCtx.state === 'suspended' && get().isPlaying) {
           audioCtx.resume().catch((e) =>
@@ -113,7 +101,6 @@ const usePlayerStore = create((set, get) => ({
 
       set({ audioContext: audioCtx, analyser });
     } catch (err) {
-      // Якщо стрім cross-origin без CORS — createMediaElementSource може кинути тут.
       console.warn('AudioContext setup failed (можливо CORS, див. п.1.2):', err);
     }
   },
@@ -128,18 +115,17 @@ const usePlayerStore = create((set, get) => ({
     if (isPlaying) {
       clearReconnect();
       clearResyncCheck();
-      clearContextWatchdog(); // ДОДАНО
+      clearContextWatchdog();
       audioElement.pause();
+      audioElement.src = '';
       set({ isPlaying: false, connectionStatus: 'idle' });
-      setMediaSessionPlaybackState('paused'); // ДОДАНО
+      setMediaSessionPlaybackState('paused');
     } else {
       await startPlayback(get, set);
     }
   },
 }));
 
-// ДОДАНО: параметр silent — для тихого ресинку на live edge без блимання
-// статусу "reconnecting" в UI
 async function startPlayback(get, set, { isReconnect = false, silent = false } = {}) {
   const { audioElement, audioContext } = get();
   if (!audioElement) return;
@@ -157,38 +143,26 @@ async function startPlayback(get, set, { isReconnect = false, silent = false } =
   }
 
   try {
-    // cache-busting query — без нього браузер/проксі можуть повторно
-    // "приліпитись" до того ж мертвого з'єднання при реконекті
     const url = `${STREAM_URL}${STREAM_URL.includes('?') ? '&' : '?'}_ts=${Date.now()}`;
     audioElement.src = url;
     audioElement.load();
     await audioElement.play();
     set({ isPlaying: true, connectionStatus: 'playing' });
-    setMediaSessionPlaybackState('playing'); // ДОДАНО
+    setMediaSessionPlaybackState('playing');
     reconnectAttempts = 0;
     armStallTimer(get, set);
     armResyncCheck(get, set);
-    armContextWatchdog(get, set); // ДОДАНО
+    armContextWatchdog(get, set);
   } catch (err) {
     console.error('Playback failed:', err);
     if (!silent) {
       set({ isPlaying: false, connectionStatus: 'error' });
-      setMediaSessionPlaybackState('paused'); // ДОДАНО
+      setMediaSessionPlaybackState('paused');
     }
-    // ВИПРАВЛЕНО: раніше тут завжди викликалось scheduleReconnect(get, set) —
-    // тобто навіть "тихий" виклик (з checkBufferDrift) міг у разі помилки
-    // .play() вивалити видимий статус "reconnecting" в UI, хоча за задумом
-    // (див. коментар у checkBufferDrift) цей ресинк мав лишатись непомітним.
     scheduleReconnect(get, set, silent);
   }
 }
 
-// ВИПРАВЛЕНО: додано параметр silent, який реально пробрасывается далі
-// ВИПРАВЛЕНО (v2): поки сторінка у фоні — жодного src/load()-реконекту.
-// Максимум — м'який повторний .play() на вже наявному елементі (без зміни
-// ресурсу), що з набагато більшою ймовірністю дозволений браузером, бо це
-// "продовження" вже дозволеної сесії, а не нова. Повноцінний реконект
-// відбудеться при поверненні у форграунд через recoverAfterForeground.
 function scheduleReconnect(get, set, silent = false) {
   clearReconnect();
 
@@ -200,7 +174,7 @@ function scheduleReconnect(get, set, silent = false) {
         // recoverAfterForeground, коли користувач поверне сторінку
       });
     }
-    return; // жодного backoff/src-реконекту, поки сторінка схована
+    return;
   }
 
   const delay = Math.min(
@@ -212,9 +186,7 @@ function scheduleReconnect(get, set, silent = false) {
     set({ connectionStatus: 'reconnecting' });
   }
   reconnectTimer = setTimeout(() => {
-    // Не намагатись перепідключатись, якщо юзер сам поставив на паузу
     if (!navigator.onLine) {
-      // почекаємо події 'online' замість того щоб довбати мережу вхолосту
       return;
     }
     startPlayback(get, set, { isReconnect: true, silent });
@@ -228,16 +200,6 @@ function clearReconnect() {
   stallTimer = null;
 }
 
-// ДОДАНО (v2 — реальна причина швидкого й однакового на iOS/Android розриву):
-// поки document.hidden === true, НІКОЛИ не можна чіпати audioElement.src /
-// викликати .load(). Мобільні браузери трактують зміну src + повторний
-// .play() як старт НОВОЇ медіа-сесії (а не продовження вже дозволеної) — і
-// такий play(), ініційований скриптом (не прямим тапом користувача), поки
-// сторінка згорнута/заблокована, ВІДХИЛЯЄТЬСЯ політикою автовідтворення.
-// Саме це вбивало звук: періодичний checkBufferDrift (кожні 30с) чи
-// watchdog у фоні намагались "тихо" перепідключитись через src+load(),
-// отримували відмову браузера — і назавжди лишали audio мовчазним, поки
-// isPlaying в сторі й далі показував true (кнопка "грає").
 function isHidden() {
   return typeof document !== 'undefined' && document.hidden;
 }
@@ -245,7 +207,6 @@ function isHidden() {
 function armStallTimer(get, set) {
   if (stallTimer) clearTimeout(stallTimer);
   stallTimer = setTimeout(() => {
-    // Якщо за STALL_TIMEOUT не було прогресу відтворення — вважаємо стрім мертвим
     const { audioElement, isPlaying } = get();
     if (isPlaying && audioElement && audioElement.paused) {
       set({ connectionStatus: 'stalled' });
@@ -254,12 +215,6 @@ function armStallTimer(get, set) {
   }, STALL_TIMEOUT);
 }
 
-// ДОДАНО: watchdog, що активно опитує AudioContext, поки триває відтворення.
-// Це не панацея (на iOS, поки сторінка у фоні, JS може взагалі не виконуватись,
-// тож цей setInterval теж може "замерзнути" — див. recoverAfterForeground нижче
-// як другу лінію захисту, яка спрацьовує гарантовано в момент повернення),
-// але для Android Chrome і для коротких/часткових призупинень на iOS це реально
-// відновлює звук без участі користувача.
 function armContextWatchdog(get, set) {
   clearContextWatchdog();
   contextWatchdogTimer = setInterval(() => {
@@ -267,16 +222,9 @@ function armContextWatchdog(get, set) {
     if (!isPlaying) return;
 
     if (audioContext && audioContext.state === 'suspended') {
-      audioContext.resume().catch(() => {
-        // якщо resume() відхилено, поки сторінка у фоні — це очікувано,
-        // наступна спроба буде за CONTEXT_WATCHDOG_INTERVAL або на поверненні
-        // у форграунд
-      });
+      audioContext.resume().catch(() => {});
     }
 
-    // Захист від "тихого" стану: audio-елемент раптово на паузі, хоча ми
-    // впевнені, що мали грати (наприклад ОС перервала сесію дзвінком/іншим
-    // застосунком), а подія 'pause' з якоїсь причини не була оброблена.
     if (audioElement && audioElement.paused) {
       set({ connectionStatus: 'stalled' });
       scheduleReconnect(get, set);
@@ -289,7 +237,6 @@ function clearContextWatchdog() {
   contextWatchdogTimer = null;
 }
 
-// ДОДАНО: періодична перевірка "наскільки буфер випереджає точку відтворення".
 function armResyncCheck(get, set) {
   clearResyncCheck();
   resyncCheckTimer = setInterval(() => checkBufferDrift(get, set), RESYNC_CHECK_INTERVAL);
@@ -301,9 +248,6 @@ function clearResyncCheck() {
 }
 
 function checkBufferDrift(get, set) {
-  // ВИПРАВЛЕНО (v2): поки сторінка згорнута, ресинк буфера нікому не чутно
-  // (екран заблокований) — а спроба його зробити якраз і була причиною
-  // "мовчазного" зависання: src-реконект у фоні браузер відхиляє.
   if (isHidden()) return;
 
   const { audioElement, isPlaying } = get();
@@ -323,12 +267,6 @@ function checkBufferDrift(get, set) {
   }
 }
 
-// ДОДАНО: Media Session API.
-// Дає: (а) керування play/pause з Lock Screen / шторки сповіщень на iOS та
-// Android; (б) сигнал ОС, що сторінка веде легітимну фонову медіа-сесію —
-// це саме той механізм, за яким ОС вирішує, чи тримати аудіо живим у фоні,
-// чи приспати його. Реєструємо обробники один раз — вони не залежать від
-// конкретного audio-елемента.
 function setupMediaSession(get, set) {
   if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
   if (mediaSessionInitialized) return;
@@ -345,6 +283,7 @@ function setupMediaSession(get, set) {
       clearResyncCheck();
       clearContextWatchdog();
       audioElement.pause();
+      audioElement.src = '';
       set({ isPlaying: false, connectionStatus: 'idle' });
       setMediaSessionPlaybackState('paused');
     }
@@ -355,20 +294,19 @@ function setupMediaSession(get, set) {
     clearReconnect();
     clearResyncCheck();
     clearContextWatchdog();
-    if (audioElement) audioElement.pause();
+    if (audioElement) {
+      audioElement.pause();
+      audioElement.src = '';
+    }
     set({ isPlaying: false, connectionStatus: 'idle' });
     setMediaSessionPlaybackState('none');
   });
 
-  // Це живий ефір без перемотки/треків — явно вимикаємо ці екшени, інакше
-  // iOS/Android можуть показати неактивні або оманливі кнопки
   ['seekbackward', 'seekforward', 'seekto', 'previoustrack', 'nexttrack'].forEach(
     (action) => {
       try {
         navigator.mediaSession.setActionHandler(action, null);
-      } catch (e) {
-        // не всі браузери підтримують усі екшени — ігноруємо
-      }
+      } catch (e) {}
     }
   );
 }
@@ -389,16 +327,9 @@ function updateMediaSessionMetadata(trackInfo) {
 
 function setMediaSessionPlaybackState(state) {
   if (typeof navigator === 'undefined' || !('mediaSession' in navigator)) return;
-  navigator.mediaSession.playbackState = state; // 'playing' | 'paused' | 'none'
+  navigator.mediaSession.playbackState = state;
 }
 
-// ДОДАНО: єдина точка "ремонту" стріму в момент повернення з фону.
-// ЧОМУ ЦЕ ОКРЕМА ФУНКЦІЯ, А НЕ ЛИШЕ watchdog: поки Safari/Chrome тримає
-// сторінку у фоні (заблокований екран, інший застосунок активний), рушій
-// може взагалі не виконувати JS на сторінці — жоден setInterval чи
-// audioCtx.onstatechange не гарантовано встигне спрацювати. Але
-// visibilitychange/focus/pageshow ГАРАНТОВАНО спрацьовують у момент, коли
-// користувач повертається — тож саме тут має бути "останній рубіж" перевірки.
 function recoverAfterForeground(get, set) {
   const { audioContext, isPlaying, audioElement } = get();
   if (!isPlaying) return;
@@ -417,31 +348,22 @@ function recoverAfterForeground(get, set) {
 function attachListeners(el, get, set) {
   el._onError = () => {
     console.warn('Audio error:', el.error);
-    // ВИПРАВЛЕНО (v2): у фоні НЕ скидаємо isPlaying — інакше
-    // recoverAfterForeground (який діє лише коли isPlaying === true) не
-    // зможе полагодити стрім, коли користувач поверне сторінку.
-    // connectionStatus теж не чіпаємо у фоні — все одно невидимо користувачу.
     if (isHidden()) {
-      scheduleReconnect(get, set); // сам розбереться (м'який play() у фоні)
+      scheduleReconnect(get, set);
       return;
     }
     set({ isPlaying: false, connectionStatus: 'error' });
     scheduleReconnect(get, set);
   };
   el._onStalled = () => {
-    // 'stalled' = браузер намагався отримати дані, але не зміг (типово для розриву Icecast)
     if (!isHidden()) set({ connectionStatus: 'stalled' });
     scheduleReconnect(get, set);
   };
   el._onWaiting = () => {
-    // 'waiting' = буферизація; даємо шанс відновитись самостійно,
-    // але страхуємось таймером на випадок, якщо буферизація ніколи не завершиться
     if (!isHidden()) set({ connectionStatus: 'connecting' });
     armStallTimer(get, set);
   };
   el._onEnded = () => {
-    // Для живого стріму 'ended' зазвичай означає, що сервер закрив з'єднання
-    // ВИПРАВЛЕНО (v2): та сама логіка — не скидаємо isPlaying у фоні
     if (isHidden()) {
       scheduleReconnect(get, set);
       return;
@@ -450,12 +372,9 @@ function attachListeners(el, get, set) {
     scheduleReconnect(get, set);
   };
   el._onSuspend = () => {
-    // 'suspend' часто нешкідливий (браузер призупинив завантаження, бо буфер повний),
-    // логуємо для діагностики, але не реагуємо агресивно
     console.debug('Audio suspend event');
   };
   el._onPause = () => {
-    // Native pause, ІНІЦІЙОВАНИЙ НЕ НАМИ (наприклад ОС/навушники/lock screen)
     if (get().isPlaying) {
       set({ connectionStatus: 'stalled' });
       scheduleReconnect(get, set);
@@ -464,7 +383,7 @@ function attachListeners(el, get, set) {
   el._onPlaying = () => {
     set({ connectionStatus: 'playing' });
     reconnectAttempts = 0;
-    setMediaSessionPlaybackState('playing'); // ДОДАНО
+    setMediaSessionPlaybackState('playing');
   };
 
   el.addEventListener('error', el._onError);
@@ -486,8 +405,6 @@ function detachListeners(el) {
   el.removeEventListener('playing', el._onPlaying);
 }
 
-// Глобальні мережеві/видимість слухачі — вішаємо один раз при завантаженні модуля.
-// SSR-safe перевірка для Next.js.
 if (typeof window !== 'undefined') {
   window.addEventListener('online', () => {
     const { isPlaying, connectionStatus } = usePlayerStore.getState();
@@ -500,13 +417,10 @@ if (typeof window !== 'undefined') {
 
   document.addEventListener('visibilitychange', () => {
     if (document.visibilityState === 'visible') {
-      recoverAfterForeground(usePlayerStore.getState, usePlayerStore.setState); // ВИПРАВЛЕНО
+      recoverAfterForeground(usePlayerStore.getState, usePlayerStore.setState);
     }
   });
 
-  // ДОДАНО: додаткові точки повернення з фону. На iOS Safari 'focus' і
-  // 'pageshow' іноді спрацьовують надійніше/раніше за visibilitychange,
-  // особливо коли сторінка відновлюється з bfcache.
   window.addEventListener('focus', () => {
     recoverAfterForeground(usePlayerStore.getState, usePlayerStore.setState);
   });

@@ -133,7 +133,7 @@ export default function Timetable() {
         <div className="w-full h-auto flex md:flex-row flex-col items-center md:justify-between justify-center">
         <div className="title"><span>Р</span>озклад</div>
         <div className="line"></div>
-        <button      className={`toggle-schedule-btn${!isSchedule ? " hidden" : ""}`} onClick={toggleSchedule}>
+        <button className={`toggle-schedule-btn${!isSchedule ? " hidden" : ""}`} onClick={toggleSchedule} suppressHydrationWarning>
   {isSchedule ? "Сховати" : "Показати"}
 </button>
         </div>

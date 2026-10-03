@@ -54,7 +54,7 @@ const News = () => {
           </div>
           <h2 className='text-center'>Будемо вдячні  за <br /> підтримку 😊</h2>
           <a href="https://buymeacoffee.com/yantarne.fm" target='_blank'>
-            <button>Підтримати</button>
+            <button suppressHydrationWarning>Підтримати</button>
           </a>
          
         </div>

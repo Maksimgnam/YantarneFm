@@ -69,6 +69,7 @@ const Contacts = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
+                suppressHydrationWarning
               />
             </div>
 
@@ -78,10 +79,11 @@ const Contacts = () => {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 required
+                suppressHydrationWarning
               />
             </div>
 
-            <button type="submit">Надіслати</button>
+            <button type="submit" suppressHydrationWarning>Надіслати</button>
           </form>
         </div>
 

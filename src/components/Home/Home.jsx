@@ -210,7 +210,7 @@ const Home = () => {
 
       <div className="player-container" style={{ zIndex: 10 }}>
         <div className="controls">
-          <button onClick={handlePlayClick} className="border_btn" aria-label={isPlaying ? 'Pause' : 'Play'}>
+          <button onClick={handlePlayClick} className="border_btn" aria-label={isPlaying ? 'Pause' : 'Play'} suppressHydrationWarning>
             <div className="grey_btn">
               <div className={isPlaying ? 'play-btn playing' : 'play-btn'}>
                 {isPlaying ? (
@@ -236,7 +236,7 @@ const Home = () => {
         </div>
 
         <div className="volume-vertical">
-          <button className="vol-icon top" onClick={increaseVolume} aria-label="increase">
+          <button className="vol-icon top" onClick={increaseVolume} aria-label="increase" suppressHydrationWarning>
             <Image src="/volume1.webp" width={32} height={32} alt="volume up" />
           </button>
 
@@ -249,14 +249,15 @@ const Home = () => {
               value={isMuted ? 0 : volume}
               onChange={onVolumeChange}
               orient="vertical"
+              suppressHydrationWarning
             />
           </div>
 
-          <button className="vol-icon bottom" onClick={decreaseVolume} aria-label="decrease">
+          <button className="vol-icon bottom" onClick={decreaseVolume} aria-label="decrease" suppressHydrationWarning>
             <Image src="/volume2.webp" width={32} height={32} alt="volume down" />
           </button>
 
-          <button className="mute-btn" onClick={handleMuteToggle} aria-label="mute">
+          <button className="mute-btn" onClick={handleMuteToggle} aria-label="mute" suppressHydrationWarning>
             {isMuted || volume === 0 ? (
               <div className="mute-ind">
                 <Image src="/Volume_Off.svg" width={28} height={28} alt="volume mute" />

@@ -49,9 +49,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="uk">
+    <html lang="uk" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} antialiased`}
+        suppressHydrationWarning
       >
         {children}
         <MiniPlayer />

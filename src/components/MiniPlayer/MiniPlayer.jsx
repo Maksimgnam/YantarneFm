@@ -6,6 +6,7 @@ import usePlayerStore from '@/store/usePlayerStore';
 const MiniPlayer = () => {
   const { 
     isPlaying, 
+    connectionStatus,
     trackInfo, 
     setAudioElement, 
     setTrackInfo, 
@@ -16,7 +17,6 @@ const MiniPlayer = () => {
   const [isMounted, setIsMounted] = useState(false);
   const [visible, setVisible] = useState(false);
   const audioRef = useRef(null);
-  const streamUrl = 'https://complex.in.ua/yantarne';
 
   useEffect(() => {
     setIsMounted(true);
@@ -74,11 +74,8 @@ const MiniPlayer = () => {
     <div className={`mini-player-wrapper ${visible ? '' : 'hidden'}`}>
       <audio 
         ref={audioRef} 
-        src={streamUrl} 
         preload="none" 
         crossOrigin="anonymous" 
-        onPlay={() => usePlayerStore.setState({ isPlaying: true })}
-        onPause={() => usePlayerStore.setState({ isPlaying: false })}
       />
 
       <div className="mini-player-glass">
@@ -110,7 +107,7 @@ const MiniPlayer = () => {
           </div>
         </div>
 
-        <div className={`mp-bars ${isPlaying ? 'animating' : ''}`}>
+        <div className={`mp-bars ${(isPlaying && connectionStatus === 'playing') ? 'animating' : ''}`}>
           <div className="bar"></div>
           <div className="bar"></div>
           <div className="bar"></div>
