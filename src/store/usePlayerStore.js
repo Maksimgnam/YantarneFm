@@ -113,14 +113,23 @@ const usePlayerStore = create((set, get) => ({
     }
 
     if (isPlaying) {
+      set({ isPlaying: false, connectionStatus: 'idle' });
+      setMediaSessionPlaybackState('paused');
       clearReconnect();
       clearResyncCheck();
       clearContextWatchdog();
-      audioElement.pause();
-      audioElement.src = '';
-      set({ isPlaying: false, connectionStatus: 'idle' });
-      setMediaSessionPlaybackState('paused');
+      reconnectAttempts = 0;
+
+      try {
+        audioElement.pause();
+        audioElement.removeAttribute('src');
+        audioElement.load();
+      } catch (e) {
+        console.warn('Pause error:', e);
+      }
     } else {
+      set({ isPlaying: true, connectionStatus: 'playing' });
+      setMediaSessionPlaybackState('playing');
       await startPlayback(get, set);
     }
   },
@@ -138,14 +147,15 @@ async function startPlayback(get, set, { isReconnect = false, silent = false } =
     }
   }
 
-  if (!silent) {
-    set({ connectionStatus: isReconnect ? 'reconnecting' : 'connecting' });
+  if (isReconnect && !silent) {
+    set({ connectionStatus: 'reconnecting' });
   }
 
   try {
+    // Завжди підключаємося до свіжого ефіру (Live edge) із таймстемпом,
+    // щоб після паузи звучав саме актуальний живий трек, а не старий буфер
     const url = `${STREAM_URL}${STREAM_URL.includes('?') ? '&' : '?'}_ts=${Date.now()}`;
     audioElement.src = url;
-    audioElement.load();
     await audioElement.play();
     set({ isPlaying: true, connectionStatus: 'playing' });
     setMediaSessionPlaybackState('playing');
@@ -154,16 +164,31 @@ async function startPlayback(get, set, { isReconnect = false, silent = false } =
     armResyncCheck(get, set);
     armContextWatchdog(get, set);
   } catch (err) {
+    // Якщо play() був скасований користувачем (швидке натискання паузи / AbortError) — ігноруємо без помилок
+    if (err.name === 'AbortError') {
+      return;
+    }
+    // Якщо користувач уже встиг натиснути паузу — не виводимо помилку і не перепідключаємося
+    if (!get().isPlaying) {
+      return;
+    }
+
     console.error('Playback failed:', err);
     if (!silent) {
-      set({ isPlaying: false, connectionStatus: 'error' });
-      setMediaSessionPlaybackState('paused');
+      set({ connectionStatus: 'error' });
+      if (!isReconnect) {
+        set({ isPlaying: false });
+        setMediaSessionPlaybackState('paused');
+      }
     }
     scheduleReconnect(get, set, silent);
   }
 }
 
 function scheduleReconnect(get, set, silent = false) {
+  // Якщо користувач сам вимкнув плеєр — ніколи не перепідключаємося
+  if (!get().isPlaying) return;
+
   clearReconnect();
 
   if (isHidden()) {
@@ -186,7 +211,9 @@ function scheduleReconnect(get, set, silent = false) {
     set({ connectionStatus: 'reconnecting' });
   }
   reconnectTimer = setTimeout(() => {
-    if (!navigator.onLine) {
+    // Перевіряємо ще раз у момент спрацювання таймера:
+    // якщо користувач натиснув паузу за цей час — скасовуємо запуск!
+    if (!get().isPlaying || !navigator.onLine) {
       return;
     }
     startPlayback(get, set, { isReconnect: true, silent });
@@ -277,29 +304,15 @@ function setupMediaSession(get, set) {
   });
 
   navigator.mediaSession.setActionHandler('pause', () => {
-    const { audioElement, isPlaying } = get();
-    if (isPlaying && audioElement) {
-      clearReconnect();
-      clearResyncCheck();
-      clearContextWatchdog();
-      audioElement.pause();
-      audioElement.src = '';
-      set({ isPlaying: false, connectionStatus: 'idle' });
-      setMediaSessionPlaybackState('paused');
+    if (get().isPlaying) {
+      get().togglePlay();
     }
   });
 
   navigator.mediaSession.setActionHandler('stop', () => {
-    const { audioElement } = get();
-    clearReconnect();
-    clearResyncCheck();
-    clearContextWatchdog();
-    if (audioElement) {
-      audioElement.pause();
-      audioElement.src = '';
+    if (get().isPlaying) {
+      get().togglePlay();
     }
-    set({ isPlaying: false, connectionStatus: 'idle' });
-    setMediaSessionPlaybackState('none');
   });
 
   ['seekbackward', 'seekforward', 'seekto', 'previoustrack', 'nexttrack'].forEach(
@@ -347,28 +360,32 @@ function recoverAfterForeground(get, set) {
 
 function attachListeners(el, get, set) {
   el._onError = () => {
+    if (!get().isPlaying) return;
     console.warn('Audio error:', el.error);
     if (isHidden()) {
       scheduleReconnect(get, set);
       return;
     }
-    set({ isPlaying: false, connectionStatus: 'error' });
+    set({ connectionStatus: 'error' });
     scheduleReconnect(get, set);
   };
   el._onStalled = () => {
+    if (!get().isPlaying) return;
     if (!isHidden()) set({ connectionStatus: 'stalled' });
     scheduleReconnect(get, set);
   };
   el._onWaiting = () => {
+    if (!get().isPlaying) return;
     if (!isHidden()) set({ connectionStatus: 'connecting' });
     armStallTimer(get, set);
   };
   el._onEnded = () => {
+    if (!get().isPlaying) return;
     if (isHidden()) {
       scheduleReconnect(get, set);
       return;
     }
-    set({ isPlaying: false, connectionStatus: 'error' });
+    set({ connectionStatus: 'error' });
     scheduleReconnect(get, set);
   };
   el._onSuspend = () => {

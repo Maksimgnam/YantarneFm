@@ -172,7 +172,6 @@ const Home = () => {
   // ДОДАНО: людський текст статусу з'єднання (використовує connectionStatus
   // з оновленого usePlayerStore — 'connecting' | 'playing' | 'reconnecting' | 'stalled' | 'error' | 'idle')
   const statusLabel = {
-    connecting: "Підключення…",
     reconnecting: "Перепідключення…",
     stalled: "Втрачено з'єднання, пробуємо знову…",
     error: "Помилка з'єднання, пробуємо знову…",
