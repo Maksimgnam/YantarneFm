@@ -80,25 +80,37 @@ const mask = s => String(s).replace(/(rtmps?:\/\/[^\s]*?\/[^/\s]+\/)[^\s]+/g, '$
 function startProxy(target) {
   return new Promise((resolve, reject) => {
     proxy = net.createServer(local => {
-      let up = 0, down = 0
-      const remote = target.secure
-        ? tls.connect({ host: target.host, port: target.port, servername: target.host })
-        : net.connect({ host: target.host, port: target.port })
-      remote.setNoDelay(true)
-      remote.once(target.secure ? 'secureConnect' : 'connect', () => log(`зʼєднання з ${target.host}:${target.port} встановлено`))
-      local.on('data', c => { up += c.length })
-      remote.on('data', c => { down += c.length })
-      local.pipe(remote).pipe(local)
-      const close = err => {
-        if (err) { state.lastError = 'Зʼєднання з Telegram: ' + err.message; log(state.lastError) }
-        local.destroy(); remote.destroy()
-      }
-      local.on('error', close); remote.on('error', close)
-      local.on('close', () => remote.destroy())
-      remote.on('close', () => {
-        log(`Telegram закрив зʼєднання (надіслано ${up} Б, отримано ${down} Б)`)
-        local.destroy()
+      // Чекаємо перший пакет: справжній RTMP від ffmpeg починається з байта 0x03 (1537 байт рукостискання).
+      // Будь-що інше (наприклад, HTTP-перевірка портів від хостингу) у Telegram не пускаємо.
+      local.once('data', first => {
+        const preview = first.slice(0, 48).toString('latin1').replace(/[^\x20-\x7e]/g, '.')
+        if (first[0] !== 0x03) {
+          log(`стороннє зʼєднання на локальному порту (${first.length} Б: "${preview}"), ігнорую`)
+          return local.destroy()
+        }
+        if (DEBUG) log(`ffmpeg почав RTMP-рукостискання (${first.length} Б)`)
+        let up = first.length, down = 0
+        const remote = target.secure
+          ? tls.connect({ host: target.host, port: target.port, servername: target.host })
+          : net.connect({ host: target.host, port: target.port })
+        remote.setNoDelay(true)
+        remote.once(target.secure ? 'secureConnect' : 'connect', () => log(`зʼєднання з ${target.host}:${target.port} встановлено`))
+        remote.write(first)
+        local.on('data', c => { up += c.length })
+        remote.on('data', c => { down += c.length })
+        local.pipe(remote).pipe(local)
+        const close = err => {
+          if (err) { state.lastError = 'Зʼєднання з Telegram: ' + err.message; log(state.lastError) }
+          local.destroy(); remote.destroy()
+        }
+        local.on('error', close); remote.on('error', close)
+        local.on('close', () => remote.destroy())
+        remote.on('close', () => {
+          log(`Telegram закрив зʼєднання (надіслано ${up} Б, отримано ${down} Б)`)
+          local.destroy()
+        })
       })
+      local.on('error', () => local.destroy())
     })
     proxy.on('error', reject)
     proxy.listen(0, '127.0.0.1', () => { proxyPort = proxy.address().port; resolve() })
@@ -182,7 +194,7 @@ function launch() {
 
   let lastLog = 0
   proc.stderr.on('data', chunk => {
-    const text = mask(chunk.toString()).trim()
+    const text = mask(chunk.toString()).split('\n').filter(l => !/Statistics: \d+ bytes read/.test(l)).join('\n').trim()
     if (!text) return
     state.lastError = text.slice(-500)
     if (DEBUG || Date.now() - lastLog > 10000) { lastLog = Date.now(); console.warn('📡 ffmpeg:', DEBUG ? text : text.slice(-300)) }
