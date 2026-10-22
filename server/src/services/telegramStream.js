@@ -39,6 +39,8 @@ const state = {
   restarts: 0,
   sourceReconnects: 0,
   lastError: null,
+  lastExit: null, // { code, signal, after } — чим і через скільки секунд завершився ffmpeg
+  recent: [], // останні рядки журналу (без ключа) — видно в /telegram/stream-status
   lastExitAt: null
 };
 
@@ -73,7 +75,12 @@ function config() {
   }
 }
 
-const log = (...a) => console.log('📡 Telegram-трансляція:', ...a)
+function remember(line) {
+  state.recent.push(new Date().toISOString().slice(11, 19) + ' ' + line)
+  if (state.recent.length > 40) state.recent.splice(0, state.recent.length - 40)
+}
+const log = (...a) => { const line = a.join(' '); remember(line); console.log('📡 Telegram-трансляція:', line) }
+let lastProbeLog = 0
 const mask = s => String(s).replace(/(rtmps?:\/\/[^\s]*?\/[^/\s]+\/)[^\s]+/g, '$1***')
 
 // ── локальний проксі: ffmpeg говорить звичайний RTMP на 127.0.0.1, Node загортає в TLS до Telegram
@@ -85,7 +92,8 @@ function startProxy(target) {
       local.once('data', first => {
         const preview = first.slice(0, 48).toString('latin1').replace(/[^\x20-\x7e]/g, '.')
         if (first[0] !== 0x03) {
-          log(`стороннє зʼєднання на локальному порту (${first.length} Б: "${preview}"), ігнорую`)
+          // хостинг періодично перевіряє порти HTTP-запитом — пишемо про це не частіше разу на 10 хв
+          if (Date.now() - lastProbeLog > 600000) { lastProbeLog = Date.now(); log(`стороннє зʼєднання на локальному порту (${first.length} Б: "${preview}"), ігнорую`) }
           return local.destroy()
         }
         if (DEBUG) log(`ffmpeg почав RTMP-рукостискання (${first.length} Б)`)
@@ -150,13 +158,13 @@ function retrySource(url, sink, reason) {
 function buildArgs({ cover, rtmpUrl, tcUrl }) {
   return [
     '-hide_banner', '-loglevel', DEBUG ? 'verbose' : 'warning', '-nostats',
-    // відео: одна картинка, 2 кадри/с у реальному часі — мінімальний трафік
-    '-re', '-loop', '1', '-framerate', '2', '-i', cover,
+    // відео: одна картинка, 10 кадрів/с (ключовий кадр кожні 2 с) — статична картинка майже не дає трафіку
+    '-re', '-loop', '1', '-framerate', '10', '-i', cover,
     // аудіо: ефір, який Node подає в stdin
     '-thread_queue_size', '1024', '-i', 'pipe:0',
     '-map', '0:v', '-map', '1:a',
     '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'stillimage', '-pix_fmt', 'yuv420p',
-    '-r', '2', '-g', '4', '-b:v', '80k', '-maxrate', '100k', '-bufsize', '200k',
+    '-r', '10', '-g', '20', '-b:v', '80k', '-maxrate', '100k', '-bufsize', '200k',
     '-c:a', 'aac', '-b:a', '96k', '-ar', '44100', '-ac', '2',
     // Telegram має бачити свою адресу, а не локальний проксі 127.0.0.1
     '-rtmp_tcurl', tcUrl,
@@ -197,6 +205,7 @@ function launch() {
     const text = mask(chunk.toString()).split('\n').filter(l => !/Statistics: \d+ bytes read/.test(l)).join('\n').trim()
     if (!text) return
     state.lastError = text.slice(-500)
+    text.split('\n').slice(-8).forEach(l => remember('ffmpeg: ' + l.trim().slice(0, 300)))
     if (DEBUG || Date.now() - lastLog > 10000) { lastLog = Date.now(); console.warn('📡 ffmpeg:', DEBUG ? text : text.slice(-300)) }
   })
 
@@ -206,6 +215,7 @@ function launch() {
     if (sourceReq) sourceReq.destroy()
     proc = null
     state.lastExitAt = new Date().toISOString()
+    state.lastExit = { code, signal, after: state.startedAt ? Math.round((Date.now() - Date.parse(state.startedAt)) / 1000) : null }
     state.liveSince = null
     if (stopping) { state.status = 'stopped'; return }
     state.status = 'restarting'
