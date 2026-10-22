@@ -15,6 +15,7 @@
 //   TG_STREAM_KEY=...                            «Ключ трансляції» з Telegram (секрет!)
 //   STREAM_SOURCE_URL=https://complex.in.ua/yantarne   (необов'язково)
 //   TG_STREAM_COVER=/шлях/до/картинки.jpg               (необов'язково)
+//   TG_STREAM_DEBUG=true                                (необов'язково) докладні логи
 // ─────────────────────────────────────────────────────────────────────────────
 const { spawn } = require('child_process');
 const path = require('path');
@@ -23,6 +24,9 @@ const net = require('net');
 const tls = require('tls');
 const http = require('http');
 const https = require('https');
+
+// TG_STREAM_DEBUG=true — докладні логи ffmpeg (для пошуку проблем)
+const DEBUG = process.env.TG_STREAM_DEBUG === 'true'
 
 let ffmpegPath;
 try { ffmpegPath = require('ffmpeg-static'); } catch { ffmpegPath = 'ffmpeg'; }
@@ -76,17 +80,25 @@ const mask = s => String(s).replace(/(rtmps?:\/\/[^\s]*?\/[^/\s]+\/)[^\s]+/g, '$
 function startProxy(target) {
   return new Promise((resolve, reject) => {
     proxy = net.createServer(local => {
+      let up = 0, down = 0
       const remote = target.secure
         ? tls.connect({ host: target.host, port: target.port, servername: target.host })
         : net.connect({ host: target.host, port: target.port })
       remote.setNoDelay(true)
+      remote.once(target.secure ? 'secureConnect' : 'connect', () => log(`зʼєднання з ${target.host}:${target.port} встановлено`))
+      local.on('data', c => { up += c.length })
+      remote.on('data', c => { down += c.length })
       local.pipe(remote).pipe(local)
       const close = err => {
-        if (err) state.lastError = 'Зʼєднання з Telegram: ' + err.message
+        if (err) { state.lastError = 'Зʼєднання з Telegram: ' + err.message; log(state.lastError) }
         local.destroy(); remote.destroy()
       }
       local.on('error', close); remote.on('error', close)
-      local.on('close', () => remote.destroy()); remote.on('close', () => local.destroy())
+      local.on('close', () => remote.destroy())
+      remote.on('close', () => {
+        log(`Telegram закрив зʼєднання (надіслано ${up} Б, отримано ${down} Б)`)
+        local.destroy()
+      })
     })
     proxy.on('error', reject)
     proxy.listen(0, '127.0.0.1', () => { proxyPort = proxy.address().port; resolve() })
@@ -123,9 +135,9 @@ function retrySource(url, sink, reason) {
   sourceTimer = setTimeout(() => pumpSource(url, sink), 3000)
 }
 
-function buildArgs({ cover, rtmpUrl }) {
+function buildArgs({ cover, rtmpUrl, tcUrl }) {
   return [
-    '-hide_banner', '-loglevel', 'warning', '-nostats',
+    '-hide_banner', '-loglevel', DEBUG ? 'verbose' : 'warning', '-nostats',
     // відео: одна картинка, 2 кадри/с у реальному часі — мінімальний трафік
     '-re', '-loop', '1', '-framerate', '2', '-i', cover,
     // аудіо: ефір, який Node подає в stdin
@@ -134,6 +146,8 @@ function buildArgs({ cover, rtmpUrl }) {
     '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'stillimage', '-pix_fmt', 'yuv420p',
     '-r', '2', '-g', '4', '-b:v', '80k', '-maxrate', '100k', '-bufsize', '200k',
     '-c:a', 'aac', '-b:a', '96k', '-ar', '44100', '-ac', '2',
+    // Telegram має бачити свою адресу, а не локальний проксі 127.0.0.1
+    '-rtmp_tcurl', tcUrl,
     '-f', 'flv', rtmpUrl
   ]
 }
@@ -152,11 +166,12 @@ function launch() {
   }
 
   const rtmpUrl = `rtmp://127.0.0.1:${proxyPort}/${cfg.target.app}/${cfg.target.key}`
+  const tcUrl = `${cfg.target.secure ? 'rtmps' : 'rtmp'}://${cfg.target.host}:${cfg.target.port}/${cfg.target.app}`
   state.status = state.restarts ? 'restarting' : 'starting'
   state.startedAt = new Date().toISOString()
   log(`запуск (${cfg.source} → ${cfg.target.secure ? 'rtmps' : 'rtmp'}://${cfg.target.host}/${cfg.target.app}/***)`)
 
-  proc = spawn(ffmpegPath, buildArgs({ cover: cfg.cover, rtmpUrl }), { stdio: ['pipe', 'ignore', 'pipe'] })
+  proc = spawn(ffmpegPath, buildArgs({ cover: cfg.cover, rtmpUrl, tcUrl }), { stdio: ['pipe', 'ignore', 'pipe'] })
   proc.stdin.on('error', () => {}) // ffmpeg міг закритися — не валимо сервер
   pumpSource(cfg.source, proc.stdin)
 
@@ -170,7 +185,7 @@ function launch() {
     const text = mask(chunk.toString()).trim()
     if (!text) return
     state.lastError = text.slice(-500)
-    if (Date.now() - lastLog > 10000) { lastLog = Date.now(); console.warn('📡 ffmpeg:', text.slice(-300)) }
+    if (DEBUG || Date.now() - lastLog > 10000) { lastLog = Date.now(); console.warn('📡 ffmpeg:', DEBUG ? text : text.slice(-300)) }
   })
 
   proc.on('exit', (code, signal) => {

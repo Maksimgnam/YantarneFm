@@ -36,6 +36,7 @@ Render → ваш сервіс з сервером → **Environment** → до�
 | `TG_RTMP_URL` | URL сервера з Telegram, напр. `rtmps://dc4-1.rtmp.t.me/s/` |
 | `TG_STREAM_KEY` | ключ трансляції з Telegram |
 | `STREAM_SOURCE_URL` | (необов'язково) за замовчуванням `https://complex.in.ua/yantarne` |
+| `TG_STREAM_DEBUG` | (необов'язково) `true` — докладні логи для пошуку проблем |
 
 ## Крок 3. Завантажити код і перезапустити
 
