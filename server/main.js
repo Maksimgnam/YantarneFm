@@ -56,4 +56,6 @@ app.get('/', (req, res) => {
 
 app.listen(port, () => {
   console.log(`🚀 Сервер запущено на порту ${port}`);
+  // ретрансляція ефіру в Telegram-канал (вмикається змінною TG_STREAM_ENABLED=true)
+  require('./src/services/telegramStream').start();
 });

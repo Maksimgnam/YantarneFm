@@ -29,4 +29,9 @@ router.get('/', (req, res) => {
   res.send('Telegram route is working!');
 });
 
+// Стан ретрансляції в Telegram (без ключів і паролів)
+router.get('/stream-status', (req, res) => {
+  res.json(require('../services/telegramStream').status());
+});
+
 module.exports = router;
