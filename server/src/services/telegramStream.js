@@ -39,6 +39,10 @@ const state = {
   restarts: 0,
   sourceReconnects: 0,
   lastError: null,
+  sourceKB: 0, // скільки отримано з ефіру
+  toTelegramKB: 0, // скільки передано в Telegram
+  progress: null, // останній рядок прогресу ffmpeg: frame / time / bitrate
+  progressAt: null,
   lastExit: null, // { code, signal, after } — чим і через скільки секунд завершився ffmpeg
   recent: [], // останні рядки журналу (без ключа) — видно в /telegram/stream-status
   lastExitAt: null
@@ -104,7 +108,7 @@ function startProxy(target) {
         remote.setNoDelay(true)
         remote.once(target.secure ? 'secureConnect' : 'connect', () => log(`зʼєднання з ${target.host}:${target.port} встановлено`))
         remote.write(first)
-        local.on('data', c => { up += c.length })
+        local.on('data', c => { up += c.length; state.toTelegramKB = Math.round(up / 1024) })
         remote.on('data', c => { down += c.length })
         local.pipe(remote).pipe(local)
         const close = err => {
@@ -138,7 +142,7 @@ function pumpSource(url, sink, redirects = 0) {
       res.resume()
       return retrySource(url, sink, 'ефір відповів кодом ' + res.statusCode)
     }
-    res.on('data', chunk => { if (sink.writable) sink.write(chunk) })
+    res.on('data', chunk => { state.sourceKB += chunk.length / 1024; if (sink.writable) sink.write(chunk) })
     res.on('end', () => retrySource(url, sink, 'ефір завершив передачу'))
     res.on('error', err => retrySource(url, sink, err.message))
   })
@@ -157,15 +161,15 @@ function retrySource(url, sink, reason) {
 
 function buildArgs({ cover, rtmpUrl, tcUrl }) {
   return [
-    '-hide_banner', '-loglevel', DEBUG ? 'verbose' : 'warning', '-nostats',
-    // відео: одна картинка, 10 кадрів/с (ключовий кадр кожні 2 с) — статична картинка майже не дає трафіку
-    '-re', '-loop', '1', '-framerate', '10', '-i', cover,
+    '-hide_banner', '-loglevel', DEBUG ? 'verbose' : 'warning', '-stats', '-stats_period', '10',
+    // відео: одна картинка, 25 кадрів/с, ключовий кадр кожні 2 с (як радить Telegram для OBS); статична картинка майже не дає трафіку
+    '-re', '-loop', '1', '-framerate', '25', '-i', cover,
     // аудіо: ефір, який Node подає в stdin
     '-thread_queue_size', '1024', '-i', 'pipe:0',
     '-map', '0:v', '-map', '1:a',
     '-c:v', 'libx264', '-preset', 'veryfast', '-tune', 'stillimage', '-pix_fmt', 'yuv420p',
-    '-r', '10', '-g', '20', '-b:v', '80k', '-maxrate', '100k', '-bufsize', '200k',
-    '-c:a', 'aac', '-b:a', '96k', '-ar', '44100', '-ac', '2',
+    '-profile:v', 'main', '-r', '25', '-g', '50', '-keyint_min', '50', '-sc_threshold', '0', '-vf', 'scale=960:540', '-b:v', '150k', '-maxrate', '200k', '-bufsize', '400k',
+    '-c:a', 'aac', '-b:a', '128k', '-ar', '48000', '-ac', '2',
     // Telegram має бачити свою адресу, а не локальний проксі 127.0.0.1
     '-rtmp_tcurl', tcUrl,
     '-f', 'flv', rtmpUrl
@@ -202,7 +206,11 @@ function launch() {
 
   let lastLog = 0
   proc.stderr.on('data', chunk => {
-    const text = mask(chunk.toString()).split('\n').filter(l => !/Statistics: \d+ bytes read/.test(l)).join('\n').trim()
+    const raw = chunk.toString()
+    // рядок прогресу ffmpeg (frame=… time=… bitrate=…) — лише в статус, не в лог
+    const prog = raw.split(/[\r\n]+/).filter(l => /time=\S+/.test(l)).pop()
+    if (prog) { state.progress = prog.replace(/\s+/g, ' ').trim(); state.progressAt = new Date().toISOString() }
+    const text = mask(raw.split(/[\r\n]+/).filter(l => !/time=\S+ bitrate=/.test(l)).join('\n')).split('\n').filter(l => !/Statistics: \d+ bytes read|Last message repeated|AVIOContext/.test(l)).join('\n').trim()
     if (!text) return
     state.lastError = text.slice(-500)
     text.split('\n').slice(-8).forEach(l => remember('ffmpeg: ' + l.trim().slice(0, 300)))
@@ -254,7 +262,7 @@ function stop() {
 ;['SIGTERM', 'SIGINT'].forEach(sig => process.once(sig, () => { stop(); setTimeout(() => process.exit(0), 1500) }))
 
 function status() {
-  return { ...state, uptimeSec: state.liveSince ? Math.round((Date.now() - Date.parse(state.liveSince)) / 1000) : 0 }
+  return { ...state, sourceKB: Math.round(state.sourceKB), uptimeSec: state.liveSince ? Math.round((Date.now() - Date.parse(state.liveSince)) / 1000) : 0 }
 }
 
 module.exports = { start, stop, status }
