@@ -21,6 +21,7 @@ const timetableRoutes = require('./src/routes/timetableRoutes');
 const sendMessageRoute = require('./src/routes/sendMessage');
 const loginRoutes = require("./src/routes/login");
 const videoPageRoute = require("./src/routes/videoPage")
+const adRequestRoute = require('./src/routes/adRequest');
 
 
 app.use(express.json());
@@ -36,6 +37,7 @@ app.use('/api/timetable', timetableRoutes);
 app.use('/api', sendMessageRoute);
 app.use('/api', loginRoutes);
 app.use('/api', videoPageRoute)
+app.use('/api', adRequestRoute);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
